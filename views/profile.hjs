@@ -12,5 +12,6 @@
         <li>{{name}}</li>
       {{/restaurantList}}
     </ul>
+    <a href="/logout">log out</a>
   </body>
 </html>

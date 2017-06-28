@@ -13,6 +13,7 @@ router.get('/profile', loginRequired, function(req, res, next) {
 		.innerJoin('Restaurant_list', {
 			'Restaurant_list.restaurant_id': 'Restaurant.id'
 		})
+		.where('user_id', req.user.id)
 		.select('name')
 		.then((restaurantList) => {
 			res.render('profile.hjs', {name: req.user.name, restaurantList: restaurantList});
