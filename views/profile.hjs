@@ -6,6 +6,11 @@
   </head>
   <body>
     <h1>Hi {{ name }} </h1>
-    <p></p>
+    <h4>here is your list of restaurants</h4>
+    <ul>
+      {{#restaurantList}}
+        <li>{{name}}</li>
+      {{/restaurantList}}
+    </ul>
   </body>
 </html>
