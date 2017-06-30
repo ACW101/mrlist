@@ -6,7 +6,7 @@ const FacebookStrategy = require('passport-facebook').Strategy
 const LocalStrategy = require('passport-local').Strategy;
 
 // import your own facebook login key
-const facebookKey = require('./facebookKey');
+const facebookKey = require('./keys/facebookKey');
 
 passport.use(new LocalStrategy(authenticate))
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))

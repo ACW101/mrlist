@@ -12,8 +12,8 @@ const auth = require('./routes/auth');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const profile = require('./routes/profile');
-require('./passport');
-const db = require('./db')
+require('./utility/passport');
+const db = require('./utility/db')
 
 const app = express();
 
