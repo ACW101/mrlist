@@ -43,7 +43,7 @@ app.use(session({ secret: "a restaurant list app", resave: false, saveUninitiali
 app
   .use(passport.initialize())
   .use(passport.session())
-  .use(auth)
+  .use('/auth', auth)
 
 app.use('/', index);
 app.use('/users', users);

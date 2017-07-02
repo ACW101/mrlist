@@ -7,14 +7,14 @@ router
 	})
 	.post("/login", passport.authenticate("local", {
     successRedirect: "/profile",
-    failureRedirect: "/login",
+    failureRedirect: "/auth/login",
   }))
-	.get('/auth/facebook',
+	.get('/facebook',
 		passport.authenticate('facebook', 
 			{ scope: ['public_profile', 'user_friends'] }
 		)
 	)
-	.get('/auth/facebook/callback', 
+	.get('/facebook/callback', 
 		passport.authenticate('facebook', { failureRedirect: '/login'}),
 		function(req, res){
 			res.redirect('/profile');
@@ -25,11 +25,11 @@ router
   })
   .post("/signup", passport.authenticate("local-register", {
     successRedirect: "/profile",
-    failureRedirect: "/signup",
+    failureRedirect: "/auth/signup",
   }))
 	.get("/logout", (req, res, next) => {
     req.session.destroy((err) => {
-      res.redirect("/login")
+      res.redirect("/auth/login")
     })
   })
 

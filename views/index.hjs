@@ -6,6 +6,6 @@
   </head>
   <body>
     <h1>Welcome to My Restaurant List</h1>
-    <a href="/login">Login here</a>
+    <a href="/auth/login">Login here</a>
   </body>
 </html>
