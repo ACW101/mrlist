@@ -48,7 +48,7 @@ app
 app.use('/', index);
 app.use('/users', users);
 app.use(profile);
-app.use(add);
+app.use('/add', add);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

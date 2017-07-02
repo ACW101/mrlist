@@ -4,7 +4,7 @@ const router = require("express").Router()
 const yelp = require('yelp-fusion');
 const db = require("../utility/db");
 const yelpKey = require("../utility/keys/yelpKey");
-let access_token;
+let client = undefined;
 
 
 function loginRequired(req, res, next) {
@@ -18,26 +18,28 @@ function getToken() {
 	return yelp.accessToken(yelpKey.clientId, yelpKey.clientSecret);
 }
 
-router.get('/add', loginRequired, function(req, res, next) {
-	if(typeof access_token !== "undefined") {
-		console.log('token exists');
-	} else {
-		console.log('getting token');
-		getToken()
-			.then(response => access_token = response.jsonBody.access_token)
-			.catch(e => { console.log(e); })
-	}
- 	res.send();
+router
+	.get('/', loginRequired, function(req, res, next) {
+		if(typeof client !== "undefined") {
+			res.render("add");
+		} else {
+			console.log('getting token');
+			getToken()
+				.then(response => {
+					client = yelp.client(response.jsonBody.access_token);
+					res.render("add");
+					})
+				.catch(e => { console.log(e); })
+		}
+	})
+	.get('/search', loginRequired, function(req, res, next) {
+		client.search(req.query).then(response => {
+			console.log(response.jsonBody.businesses);
+			res.render("add", {searchResult: response.jsonBody.businesses});
+		}).catch(e => {
+			console.log(e);
+		})
+	})
 
-	// db.from('Restaurant')
-	// 	.innerJoin('Restaurant_list', {
-	// 		'Restaurant_list.restaurant_id': 'Restaurant.id'
-	// 	})
-	// 	.where('user_id', req.user.id)
-	// 	.select('name')
-	// 	.then((restaurantList) => {
-	// 		res.render('profile.hjs', {name: req.user.name, restaurantList: restaurantList});
-	// 	})
-});
 
 module.exports = router;
