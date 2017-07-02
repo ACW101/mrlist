@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
+    "chai": "^4.0.2",
     "connect-redis": "^3.3.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
@@ -22,7 +24,7 @@
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.4.2",
-    "yelp": "^1.0.2"
+    "yelp-fusion": "^1.0.3"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
