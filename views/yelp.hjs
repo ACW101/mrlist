@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>add new restaurant</h1>
-		  <form action="/add/search" method="get">
+		  <form action="/yelp/search" method="get">
 		  <label>Find</label>
 		  <input type="text" name="term" placeholder="restaurant name">
 		  <label>Near</label>

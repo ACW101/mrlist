@@ -3,7 +3,7 @@ const db = require("../utility/db");
 
 function loginRequired(req, res, next) {
 	if (!req.isAuthenticated()) {
-		return res.redirect("/login")
+		return res.redirect("/auth/login")
 	}
 	next()
 }
