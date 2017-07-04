@@ -12,7 +12,7 @@ passport.use(new LocalStrategy(authenticate))
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))
 
 function authenticate(email, password, done){
-  db("Users")
+  db("users")
     .where("email", email)
     .first()
     .then((user) => {
@@ -25,7 +25,7 @@ function authenticate(email, password, done){
 }
 
 function register(req, email, password, done) {
-  db("Users")
+  db("users")
     .where("email", email)
     .first()
     .then((user) => {
@@ -42,7 +42,7 @@ function register(req, email, password, done) {
         password: bcrypt.hashSync(password)
       };
 
-      db("Users")
+      db("users")
         .insert(newUser)
         .then((ids) => {
           newUser.id = ids[0]
@@ -54,7 +54,7 @@ function register(req, email, password, done) {
 passport.use(new FacebookStrategy(facebookKey,
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
-    db("Users")
+    db("users")
     	.where("oauth_id", profile.id)
     	.first()
     	.then((user) => {
@@ -66,7 +66,7 @@ passport.use(new FacebookStrategy(facebookKey,
           oauth_provider: 'facebook',
           name: profile.displayName,
     		};
-    		return db("Users")
+    		return db("users")
     			.insert(newUser)
     			.then((ids) => {
     				newUser.id = ids[0];
@@ -83,7 +83,7 @@ passport.serializeUser(function(user, done) {
 })
 
 passport.deserializeUser(function(id, done) {
-  db("Users")
+  db("users")
     .where("id", id)
     .first()
     .then((user) => {

@@ -11,7 +11,7 @@ const passport = require("passport")
 const yelp = require('./routes/yelp');
 const auth = require('./routes/auth');
 const index = require('./routes/index');
-const users = require('./routes/users');
+const api = require('./routes/api');
 const profile = require('./routes/profile');
 require('./utility/passport');
 const db = require('./utility/db')
@@ -46,7 +46,7 @@ app
   .use('/auth', auth)
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/api', api);
 app.use(profile);
 app.use('/yelp', yelp);
 

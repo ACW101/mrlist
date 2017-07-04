@@ -9,9 +9,9 @@ function loginRequired(req, res, next) {
 }
 
 router.get('/profile', loginRequired, function(req, res, next) {
-	db.from('Restaurant')
-		.innerJoin('Restaurant_list', {
-			'Restaurant_list.restaurant_id': 'Restaurant.id'
+	db.from('restaurants')
+		.innerJoin('restaurant_list', {
+			'restaurant_list.restaurant_id': 'restaurants.id'
 		})
 		.where('user_id', req.user.id)
 		.select('name')
