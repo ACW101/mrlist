@@ -1,32 +1,116 @@
 const router = require("express").Router();
-const restaurantsController = require('../controllers/restaurants')
+const controllers = require('../controllers/index');
+
+function loginRequired(req, res, next) {
+	// if (!req.isAuthenticated()) {
+	// 	return res.json({
+	// 		confirmation: 'fail',
+	// 		message: ('login required!')
+	// 	})
+	// }
+	next()
+}
 
 router
-	.get('/:resource/:id?', function(req, res){
-		const resource = req.params.resource;
-		const id = req.params.id;
+	.get('/user/:userResource?', loginRequired, function(req, res) {
+		const controller = controllers['user'];
+		const testId = 11;
 
-		function handleResponse(err, response) {
+	const params = {id: testId, userResource: req.params.userResource};
+		
+		controller.find(params, function(err, userInfo) {
 			if (err) {
 				res.json({
-						confirmation: 'fail',
-						message: 'error finding restaurant err: ' + err,
-					})
+					confirmation: 'fail',
+					message: ('error getting userInfo: ' + err)
+				})
 			}
 			res.json({
 				confirmation: 'success',
-				restaurant: response
+				result: userInfo,
+			})
+		})
+	})
+	.get('/:resource', function(req, res){
+		const resource = req.params.resource;
+		const controller = controllers[resource];
+
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource',
 			})
 		}
 
-		if (resource == 'restaurants') {
-			if (typeof id != 'undefined') {
-				restaurantsController.findById(id, handleResponse)
-			} else {
-				restaurantsController.findAll(handleResponse)
+		const params = {query: req.query }
+		controller.find(params, function(err, results) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: err
+				})
+				return
 			}
-		}
+			res.json({
+				confirmation: 'success',
+				results: results
+			})
+		})
 	})
+	.get('/:resource/:resource_id', function(req, res) {
+		const resource = req.params.resource;
+		const resource_id = req.params.resource_id;
+		const controller = controllers[resource]
+
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource',
+			})
+		}
+
+		const params = {resource_id: resource_id , query: req.query }
+		controller.findById(params, function(err, results) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: err
+				})
+				return
+			}
+			res.json({
+				confirmation: 'success',
+				results: results
+			})
+		})
+	})
+	// .post('/:resource', function(req, res) {
+	// 	const resource = req.params.resource;
+	// 	const resource_id = req.params.resource_id;
+	// 	const controller = controllers[resource]
+
+	// 	if (controller == null) {
+	// 		res.json({
+	// 			confirmation: 'fail',
+	// 			message: 'invalid resource',
+	// 		})
+	// 	}
+
+	// 	const params = {resource_id: resource_id , query: req.query }
+	// 	controller.findById(params, function(err, results) {
+	// 		if (err) {
+	// 			res.json({
+	// 				confirmation: 'fail',
+	// 				message: err
+	// 			})
+	// 			return
+	// 		}
+	// 		res.json({
+	// 			confirmation: 'success',
+	// 			results: results
+	// 		})
+	// 	})
+	// })
 
 
 module.exports = router

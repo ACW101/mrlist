@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const db = require("../utility/db");
+const UserController = require("../controllers/UserController");
 
 function loginRequired(req, res, next) {
 	if (!req.isAuthenticated()) {
@@ -8,15 +8,12 @@ function loginRequired(req, res, next) {
 	next()
 }
 
-router.get('/profile', loginRequired, function(req, res, next) {
-	db.from('restaurants')
-		.innerJoin('restaurant_list', {
-			'restaurant_list.restaurant_id': 'restaurants.id'
-		})
-		.where('user_id', req.user.id)
-		.select('name')
-		.then((restaurantList) => {
-			res.render('profile.hjs', {name: req.user.name, restaurantList: restaurantList});
+router.get('/', loginRequired, function(req, res, next) {
+	UserController.find({id: req.user.id}, 
+		(err, response) => {
+			console.log(response);
+			if (err) console.log(err);
+			res.render('profile.hjs', {name: req.user.name, restaurants: response})
 		})
 });
 

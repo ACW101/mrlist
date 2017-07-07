@@ -8,9 +8,9 @@
     <h1>Hi {{ name }} </h1>
     <h4>here is your list of restaurants</h4>
     <ul>
-      {{#restaurantList}}
+      {{#restaurants}}
         <li>{{name}}</li>
-      {{/restaurantList}}
+      {{/restaurants}}
     </ul>
     <a href="/auth/logout">log out</a>
     <a href="/yelp">add new</a>

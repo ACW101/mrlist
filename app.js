@@ -14,7 +14,6 @@ const index = require('./routes/index');
 const api = require('./routes/api');
 const profile = require('./routes/profile');
 require('./utility/passport');
-const db = require('./utility/db')
 
 const app = express();
 
@@ -45,9 +44,10 @@ app
   .use(passport.session())
   .use('/auth', auth)
 
+// routes
 app.use('/', index);
 app.use('/api', api);
-app.use(profile);
+app.use('/profile', profile);
 app.use('/yelp', yelp);
 
 // catch 404 and forward to error handler

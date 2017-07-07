@@ -2,7 +2,6 @@
 
 const router = require("express").Router()
 const yelp = require('yelp-fusion');
-const db = require("../utility/db");
 const yelpKey = require("../utility/keys/yelpKey");
 let client;
 
