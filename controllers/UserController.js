@@ -12,10 +12,10 @@ module.exports = {
 	},
 
 	findRestaurants: function(params, callback) {
-		User.forge({id: params.id})
+		User.where({id: params.id})
 				.fetch({withRelated: !!params.userResource})
-				.then((User) => {
-					callback(null, User.related('restaurants').toJSON());
+				.then((user) => {
+					callback(null, user.related('restaurants').toJSON());
 				})
 				.catch(e => callback(e, null))
 	},
@@ -26,8 +26,13 @@ module.exports = {
 	}, 
 
 	create: function(params, callback) {
-		const errMessage = "not supported"
-		callback(errMessage, null);
+		User.findOrCreate(params)
+				.then((user) => {
+					const json = user.toJSON();
+					console.log(json);
+					callback(null, json);
+				})
+				.catch(e => callback(e, null))
 	}, 
 
 	update: function(params, callback) {

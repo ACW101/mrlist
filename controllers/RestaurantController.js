@@ -2,7 +2,7 @@ const Restaurant = require('../models/Restaurant');
 
 module.exports = {
 	find: function(params, callback) {
-		Restaurant.forge(params.query)
+		Restaurant.where(params.query)
 				.fetchAll()
 				.then((restaurants) => {
 					callback(null, restaurants.toJSON());
@@ -11,11 +11,19 @@ module.exports = {
 	},
 
 	findById: function(params, callback) {
-		console.log()
+		Restaurant.findOne({id: params.resource_id})
+							.then((restaurant) => {
+								callback(null, restaurant.toJSON());
+							})
+							.catch(e => callback(e, null))
 	}, 
 
 	create: function(params, callback) {
-
+		Restaurant.findOrCreate(params)
+				.then((restaurant) => {
+					callback(null, restaurant.toJSON());
+				})
+				.catch(e => callback(e, null))
 	}, 
 
 	update: function(params, callback) {

@@ -84,33 +84,31 @@ router
 			})
 		})
 	})
-	// .post('/:resource', function(req, res) {
-	// 	const resource = req.params.resource;
-	// 	const resource_id = req.params.resource_id;
-	// 	const controller = controllers[resource]
+	.post('/:resource', function(req, res) {
+		const resource = req.params.resource;
+		const controller = controllers[resource]
 
-	// 	if (controller == null) {
-	// 		res.json({
-	// 			confirmation: 'fail',
-	// 			message: 'invalid resource',
-	// 		})
-	// 	}
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource',
+			})
+		}
 
-	// 	const params = {resource_id: resource_id , query: req.query }
-	// 	controller.findById(params, function(err, results) {
-	// 		if (err) {
-	// 			res.json({
-	// 				confirmation: 'fail',
-	// 				message: err
-	// 			})
-	// 			return
-	// 		}
-	// 		res.json({
-	// 			confirmation: 'success',
-	// 			results: results
-	// 		})
-	// 	})
-	// })
+		controller.create(req.body, function(err, results) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: err
+				})
+				return
+			}
+			res.json({
+				confirmation: 'success',
+				results: results
+			})
+		})
+	})
 
 
 module.exports = router
