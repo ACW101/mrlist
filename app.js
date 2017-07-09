@@ -8,13 +8,12 @@ const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
 const passport = require("passport")
 
-const add = require('./routes/add');
+const yelp = require('./routes/yelp');
 const auth = require('./routes/auth');
 const index = require('./routes/index');
-const users = require('./routes/users');
+const api = require('./routes/api');
 const profile = require('./routes/profile');
 require('./utility/passport');
-const db = require('./utility/db')
 
 const app = express();
 
@@ -45,10 +44,11 @@ app
   .use(passport.session())
   .use('/auth', auth)
 
+// routes
 app.use('/', index);
-app.use('/users', users);
-app.use(profile);
-app.use('/add', add);
+app.use('/api', api);
+app.use('/profile', profile);
+app.use('/yelp', yelp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
