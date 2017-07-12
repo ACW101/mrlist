@@ -8,11 +8,11 @@ const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
 const passport = require("passport")
 
-const yelp = require('./routes/yelp');
-const auth = require('./routes/auth');
 const index = require('./routes/index');
 const api = require('./routes/api');
-const profile = require('./routes/profile');
+// const profile = require('./routes/profile');
+// const yelp = require('./routes/yelp');
+// const auth = require('./routes/auth');
 require('./utility/passport');
 
 const app = express();
@@ -42,13 +42,14 @@ app.use(session({ secret: "a restaurant list app", resave: false, saveUninitiali
 app
   .use(passport.initialize())
   .use(passport.session())
-  .use('/auth', auth)
+  
 
 // routes
-app.use('/', index);
 app.use('/api', api);
-app.use('/profile', profile);
-app.use('/yelp', yelp);
+app.get('/*', (req, res) => { res.render('index')});
+// app.use('/auth', auth)
+// app.use('/profile', profile);
+// app.use('/yelp', yelp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

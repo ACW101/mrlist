@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const controllers = require('../controllers/index');
+const yelp = require('./yelp');
 
 function loginRequired(req, res, next) {
 	// if (!req.isAuthenticated()) {
@@ -12,6 +13,7 @@ function loginRequired(req, res, next) {
 }
 
 router
+	.use('/yelp', yelp)
 	.get('/user/:userResource?', loginRequired, function(req, res) {
 		const controller = controllers['user'];
 		const testId = 11;
