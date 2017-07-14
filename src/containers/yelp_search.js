@@ -15,7 +15,6 @@ class SearchBar extends Component {
 		const keyToUpdate = {};
 		keyToUpdate[event.target.name] = event.target.value;
 		this.setState(keyToUpdate);
-		console.log(this.state);
 	}
 	onFormSubmit(event) {
 		event.preventDefault();

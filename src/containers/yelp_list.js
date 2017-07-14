@@ -1,16 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { addRestaurant } from "../actions";
 
 const imageStyle = {
   width: '150px',
   height: '150px',
   borderRadius: '50%',
 }
-const trStyle = {
-  'textAlign': 'center'
-}
 
 class YelpList extends Component {
+  onClick(event) {
+    const { id } = event.target;
+    const restaurantData = this.props.searchResult[id];
+    this.props.addRestaurant(restaurantData, (response) => {
+      console.log(response);
+    });
+  }
+
   renderList(restaurantData) {
     console.log(restaurantData);
     const name = restaurantData.id;
@@ -18,7 +24,10 @@ class YelpList extends Component {
     const address = restaurantData.location.display_address;
 
     return (
-      <tr style={trStyle} key={name}>
+      <tr key={name}>
+      <td>
+        <span id={name} onClick={this.onClick.bind(this)} className="fa fa-plus" aria-hidden="true"></span>
+      </td>
       <td><a className="thumbnail"><img  style={imageStyle} src={imageURL} /></a></td>
       <td>
         <div >
@@ -29,12 +38,12 @@ class YelpList extends Component {
       </tr>
     );
   }
-
+  
   render() {
     return( 
       <table className="table table-hover">
         <tbody>
-          {this.props.searchResult.map(this.renderList)}
+          {_.map(this.props.searchResult, this.renderList.bind(this))}
         </tbody>
       </table>
     )
@@ -45,4 +54,4 @@ function mapStateToProps({ searchResult }) {
   return { searchResult };
 }
 
-export default connect(mapStateToProps)(YelpList);
+export default connect(mapStateToProps, { addRestaurant })(YelpList);
