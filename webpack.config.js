@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
 	entry: {
-		app: './src/app.js' //entry point where react start'
+		app: './src/index.js' //entry point where react start'
 	},
 	output: {
 		filename: 'public/build/bundle.js',

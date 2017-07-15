@@ -25,7 +25,7 @@ export function addRestaurant(restaurantData, callback) {
 		data: { name: restaurantData.id },
 		method: 'post',
 		responseType: 'json',
-	}).then( (response) => callback(response));
+	}).then((response) => callback(response));
 	return {
 		type: ADD_RESTAURANT,
 		payload: request,

@@ -12,7 +12,7 @@ let User = bookshelf.Model.extend({
 		console.log(this.password);
 		return bcrypt.compareSync(password, user.password);
 	}
-	}, {
-})
+	}
+)
 
 module.exports = bookshelf.model('User', User);

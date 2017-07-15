@@ -18,7 +18,7 @@ router
 		const controller = controllers['user'];
 		const testId = 11;
 
-	const params = {id: testId, userResource: req.params.userResource};
+		const params = {id: testId, userResource: req.params.userResource};
 		
 		controller.find(params, function(err, userInfo) {
 			if (err) {
@@ -30,6 +30,29 @@ router
 			res.json({
 				confirmation: 'success',
 				result: userInfo,
+			})
+		})
+	})
+	.post('/user/:userResource/:resource_id', function(req,res){
+		const { userResource, resource_id } = req.params;
+		const controller = controllers['user'];
+		const testId = 11;
+
+		const params = {
+			id: testId,
+			userResource: userResource,
+			resource_id: resource_id
+		};
+		controller.addRestaurant(params, (err, response) => {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: `error adding ${userResource}: ${err}`
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				response: response
 			})
 		})
 	})
