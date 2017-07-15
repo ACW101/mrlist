@@ -25,7 +25,24 @@ export function addRestaurant(restaurantData, callback) {
 		data: { name: restaurantData.id },
 		method: 'post',
 		responseType: 'json',
-	}).then((response) => callback(response));
+	})
+	.then((response) => {
+		console.log(response);
+		const restaurant_id = response.data.results.id;
+		const request = axios({
+			url: `${ROOT_URL}/user/restaurants/${restaurant_id}`,
+			method: 'post',
+			responseType: 'json'
+		})
+		return request;
+	})
+	.then((response) => {
+			console.log(response);
+			callback(null, response);
+	})
+	.catch(err => callback(err, null))
+	
+
 	return {
 		type: ADD_RESTAURANT,
 		payload: request,

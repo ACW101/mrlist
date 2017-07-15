@@ -39693,6 +39693,8 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(110);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39716,7 +39718,12 @@ var Profile = function (_Component) {
 			return _react2.default.createElement(
 				'div',
 				null,
-				'This is Profile'
+				'This is Profile',
+				_react2.default.createElement(
+					_reactRouterDom.Link,
+					{ to: '/yelp' },
+					'add New'
+				)
 			);
 		}
 	}]);
@@ -40007,8 +40014,21 @@ function addRestaurant(restaurantData, callback) {
 		method: 'post',
 		responseType: 'json'
 	}).then(function (response) {
-		return callback(response);
+		console.log(response);
+		var restaurant_id = response.data.results.id;
+		var request = (0, _axios2.default)({
+			url: ROOT_URL + "/user/restaurants/" + restaurant_id,
+			method: 'post',
+			responseType: 'json'
+		});
+		return request;
+	}).then(function (response) {
+		console.log(response);
+		callback(null, response);
+	}).catch(function (err) {
+		return callback(err, null);
 	});
+
 	return {
 		type: ADD_RESTAURANT,
 		payload: request
@@ -41073,12 +41093,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// const imageStyle = {
-//   width: '150px',
-//   height: '150px',
-//   borderRadius: '50%',
-// }
-
 var ResultTable = function (_Component) {
   _inherits(ResultTable, _Component);
 
@@ -41094,43 +41108,17 @@ var ResultTable = function (_Component) {
       var id = event.target.id;
 
       var restaurantData = this.props.searchResult[id];
-      this.props.addRestaurant(restaurantData, function (response) {
-        console.log(response);
+      this.props.addRestaurant(restaurantData, function (err, response) {
+        if (err) {
+          console.log(err);
+          return;
+        }
       });
     }
-
-    // renderList(restaurantData) {
-    //   console.log(restaurantData);
-    //   const name = restaurantData.id;
-    //   const imageURL = restaurantData.image_url;
-    //   const address = restaurantData.location.display_address;
-
-    //   return (
-    //     <tr key={name}>
-    //     <td>
-    //       <span id={name} onClick={this.onClick.bind(this)} className="fa fa-plus" aria-hidden="true"></span>
-    //     </td>
-    //     <td><a className="thumbnail"><img  style={imageStyle} src={imageURL} /></a></td>
-    //     <td>
-    //       <div >
-    //         <h3>{name}</h3>
-    //         {address.map((address, i) => <p key={i}>{address}</p>)}
-    //       </div>
-    //     </td>
-    //     </tr>
-    //   );
-    // }
-
   }, {
     key: "render",
     value: function render() {
-      return _react2.default.createElement(_restaurantList2.default, { restaurantData: this.props.searchResult, onClick: this.onClick.bind(this) })
-      // <table className="table table-hover">
-      //   <tbody>
-      //     {_.map(this.props.searchResult, this.renderList.bind(this))}
-      //   </tbody>
-      // </table>
-      ;
+      return _react2.default.createElement(_restaurantList2.default, { restaurantData: this.props.searchResult, onClick: this.onClick.bind(this) });
     }
   }]);
 
