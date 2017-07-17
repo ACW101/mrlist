@@ -1,12 +1,5 @@
-const knex = require("knex")({
-	client: "mysql",
-	connection: {
-		host: "127.0.0.1",
-		user: "root",
-		database: "mrlist",
-		charset: "utf8",
-	}
-});
+const config = require("./knexfile")[process.env.NODE_ENV || "development"];
+const knex = require("knex")(config);
 const bookshelf = require('bookshelf')(knex);
 bookshelf.plugin([require('bookshelf-modelbase').pluggable, 'registry']);
 
