@@ -3,12 +3,12 @@ const controllers = require('../controllers/index');
 const yelp = require('./yelp');
 
 function loginRequired(req, res, next) {
-	// if (!req.isAuthenticated()) {
-	// 	return res.json({
-	// 		confirmation: 'fail',
-	// 		message: ('login required!')
-	// 	})
-	// }
+	if (!req.isAuthenticated()) {
+		return res.json({
+			confirmation: 'fail',
+			message: ('login required!')
+		})
+	}
 	next()
 }
 
@@ -16,9 +16,7 @@ router
 	.use('/yelp', yelp)
 	.get('/user/:userResource?', loginRequired, function(req, res) {
 		const controller = controllers['user'];
-		const testId = 11;
-
-		const params = {id: testId, userResource: req.params.userResource};
+		const params = {id: req.user.id, userResource: req.params.userResource};
 		
 		controller.find(params, function(err, userInfo) {
 			if (err) {
@@ -36,10 +34,9 @@ router
 	.post('/user/:userResource/:resource_id', function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers['user'];
-		const testId = 11;
 
 		const params = {
-			id: testId,
+			id: req.user.id,
 			userResource: userResource,
 			resource_id: resource_id
 		};
