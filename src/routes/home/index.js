@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class Home extends Component {
 	render() {
@@ -8,7 +9,7 @@ export default class Home extends Component {
 				This is Home
 				<div className="btn-group">
 					<Link to="/auth/login">
-						<button  className="btn btn-default">Login</button>
+						<RaisedButton label="Default" />
 					</Link>
 				</div>
 			</div>

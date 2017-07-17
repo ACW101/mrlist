@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Route } from 'react-router-dom';
 
 import Login from './login'
-import Signup from './signup'
 
 export default class Auth extends Component {
 	render() {
