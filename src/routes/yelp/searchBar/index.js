@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchRestaurant } from '../actions';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class SearchBar extends Component {
 	constructor(props) {
@@ -11,10 +13,10 @@ class SearchBar extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.onFormSubmit = this.onFormSubmit.bind(this);
 	}
-	onInputChange(event) {
-		const keyToUpdate = {};
-		keyToUpdate[event.target.name] = event.target.value;
-		this.setState(keyToUpdate);
+	onInputChange(event, fieldName) {
+		console.log(event.target.value);
+		const newState = { [fieldName]: event.target.value};
+		this.setState(newState);
 	}
 	onFormSubmit(event) {
 		event.preventDefault();
@@ -24,32 +26,24 @@ class SearchBar extends Component {
 		}
 
 		this.props.fetchRestaurant(query);
-		this.setState({ term: "", location: ""});
 	}
 	render() {
 		return (
 			<form onSubmit={this.onFormSubmit} className="input-group">
-				<div className="row">
-					<input 
-						className="form-control" 
-						placeholder="thai, noodle..."
-						name="term"
-						value={this.state.term}
-						onChange={event => this.onInputChange(event)}
-					/>
-					<input 
-						className="form-control" 
-						placeholder="Taipei"
-						name="location"
-						value={this.state.location}
-						onChange={event => this.onInputChange(event)}
-					/>
-				</div>
-				
-				<span className="input-group-btn">
-					<button type="submit" className="btn btn-default">Search</button>
-				</span>
-    	</form>
+				<TextField
+					hintText="thai, noodle..."
+					floatingLabelText="Search on Yelp"
+					value={this.state.term}
+					onChange={event => this.onInputChange(event, "term")}
+				/>
+				<TextField 
+					hintText="Taipei, SongShan..."
+					floatingLabelText="place"
+					value={this.state.location}
+					onChange={event => this.onInputChange(event, "location")}
+				/><br/>
+				<RaisedButton type="submit">Search</RaisedButton>
+    		</form>
 		)
 	}
 }

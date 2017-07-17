@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import RestaurantReducer from './reducer_restaurant';
+import SearchResultReducer from './reducer_searchResult';
+import UserListReducer from './reducer_userList';
 
 const rootReducer = combineReducers({
-  searchResult: RestaurantReducer
+  searchResult: SearchResultReducer,
+  userList: UserListReducer,
 });
 
 export default rootReducer;

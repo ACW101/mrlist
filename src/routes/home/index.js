@@ -9,7 +9,7 @@ export default class Home extends Component {
 				This is Home
 				<div className="btn-group">
 					<Link to="/auth/login">
-						<RaisedButton label="Default" />
+						<RaisedButton label="Login" />
 					</Link>
 				</div>
 			</div>

@@ -12,7 +12,6 @@ export function fetchRestaurant(query) {
 		method: 'get',
 		responseType: 'json',
 	});
-	console.log(request);
 	return {
 		type: FETCH_RESTAURANT,
 		payload: request,
@@ -21,7 +20,7 @@ export function fetchRestaurant(query) {
 
 export function addRestaurant(restaurantData, callback) {
 	const request = axios({
-		url: `${ROOT_URL}/restaurant`,
+		url: `api/restaurant`,
 		data: { name: restaurantData.id },
 		method: 'post',
 		responseType: 'json',

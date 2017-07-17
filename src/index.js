@@ -7,6 +7,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
+import _ from "lodash";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 

@@ -5,7 +5,7 @@ export default class Login extends Component {
 		return (
 			<div>
 				<a href="/auth/facebook">
-					<img src="/images/fb_login.png" alt="facebook_login"/>
+					<img id="fb_login" style={{height: "36px"}} src="/images/fb_login.png" alt="facebook_login"/>
 				</a>
 			</div>
 		)
