@@ -1,7 +1,5 @@
 import {FETCH_RESTAURANT} from "../routes/yelp/actions/index";
 import {ADD_RESTAURANT} from "../routes/yelp/actions/index";
-import _ from "lodash";
-
 
 export default function(state = {}, action) {
 	switch(action.type) {

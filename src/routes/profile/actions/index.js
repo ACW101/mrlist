@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const FETCH_USERLIST = "FETCH_USERLIST";
+export const SELECT_RESTAURANTS= "SELECT_RESTAURANTS";
 
 export function fetchUserList(query) {
 	const request = axios({
@@ -11,5 +12,12 @@ export function fetchUserList(query) {
 	return {
 		type: FETCH_USERLIST,
 		payload: request,
+	};
+}
+
+export function selectRestaurants(selectedRows) {
+		return {
+		type: SELECT_RESTAURANTS,
+		payload: selectedRows
 	};
 }

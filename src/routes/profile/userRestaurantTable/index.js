@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { fetchUserList } from "../actions";
+import { fetchUserList, selectRestaurants} from "../actions";
 import { connect } from "react-redux";
+
 
 import {
   Table,
@@ -12,19 +13,23 @@ import {
 } from 'material-ui/Table';
 
 class UserRestaurantTable extends Component {
+    constructor(props) {
+        super(props);
+        this.handleRowSelection = this.handleRowSelection.bind(this);
+    }
     componentDidMount() {
-        this.props.fetchUserList().then(()=> console.log(this.props.userList));
+        this.props.fetchUserList();
     }
     render() {
         return (
-            <Table multiSelectable={true}>
+            <Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
                 <TableHeader>
                     <TableRow>
                         <TableHeaderColumn>NAME</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
-                    {_.map(this.props.userList, (restaurant) => this.renderList(restaurant))}
+                <TableBody deselectOnClickaway={false}>
+                    {this.props.userList.map((restaurant) => this.renderList(restaurant)) }
                 </TableBody>
             </Table>
         )
@@ -36,8 +41,11 @@ class UserRestaurantTable extends Component {
             </TableRow>
         )
     }
+    handleRowSelection(selectedRows) {
+        this.props.selectRestaurants(selectedRows);
+    }
 }
 function mapStateToProps({ userList }) {
-    return { userList }; 
+    return { userList };
 }
-export default connect(mapStateToProps, { fetchUserList })(UserRestaurantTable);
+export default connect(mapStateToProps, { fetchUserList, selectRestaurants })(UserRestaurantTable);
