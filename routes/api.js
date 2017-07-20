@@ -3,22 +3,25 @@ const controllers = require('../controllers/index');
 const yelp = require('./yelp');
 
 function loginRequired(req, res, next) {
-	if (!req.isAuthenticated()) {
-		return res.json({
-			confirmation: 'fail',
-			message: ('login required!')
-		})
-	}
+	// if (!req.isAuthenticated()) {
+	// 	return res.json({
+	// 		confirmation: 'fail',
+	// 		message: ('login required!')
+	// 	})
+	// }
+	
+	// default userID for development
+	req.user = {id: 17}
 	next()
 }
 
 router
 	.use('/yelp', yelp)
-	.get('/user/:userResource?', loginRequired, function(req, res) {
-		const controller = controllers['user'];
-		const params = {id: req.user.id, userResource: req.params.userResource};
-		
-		controller.find(params, function(err, userInfo) {
+	.get('/user/:userResource', loginRequired, function(req, res) {
+		const controller = controllers['userResource'];
+		const params = {user_id: req.user.id, userResource: req.params.userResource};
+
+		controller.find(params, function(err, userResource) {
 			if (err) {
 				res.json({
 					confirmation: 'fail',
@@ -27,20 +30,41 @@ router
 			}
 			res.json({
 				confirmation: 'success',
-				result: userInfo,
+				result: userResource,
 			})
 		})
 	})
-	.post('/user/:userResource/:resource_id', function(req,res){
+	.get('/user/:userResource/:userResource_id', loginRequired, function(req, res) {
+		const controller = controllers['userResource'];
+		const params = {
+			user_id: req.user.id, 
+			userResource: req.params.userResource,
+			userResource_id: parseInt(req.params.userResource_id)
+		};
+		
+		controller.findById(params, function(err, userResource) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: ('error getting userInfo: ' + err)
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				result: userResource,
+			})
+		})
+	})
+	.put('/user/:userResource/:resource_id', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
-		const controller = controllers['user'];
+		const controller = controllers['userResource'];
 
 		const params = {
-			id: req.user.id,
-			userResource: userResource,
-			resource_id: resource_id
+			user_id: req.user.id,
+			userResource,
+			resource_id
 		};
-		controller.addRestaurant(params, (err, response) => {
+		controller.create(params, (err, response) => {
 			if (err) {
 				res.json({
 					confirmation: 'fail',

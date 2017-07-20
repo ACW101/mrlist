@@ -8,6 +8,9 @@ let User = bookshelf.Model.extend({
 	restaurants: function() {
 		return this.belongsToMany('Restaurant')
 	},
+	// friends: function() {
+	// 	return this.belongsToMany('Friends')
+	// },
 	verifyPassword: function(password) {
 		console.log(this.password);
 		return bcrypt.compareSync(password, user.password);
