@@ -19,7 +19,10 @@ router
 	.use('/yelp', yelp)
 	.get('/user/:userResource', loginRequired, function(req, res) {
 		const controller = controllers['userResource'];
-		const params = {user_id: req.user.id, userResource: req.params.userResource};
+		const params = {
+			user_id: req.user.id,
+			userResource: req.params.userResource
+		};
 
 		controller.find(params, function(err, userResource) {
 			if (err) {
@@ -58,17 +61,61 @@ router
 	.put('/user/:userResource/:resource_id', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers['userResource'];
-
 		const params = {
 			user_id: req.user.id,
 			userResource,
 			resource_id
 		};
+
 		controller.create(params, (err, response) => {
 			if (err) {
 				res.json({
 					confirmation: 'fail',
 					message: `error adding ${userResource}: ${err}`
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				response: response
+			})
+		})
+	})
+	.post('/user/:userResource', loginRequired, function(req,res){
+		const userResource = req.params.userResource;
+		const body = req.body;
+		body.user_id = req.user.id;
+		const controller = controllers[userResource];
+
+		controller.create(body, (err, response) => {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: `error adding ${userResource}: ${err}`
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				response: response
+			})
+		})
+	})
+	.delete('/user/:userResource/:resource_id', loginRequired, function(req,res){
+		const { userResource, resource_id } = req.params;
+		const controller = (userResource === 'restaurants') 
+			? controllers['userResource']
+			: controllers[userResource];
+		console.log(controller);
+		const params = {
+			user_id: req.usser.id,
+			userResource,
+			resource_id
+		};
+
+		controller.destroy(params, (err, response) => {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: `error deleting ${userResource}: ${err}`
 				})
 			}
 			res.json({

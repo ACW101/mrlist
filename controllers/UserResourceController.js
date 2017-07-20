@@ -38,7 +38,14 @@ module.exports = {
 		callback(errMessage, null)
 	},
 	destroy: function(params, callback) {
-		const errMessage = "not supported"
-		callback(errMessage, null);
+		const { user_id, userResource, resource_id } = params;
+		User.forge({id: user_id})
+			[userResource]()
+			.detach(resource_id)
+			.then((response) => {
+				console.log(response);
+				callback(null, response.toJSON());
+			})
+			.catch(e => callback(e, null))
 	},
 }
