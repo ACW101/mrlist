@@ -3,9 +3,11 @@
   <head>
     <title>My list</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css">
+
   </head>
   <body>
-    <h1>Welcome to My Restaurant List</h1>
-    <a href="/auth/login">Login here</a>
+		<div id="root"></div>
+    <script type="text/javascript" src="/build/bundle.js"></script>
   </body>
 </html>

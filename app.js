@@ -8,12 +8,17 @@ const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
 const passport = require("passport")
 
-const yelp = require('./routes/yelp');
-const auth = require('./routes/auth');
 const index = require('./routes/index');
 const api = require('./routes/api');
-const profile = require('./routes/profile');
+const auth = require('./routes/auth');
 require('./utility/passport');
+
+function loginRequired(req, res, next) {
+	if (!req.isAuthenticated()) {
+		return res.redirect("/auth/login")
+	}
+	next()
+}
 
 const app = express();
 
@@ -42,13 +47,12 @@ app.use(session({ secret: "a restaurant list app", resave: false, saveUninitiali
 app
   .use(passport.initialize())
   .use(passport.session())
-  .use('/auth', auth)
 
 // routes
-app.use('/', index);
-app.use('/api', api);
-app.use('/profile', profile);
-app.use('/yelp', yelp);
+app.use('/api', api)
+  .use('/auth', auth)
+  .get('/', (req, res) => { res.render('index')})
+  .get('/*', loginRequired , (req, res) => { res.render('index')})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

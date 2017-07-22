@@ -13,11 +13,23 @@ module.exports = {
 
 	findRestaurants: function(params, callback) {
 		User.where({id: params.id})
-				.fetch({withRelated: !!params.userResource})
-				.then((user) => {
-					callback(null, user.related('restaurants').toJSON());
-				})
-				.catch(e => callback(e, null))
+			.fetch({withRelated: !!params.userResource})
+			.then((user) => {
+				callback(null, user.related('restaurants').toJSON());
+			})
+			.catch(e => callback(e, null))
+	},
+
+	addRestaurant: function(params, callback) {
+		const { id, userResource, resource_id } = params;
+		User.forge({id: params.id})
+			.restaurants()
+			.attach(resource_id)
+			.then((response) => {
+				console.log(response);
+				callback(null, response.toJSON());
+			})
+			.catch(e => callback(e, null))
 	},
 
 	findById: function(id, callback) {
