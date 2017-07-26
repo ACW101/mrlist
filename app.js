@@ -8,14 +8,13 @@ const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
 const passport = require("passport")
 
-const index = require('./routes/index');
 const api = require('./routes/api');
 const auth = require('./routes/auth');
 require('./utility/passport');
 
 function loginRequired(req, res, next) {
 	if (!req.isAuthenticated()) {
-		return res.redirect("/auth/login")
+		return res.redirect("/")
 	}
 	next()
 }

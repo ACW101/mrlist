@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const FETCH_USERLIST = "FETCH_USERLIST";
 export const SELECT_RESTAURANTS= "SELECT_RESTAURANTS";
+export const FETCH_FRIENDLIST = "FETCH_FRIENDLIST";
 
 export function fetchUserList(query) {
 	const request = axios({
@@ -19,5 +20,17 @@ export function selectRestaurants(selectedRows) {
 		return {
 		type: SELECT_RESTAURANTS,
 		payload: selectedRows
+	};
+}
+
+export function fetchFriendList(query) {
+	const request = axios({
+		url: '/api/user/friends',
+		method: 'get',
+		responseType: 'json',
+	});
+	return {
+		type: FETCH_FRIENDLIST,
+		payload: request,
 	};
 }

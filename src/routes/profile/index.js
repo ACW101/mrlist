@@ -9,6 +9,7 @@ import './style.css'
 
 import SendDialog from './sendDialog';
 import UserRestaurantTable from './userRestaurantTable';
+import FriendList from './friendList';
 
 export default class Profile extends Component {
 	constructor(props) {
@@ -38,7 +39,7 @@ export default class Profile extends Component {
 					</Link>
 				</Paper>
 				<Paper id="flist">
-					a list of friends
+					<FriendList />
 				</Paper>
 				<RaisedButton 
 					className="send-btn" 
