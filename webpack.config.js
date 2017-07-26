@@ -13,6 +13,13 @@ module.exports = {
 	module: { // instruction to how to transpile the code
 		rules: [
 			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			},
+			{
 				test: /\.jsx?$/,
 				use: {
 					loader: 'babel-loader',

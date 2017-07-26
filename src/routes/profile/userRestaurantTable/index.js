@@ -22,7 +22,11 @@ class UserRestaurantTable extends Component {
     }
     render() {
         return (
-            <Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
+            <Table
+            multiSelectable={true} 
+            onRowSelection={this.handleRowSelection}
+            height={this.props.height}
+            >
                 <TableHeader>
                     <TableRow>
                         <TableHeaderColumn>NAME</TableHeaderColumn>
