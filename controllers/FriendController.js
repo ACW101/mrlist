@@ -4,19 +4,21 @@ const Friend = bookshelf.model('Friend');
 
 module.exports = {
 	find: function(params, callback) {
-		const errMessage ="not supported"
-		callback(errMessage, null);
-		
+		Friend.where({ user_id: params.user_id})
+			.fetchAll()
+			.then((friends) => {
+				callback(null, friends.toJSON());
+			})
 	},
-	findById: function(id, callback) {
+	findById: function(params, callback) {
 		Friend.where({ id: params.id })
 			.fetch()
 			.then((friend) => {
 				callback(null, friend.toJSON());
 			})
 	}, 
-	create: function(body, callback) {
-		Friend.findOrCreate(body)
+	create: function(params, callback) {
+		Friend.findOrCreate(params.body)
             .then((friend) => {
                 callback(null, friend.toJSON());
             })

@@ -36,9 +36,13 @@ export function addRestaurant(restaurantData, callback) {
 		return request;
 	})
 	.then((response) => {
+		console.log(response);
 		callback(null, response);
 	})
-	.catch(err => callback(err, null))
+	.catch(err =>{
+		console.log(err);
+		callback(err, null);
+	}) 
 	
 
 	return {

@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
     password varchar(255) CHARACTER SET latin1 DEFAULT NULL,
     created_at timestamp(6) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6),
     updated_at timestamp(6) NULL DEFAULT NULL,
+    picture varchar(255) DEFAULT NULL,
     PRIMARY KEY (id)
     ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
   `)

@@ -4,20 +4,20 @@ const User = bookshelf.model('User');
 
 module.exports = {
 	find: function(params, callback) {
-		const { user_id, userResource } = params;
+		const { user_id } = params;
 		User.where({ id: user_id })
-			.fetch({withRelated: userResource})
+			.fetch({withRelated: 'restaurants'})
 			.then((user) => {
-				callback(null, user.related(userResource));
+				callback(null, user.related('restaurants'));
 			})
 			.catch( e => callback(e, null))  
 	},
 	findById: function(params, callback) {
-		const { user_id, userResource, userResource_id } = params;
+		const { user_id, resource_id } = params;
 		User.where({ id: user_id })
-			.fetch({withRelated: userResource})
+			.fetch({withRelated: 'restaurants'})
 			.then((user) => {
-				callback(null, user.related(userResource).where({ id: userResource_id}));
+				callback(null, user.related('restaurants').where({ id: resource_id}));
 			})
 			.catch( e => callback(e, null))  
 
@@ -25,8 +25,8 @@ module.exports = {
 	create: function(params, callback) {
 		const { user_id, userResource, resource_id } = params;
 		User.forge({id: user_id})
-			[userResource]()
-			.attach(resource_id)
+			.restaurants()
+			.attach(resource_id) 
 			.then((response) => {
 				console.log(response);
 				callback(null, response.toJSON());
@@ -40,7 +40,7 @@ module.exports = {
 	destroy: function(params, callback) {
 		const { user_id, userResource, resource_id } = params;
 		User.forge({id: user_id})
-			[userResource]()
+			.restaurants()
 			.detach(resource_id)
 			.then((response) => {
 				console.log(response);

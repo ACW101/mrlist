@@ -2,28 +2,36 @@ const router = require("express").Router();
 const controllers = require('../controllers/index');
 const yelp = require('./yelp');
 
+
 function loginRequired(req, res, next) {
-	// if (!req.isAuthenticated()) {
-	// 	return res.json({
-	// 		confirmation: 'fail',
-	// 		message: ('login required!')
-	// 	})
-	// }
+	if (!req.isAuthenticated()) {
+		return res.json({
+			confirmation: 'fail',
+			message: ('login required!')
+		})
+	}
 	
 	// default userID for development
-	req.user = {id: 17}
+	// req.user = {id: 17}
 	next()
 }
 
 router
 	.use('/yelp', yelp)
 	.get('/user/:userResource', loginRequired, function(req, res) {
-		const controller = controllers['userResource'];
+		const { userResource} = req.params;
+		const controller = controllers.userResources[userResource];
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource',
+			})
+		}
+
 		const params = {
 			user_id: req.user.id,
-			userResource: req.params.userResource
+			userResource
 		};
-
 		controller.find(params, function(err, userResource) {
 			if (err) {
 				res.json({
@@ -37,14 +45,21 @@ router
 			})
 		})
 	})
-	.get('/user/:userResource/:userResource_id', loginRequired, function(req, res) {
-		const controller = controllers['userResource'];
+	.get('/user/:userResource/:resource_id', loginRequired, function(req, res) {
+		const { userResource, resource_id } = req.params;
+		const controller = controllers.userResources[userResource];	
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource',
+			})
+		}
+
 		const params = {
 			user_id: req.user.id, 
-			userResource: req.params.userResource,
-			userResource_id: parseInt(req.params.userResource_id)
+			userResource,
+			userResource_id: parseInt(resource_id)
 		};
-		
 		controller.findById(params, function(err, userResource) {
 			if (err) {
 				res.json({
@@ -60,7 +75,7 @@ router
 	})
 	.put('/user/:userResource/:resource_id', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
-		const controller = controllers['userResource'];
+		const controller = controllers.userResources[userResource];		
 		const params = {
 			user_id: req.user.id,
 			userResource,
@@ -81,12 +96,11 @@ router
 		})
 	})
 	.post('/user/:userResource', loginRequired, function(req,res){
-		const userResource = req.params.userResource;
-		const body = req.body;
-		body.user_id = req.user.id;
-		const controller = controllers[userResource];
+		const { userResource, resource_id } = req.params;
+		const controller = controllers.userResources[userResource];		
+		const params = { body: Object.assign({}, req.body, {user_id: req.user.id})};
 
-		controller.create(body, (err, response) => {
+		controller.create(params, (err, response) => {
 			if (err) {
 				res.json({
 					confirmation: 'fail',
@@ -101,12 +115,10 @@ router
 	})
 	.delete('/user/:userResource/:resource_id', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
-		const controller = (userResource === 'restaurants') 
-			? controllers['userResource']
-			: controllers[userResource];
-		console.log(controller);
+		const controller = controllers.userResources[userResource];
+		
 		const params = {
-			user_id: req.usser.id,
+			user_id: req.user.id,
 			userResource,
 			resource_id
 		};
