@@ -7,6 +7,8 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import FontIcon from 'material-ui/FontIcon';
 import Subheader from 'material-ui/Subheader';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 class FriendList extends Component {
     constructor(props) {
@@ -19,7 +21,18 @@ class FriendList extends Component {
     render() {
         return (
             <List>
-                <Subheader>Friends</Subheader>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <Subheader style={{width: 'auto'}}>Friends</Subheader>
+                    <FloatingActionButton 
+                        style={{marginRight: 10}} 
+                        mini={true} 
+                        secondary={true} 
+                        zDepth={0} 							
+                        onTouchTap={this.props.handleOpenAddFriendDialog}
+                    >
+                        <ContentAdd />
+                    </FloatingActionButton>
+                </div>
                 {this.props.friendList.map(friend => this.renderList(friend))}
             </List>
         )
