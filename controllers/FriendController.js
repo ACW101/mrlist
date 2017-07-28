@@ -19,10 +19,10 @@ module.exports = {
 	}, 
 	create: function(params, callback) {
 		Friend.findOrCreate(params.body)
-            .then((friend) => {
-                callback(null, friend.toJSON());
-            })
-            .catch(e => callback(e, null))
+			.then((friend) => {
+				callback(null, friend.id);
+			})
+			.catch(e => callback(e, null))
 	}, 
 	update: function(params, callback) {
 		const errMessage = "not supported"

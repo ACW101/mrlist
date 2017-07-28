@@ -36,9 +36,7 @@ export default class Profile extends Component {
 				<SendDialog open={this.state.sendDialog.open} handleClose={this.handleCloseSendDialog} zDepth={2}/>
 				<AddFriendDialog open={this.state.addFriendDialog.open} handleClose={this.handleCloseAddFriendDialog} zDepth={2}/>
 				<Paper id="rlist">
-					<UserRestaurantTable
-						height="600px"
-					/>
+					<UserRestaurantTable height="600px"/>
 					<Link to="/yelp">
 						<FloatingActionButton style={addButtonStyle}>
 							<ContentAdd />
@@ -46,7 +44,11 @@ export default class Profile extends Component {
 					</Link>
 				</Paper>
 				<Paper id="flist">
-					<FriendList handleOpenAddFriendDialog={this.handleOpenAddFriendDialog} />
+					<FriendList 
+						handleOpen={this.handleOpenAddFriendDialog} 
+						handleClose={this.handleCloseAddFriendDialog}
+						height="600px"
+					/>
 				</Paper>
 				<RaisedButton 
 					className="send-btn" 

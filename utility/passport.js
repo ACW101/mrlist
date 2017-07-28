@@ -12,8 +12,6 @@ const facebookConfig = Object.assign({}, facebookKey, {
   callbackURL: "http://localhost:3000/auth/facebook/callback",
   profileFields: ['id', 'displayName', 'photos', 'email', 'name']
 })
-console.log(facebookConfig);
-
 
 passport.use(new LocalStrategy(authenticate))
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))

@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+
+import { addFriends } from '../actions';
+
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -9,37 +12,45 @@ import Chip from 'material-ui/Chip';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Subheader from 'material-ui/Subheader';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 
 class AddFriendDialog extends Component {
     constructor(props) {
 		super(props);
-
         this.state = { 
             emailField: "",
             nameField: "",
-            emails: [],
-            names: []
+            friends: []
         };
 		this.onInputChange = this.onInputChange.bind(this);
-		this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.handleRequestDelete = this.handleRequestDelete.bind(this);
 	}
     onInputChange(event, fieldName) {
         this.setState({ [fieldName]: event.target.value });
     }
     onFormSubmit(event) {
         event.preventDefault();
-        const newEmail = this.state.emailField;
-        const newName = this.state.nameField;
-        if (newEmail != '') {
+        const newFriend = {
+            name: this.state.nameField,
+            email: this.state.emailField
+        }
+        if (newFriend.email != '' && newFriend.name != '') {
             this.setState({
                 emailField: '',
                 nameField: '',
-                emails: [...this.state.emails, newEmail],
-                names: [...this.state.names, newName]
+                friends: [...this.state.friends, newFriend]
             })
+            addFriends(newFriend);
         }
-	}
+    }
+    handleRequestDelete(i) {
+        const friendToDelete = this.state.friends[i];
+        let friendCopy = this.state.friends;
+        friendCopy.splice(i, 1);
+        this.setState({
+            friends: friendCopy
+        })
+    }
     render() {
         const addButtonStyle = {
 			marginRight: '5px',
@@ -55,20 +66,24 @@ class AddFriendDialog extends Component {
             flexWrap: "wrap",
             marginTop: 10,
         }
-        const verticalLine = {
-            borderRight: `thin solid ${this.props.muiTheme.palette.borderColor}`,
-        }
         const { selectedRestaurants, userList } = this.props;
+        const actions = [
+            <RaisedButton
+                label="DONE"
+                primary={true}
+                onTouchTap={this.props.handleClose}
+            />
+        ];
         return(
             <Dialog
                 title="Add Friend"
                 modal={false}
+                actions={actions}
                 open={this.props.open}
             >
                 <form onSubmit={this.onFormSubmit} className="input-group">
                 <Paper style={formStyle}>
                     <TextField
-                        style={verticalLine}
                         hintText="Name"
                         underlineShow={false}
                         value={this.state.nameField}
@@ -93,19 +108,19 @@ class AddFriendDialog extends Component {
                 </Paper>
                 </form>
                 <div style={wrapperStyle}>
-                    {this.renderChips(this.state.names)}
+                    {this.renderChips(this.state.friends)}
                 </div>
             </Dialog>
         )
     }
-    renderChips(names) {
+    renderChips(friends) {
         const chipStyle = {
             margin: 4,
         }
-        return names.map((name, i) => {
+        return friends.map((friend, i) => {
             return (
-                <Chip key={i} style={chipStyle}>
-                    {name}
+                <Chip key={i} style={chipStyle} onRequestDelete={() => this.handleRequestDelete(i)}>
+                    {`${friend.name} - ${friend.email}`}
                 </Chip>
             )
         })
@@ -115,4 +130,4 @@ function mapStateToProps({ friendList }) {
     return { friendList };
 }
 
-export default connect(mapStateToProps, null)(muiThemeable()(AddFriendDialog));
+export default connect(mapStateToProps, {addFriends})(AddFriendDialog);

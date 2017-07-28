@@ -9,32 +9,35 @@ import FontIcon from 'material-ui/FontIcon';
 import Subheader from 'material-ui/Subheader';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Divider from 'material-ui/Divider';
 
 class FriendList extends Component {
     constructor(props) {
         super(props);
-        // this.handleItemSelection = this.handleItemSelection.bind(this);
     }
     componentDidMount() {
         this.props.fetchFriendList();
     }
     render() {
         return (
-            <List>
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <div>
+                <div style={{display: 'flex', position: 'relative', top: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 56}}>
                     <Subheader style={{width: 'auto'}}>Friends</Subheader>
-                    <FloatingActionButton 
-                        style={{marginRight: 10}} 
-                        mini={true} 
-                        secondary={true} 
-                        zDepth={0} 							
-                        onTouchTap={this.props.handleOpenAddFriendDialog}
+                    <FloatingActionButton
+                        style={{marginRight: 10}}
+                        mini={true}
+                        secondary={true}
+                        zDepth={0}
+                        onTouchTap={this.props.handleOpen}
                     >
                         <ContentAdd />
                     </FloatingActionButton>
                 </div>
-                {this.props.friendList.map(friend => this.renderList(friend))}
-            </List>
+                <Divider/>
+                <List style={{height: this.props.height, overflowY: 'scroll'}}>
+                    {this.props.friendList.map(friend => this.renderList(friend))}
+                </List>
+            </div>
         )
     }
     renderList(friend){
