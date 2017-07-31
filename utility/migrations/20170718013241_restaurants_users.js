@@ -2,10 +2,9 @@
 exports.up = function(knex, Promise) {
     return knex.raw(`
         CREATE TABLE restaurants_users (
-            id int(11) unsigned NOT NULL AUTO_INCREMENT,
             user_id int(11) unsigned NOT NULL,
             restaurant_id int(11) unsigned NOT NULL,
-            PRIMARY KEY (id),
+            PRIMARY KEY (user_id, restaurant_id),
             KEY user_id (user_id),
             KEY restaurant_id (restaurant_id),
             CONSTRAINT restaurants_users_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION ON UPDATE NO ACTION,

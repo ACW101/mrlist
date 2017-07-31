@@ -8,6 +8,10 @@ let User = require('../models/User');
 
 // import your own facebook login key
 const facebookKey = require('./keys/facebookKey');
+const facebookConfig = Object.assign({}, facebookKey, {
+  callbackURL: "http://localhost:3000/auth/facebook/callback",
+  profileFields: ['id', 'displayName', 'photos', 'email', 'name']
+})
 
 passport.use(new LocalStrategy(authenticate))
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))
@@ -44,17 +48,19 @@ function register(req, email, password, done) {
   });
 }
 
-passport.use(new FacebookStrategy(facebookKey,
+passport.use(new FacebookStrategy(facebookConfig,
   function(accessToken, refreshToken, profile, done) {
+    console.log(profile);
     User.findOne({ oauth_id: profile.id}, {require: false})
     	.then((user) => {
     		if (user) {
     			return done(null, user)
-    		}
+        }
   		const newUser = {
   			oauth_id: profile.id,
         oauth_provider: 'facebook',
         name: profile.displayName,
+        picture: profile.photos[0].value
   		};
   		User.create(newUser)
   			.then(() => {

@@ -30,16 +30,19 @@ export function addRestaurant(restaurantData, callback) {
 		const restaurant_id = response.data.results.id;
 		const request = axios({
 			url: `${ROOT_URL}/user/restaurants/${restaurant_id}`,
-			method: 'post',
+			method: 'put',
 			responseType: 'json'
 		})
 		return request;
 	})
 	.then((response) => {
-			console.log(response);
-			callback(null, response);
+		console.log(response);
+		callback(null, response);
 	})
-	.catch(err => callback(err, null))
+	.catch(err =>{
+		console.log(err);
+		callback(err, null);
+	}) 
 	
 
 	return {
