@@ -57,8 +57,7 @@ router
 
 		const params = {
 			user_id: req.user.id, 
-			userResource,
-			userResource_id: parseInt(resource_id)
+			id: parseInt(resource_id)
 		};
 		controller.findById(params, function(err, userResource) {
 			if (err) {

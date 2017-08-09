@@ -2,6 +2,7 @@ const RestaurantController = require('./RestaurantController')
 const UserController = require('./UserController')
 const RestaurantListController = require('./RestaurantListController')
 const FriendController = require('./FriendController')
+const PollController = require('./PollController')
 
 module.exports = {
 	user: UserController,
@@ -9,5 +10,6 @@ module.exports = {
 	userResources: {
 		friends: FriendController,
 		restaurants: RestaurantListController,
+		polls: PollController
 	}
 }

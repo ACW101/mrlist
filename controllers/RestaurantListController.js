@@ -13,11 +13,11 @@ module.exports = {
 			.catch( e => callback(e, null))  
 	},
 	findById: function(params, callback) {
-		const { user_id, resource_id } = params;
+		const { user_id, id } = params;
 		User.where({ id: user_id })
 			.fetch({withRelated: 'restaurants'})
 			.then((user) => {
-				callback(null, user.related('restaurants').where({ id: resource_id}));
+				callback(null, user.related('restaurants').where({ id: id}));
 			})
 			.catch( e => callback(e, null))  
 

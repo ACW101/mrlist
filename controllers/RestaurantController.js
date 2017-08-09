@@ -11,7 +11,8 @@ module.exports = {
 	},
 
 	findById: function(params, callback) {
-		Restaurant.findOne({id: params.resource_id})
+		console.log(params);
+		Restaurant.findOne({id: params.id})
 							.then((restaurant) => {
 								callback(null, restaurant.toJSON());
 							})

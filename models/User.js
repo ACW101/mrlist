@@ -2,6 +2,7 @@ const bookshelf = require("../utility/bookshelf");
 const bcrypt = require("bcrypt-nodejs");
 require("./Restaurant");
 require("./Friend");
+require("./Poll");
 
 let User = bookshelf.Model.extend({
 	tableName: 'users',
@@ -11,6 +12,9 @@ let User = bookshelf.Model.extend({
 	},
 	friends: function() {
 		return this.hasMany('Friend')
+	},
+	polls: function(){
+		return this.hasMany('Poll')
 	},
 	verifyPassword: function(password) {
 		console.log(this.password);
