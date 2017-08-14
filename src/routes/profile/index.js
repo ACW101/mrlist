@@ -9,8 +9,8 @@ import './style.css'
 
 import SendDialog from './sendDialog';
 import AddFriendDialog from './addFriendDialog';
-import UserRestaurantTable from './userRestaurantTable';
-import FriendList from './friendList';
+import RestaurantList from './RestaurantList';
+import TagList from './TagList';
 
 export default class Profile extends Component {
 	constructor(props) {
@@ -35,27 +35,20 @@ export default class Profile extends Component {
 			<div id="profile">
 				<SendDialog open={this.state.sendDialog.open} handleClose={this.handleCloseSendDialog} zDepth={2}/>
 				<AddFriendDialog open={this.state.addFriendDialog.open} handleClose={this.handleCloseAddFriendDialog} zDepth={2}/>
+				<Paper id="tags">
+					<TagList />
+				</Paper>
 				<Paper id="rlist">
-					<UserRestaurantTable height="600px"/>
+					<RestaurantList height="600px"/>
 					<Link to="/yelp">
 						<FloatingActionButton style={addButtonStyle}>
 							<ContentAdd />
 						</FloatingActionButton>
 					</Link>
 				</Paper>
-				<Paper id="flist">
-					<FriendList 
-						handleOpen={this.handleOpenAddFriendDialog} 
-						handleClose={this.handleCloseAddFriendDialog}
-						height="600px"
-					/>
+				<Paper id="details">
+
 				</Paper>
-				<RaisedButton 
-					className="send-btn" 
-					label="SEND INVITATION"
-					id="sendDialog"
-					onTouchTap={this.handleOpenSendDialog} 
-				/>
 			</div>
 		)
 	}

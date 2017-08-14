@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux';
 import SearchResultReducer from './reducer_searchResult';
-import UserListReducer from './reducer_userList';
+import RestaurantListReducer from './reducer_restaurantList';
 import SelectedRestaurantsReducer from './reducer_selectedRestaurants';
 import FriendListReducer from './reducer_friendList';
+import TagListReducer from './reducer_tagList';
 
 const rootReducer = combineReducers({
   searchResult: SearchResultReducer,
-  userList: UserListReducer,
+  restaurantList: RestaurantListReducer,
   selectedRestaurants: SelectedRestaurantsReducer,
-  friendList: FriendListReducer
+  friendList: FriendListReducer,
+  tagList: TagListReducer,
 });
 
 export default rootReducer;

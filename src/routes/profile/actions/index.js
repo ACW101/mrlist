@@ -1,18 +1,31 @@
 import axios from "axios";
 
-export const FETCH_USERLIST = "FETCH_USERLIST";
+export const FETCH_RESTAURANTLIST = "FETCH_RESTAURANTLIST";
+export const FETCH_TAGLIST = "FETCH_TAGLIST";
 export const SELECT_RESTAURANTS= "SELECT_RESTAURANTS";
 export const FETCH_FRIENDLIST = "FETCH_FRIENDLIST";
 export const ADD_FRIENDS = "ADD_FRIENDS";
 
-export function fetchUserList(query) {
+export function fetchRestaurantList(query) {
 	const request = axios({
 		url: '/api/user/restaurants',
 		method: 'get',
 		responseType: 'json',
 	});
 	return {
-		type: FETCH_USERLIST,
+		type: FETCH_RESTAURANTLIST,
+		payload: request,
+	};
+}
+
+export function fetchTagList() {
+	const request = axios({
+		url: '/api/user/tags',
+		method: 'get',
+		responseType: 'json',
+	});
+	return {
+		type: FETCH_TAGLIST,
 		payload: request,
 	};
 }
