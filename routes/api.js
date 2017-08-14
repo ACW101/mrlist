@@ -27,11 +27,9 @@ router
 				message: 'invalid resource',
 			})
 		}
-
-		const params = {
+		const params = Object.assign({
 			user_id: req.user.id,
-			userResource
-		};
+		}, req.query);
 		controller.find(params, function(err, userResource) {
 			if (err) {
 				res.json({
@@ -74,14 +72,14 @@ router
 	})
 	.put('/user/:userResource/:resource_id', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
-		const controller = controllers.userResources[userResource];		
+		const controller = controllers.userResources[userResource];	
 		const params = {
 			user_id: req.user.id,
-			userResource,
-			resource_id
+			body: req.body,
+			resource_id,
 		};
 
-		controller.create(params, (err, response) => {
+		controller.update(params, (err, response) => {
 			if (err) {
 				res.json({
 					confirmation: 'fail',
@@ -118,7 +116,6 @@ router
 		
 		const params = {
 			user_id: req.user.id,
-			userResource,
 			resource_id
 		};
 

@@ -23,6 +23,10 @@ module.exports = {
 
 	}, 
 	create: function(params, callback) {
+		const errMessage = "not supported"
+		callback(errMessage, null)
+	}, 
+	update: function(params, callback) {
 		const { user_id, userResource, resource_id } = params;
 		User.forge({id: user_id})
 			.restaurants()
@@ -32,10 +36,6 @@ module.exports = {
 				callback(null, response.toJSON());
 			})
 			.catch(e => callback(e, null))
-	}, 
-	update: function(params, callback) {
-		const errMessage = "not supported"
-		callback(errMessage, null)
 	},
 	destroy: function(params, callback) {
 		const { user_id, userResource, resource_id } = params;
