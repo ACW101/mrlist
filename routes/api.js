@@ -70,6 +70,33 @@ router
 			})
 		})
 	})
+	.get('/user/:userResource/:resource_id/:resourceChild', loginRequired, function(req, res){
+		const { userResource, resource_id, resourceChild } = req.params;
+		const controller = controllers.resourceChild[userResource][resourceChild];
+
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource'
+			})
+		}
+		const params = {
+			user_id: req.user.id,
+			resource_id,
+		}
+		controller.find(params, function(err, response) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: (`error getting ${userResource}'s ${resourceChild}: ${err}`)
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				response: response
+			})
+		})
+	})
 	.put('/user/:userResource/:resource_id', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers.userResources[userResource];	
