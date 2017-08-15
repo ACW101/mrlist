@@ -119,6 +119,34 @@ router
 			})
 		})
 	})
+	.put('/user/:userResource/:resource_id/:resourceChild/:resourceChild_id', loginRequired, function(req, res){
+		const { userResource, resource_id, resourceChild, resourceChild_id } = req.params;
+		const controller = controllers.resourceChild[userResource][resourceChild];
+
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource'
+			})
+		}
+		const params = {
+			user_id: req.user.id,
+			resource_id,
+			resourceChild_id,
+		}
+		controller.update(params, function(err, response) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: (`error putting ${userResource}'s ${resourceChild}: ${err}`)
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				response: response
+			})
+		})
+	})
 	.post('/user/:userResource', loginRequired, function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers.userResources[userResource];		
@@ -151,6 +179,34 @@ router
 				res.json({
 					confirmation: 'fail',
 					message: `error deleting ${userResource}: ${err}`
+				})
+			}
+			res.json({
+				confirmation: 'success',
+				response: response
+			})
+		})
+	})
+	.delete('/user/:userResource/:resource_id/:resourceChild/:resourceChild_id', loginRequired, function(req, res){
+		const { userResource, resource_id, resourceChild, resourceChild_id } = req.params;
+		const controller = controllers.resourceChild[userResource][resourceChild];
+
+		if (controller == null) {
+			res.json({
+				confirmation: 'fail',
+				message: 'invalid resource'
+			})
+		}
+		const params = {
+			user_id: req.user.id,
+			resource_id,
+			resourceChild_id,
+		}
+		controller.destroy(params, function(err, response) {
+			if (err) {
+				res.json({
+					confirmation: 'fail',
+					message: (`error putting ${userResource}'s ${resourceChild}: ${err}`)
 				})
 			}
 			res.json({

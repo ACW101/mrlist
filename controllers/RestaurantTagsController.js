@@ -7,7 +7,7 @@ module.exports = {
 		const { user_id } = params;
 		const restaurant_id = params.resource_id;
 		Restaurant.where({ id: restaurant_id})
-			.fetch({withRelated: {tags: tag => tag.where({user_id})}})
+			.fetch({withRelated: {tags: tags => tags.where({user_id})}})
 			.then((restaurant) => {
 				callback(null, restaurant.related('tags').toJSON())
 			})
@@ -28,25 +28,29 @@ module.exports = {
 		callback(errMessage, null)
 	}, 
 	update: function(params, callback) {
-		// const { user_id, userResource, resource_id } = params;
-		// User.forge({id: user_id})
-		// 	.restaurants()
-		// 	.attach(resource_id) 
-		// 	.then((response) => {
-		// 		console.log(response);
-		// 		callback(null, response.toJSON());
-		// 	})
-		// 	.catch(e => callback(e, null))
+		const { user_id } = params;
+		const restaurant_id = params.resource_id;
+		const tag_id = params.resourceChild_id;
+		Restaurant.forge({id: restaurant_id})
+			.tags()
+			.attach(tag_id) 
+			.then((response) => {
+				console.log(response);
+				callback(null, response.toJSON());
+			})
+			.catch(e => callback(e, null))
 	},
 	destroy: function(params, callback) {
-		// const { user_id, userResource, resource_id } = params;
-		// User.forge({id: user_id})
-		// 	.restaurants()
-		// 	.detach(resource_id)
-		// 	.then((response) => {
-		// 		console.log(response);
-		// 		callback(null, response.toJSON());
-		// 	})
-		// 	.catch(e => callback(e, null))
+		const { user_id } = params;
+		const restaurant_id = params.resource_id;
+		const tag_id = params.resourceChild_id;
+		Restaurant.forge({id: restaurant_id})
+			.tags()
+			.detach(tag_id)
+			.then((response) => {
+				console.log(response);
+				callback(null, response.toJSON());
+			})
+			.catch(e => callback(e, null))
 	},
 }
