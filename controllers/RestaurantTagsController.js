@@ -6,10 +6,10 @@ module.exports = {
 	find: function(params, callback) {
 		const { user_id } = params;
 		const restaurant_id = params.resource_id;
-		Restaurant.where({ id: restaurant_id })
-			.fetch({withRelated: 'tags'})
+		Restaurant.where({ id: restaurant_id})
+			.fetch({withRelated: {tags: tag => tag.where({user_id})}})
 			.then((restaurant) => {
-				callback(null, restaurant.related('tags').toJSON());
+				callback(null, restaurant.related('tags').toJSON())
 			})
 			.catch( e => callback(e, null))  
 	},
