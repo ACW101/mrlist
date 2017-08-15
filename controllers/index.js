@@ -5,6 +5,7 @@ const RestaurantTagsController = require('./RestaurantTagsController')
 const FriendController = require('./FriendController')
 const PollController = require('./PollController')
 const TagController = require('./TagController')
+const TagRestaurantsController = require('./TagRestaurantsController')
 
 module.exports = {
 	user: UserController,
@@ -18,6 +19,9 @@ module.exports = {
 	resourceChild:{
 		restaurants: {
 			tags: RestaurantTagsController,
+		},
+		tags: {
+			restaurants: TagRestaurantsController,
 		}
 	}
 }
