@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxPromise from 'redux-promise';
+import ReduxThunk from 'redux-thunk';
 import {
   BrowserRouter as Router,
   Route
@@ -24,7 +25,8 @@ import Profile from './routes/profile';
 import Auth from './routes/auth';
 import Yelp from './routes/yelp';
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+const middlewares = [ReduxPromise, ReduxThunk];
+const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
 ReactDOM.render(
   <MuiThemeProvider>

@@ -35,7 +35,7 @@ export default class Profile extends Component {
 			<div id="profile">
 				<SendDialog open={this.state.sendDialog.open} handleClose={this.handleCloseSendDialog} zDepth={2}/>
 				<AddFriendDialog open={this.state.addFriendDialog.open} handleClose={this.handleCloseAddFriendDialog} zDepth={2}/>
-				<Paper id="tags">
+				<Paper>
 					<TagList />
 				</Paper>
 				<Paper id="rlist">

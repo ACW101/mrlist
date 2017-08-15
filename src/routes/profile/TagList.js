@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchTagList } from "./actions";
+import { fetchTagList, selectTag } from "./actions";
 import { connect } from "react-redux";
 
 import Chip from 'material-ui/Chip';
@@ -28,18 +28,22 @@ class TagList extends Component {
     renderList(tag) {
         console.log(tag)
         return(
-            <div>
-                <Chip
-                    style={styles.chip}
-                >
-                    {tag.name}
-                </Chip>
-            </div>
+            <Chip
+                key={tag.id}
+                style={styles.chip}
+                onClick={() => this.handleTagSelect(tag.id)}
+            >
+                {tag.name}
+            </Chip>
         )
+    }
+    handleTagSelect(tag_id) {
+        this.props.selectTag(tag_id);
+        console.log(tag_id);
     }
 }
 
 function mapStateToProps({ tagList }) {
     return { tagList };
 }
-export default connect(mapStateToProps, { fetchTagList })(TagList);
+export default connect(mapStateToProps, { fetchTagList, selectTag })(TagList);

@@ -1,9 +1,22 @@
-import {FETCH_RESTAURANTLIST} from "../routes/profile/actions";
+import {
+	RESTAURANTLIST_IS_LOADING, 
+	RESTAURANTLIST_FETCH_SUCCESS
+} from "../routes/profile/actions";
 
-export default function(state = [], action) {
+export function restaurantListIsLoading(state = false, action) {
 	switch(action.type) {
-        case FETCH_RESTAURANTLIST:
-		return action.payload.data.result;
+        case RESTAURANTLIST_IS_LOADING: {
+			return action.payload;
+		}
+	}
+	return state;
+}
+
+export function restaurantList(state = [], action) {
+	switch(action.type) {
+		case RESTAURANTLIST_FETCH_SUCCESS: {
+			return action.payload;
+		}
 	}
 	return state;
 }

@@ -13,6 +13,7 @@ class RestaurantList extends Component {
     render() {
         return(
             <div>
+                <h1>{this.props.selectedTag}</h1>
                 <List>
                     {this.props.restaurantList.map(restaurant => this.renderList(restaurant))}
                 </List>
@@ -33,7 +34,7 @@ class RestaurantList extends Component {
     }
 }
 
-function mapStateToProps({ restaurantList }) {
-    return { restaurantList };
+function mapStateToProps({ restaurantList, selectedTag }) {
+    return { restaurantList, selectedTag };
 }
 export default connect(mapStateToProps, { fetchRestaurantList })(RestaurantList);
