@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { fetchTagList, selectTag } from "./actions";
 import { connect } from "react-redux";
+import {blue300, indigo900} from 'material-ui/styles/colors';
 
 import Chip from 'material-ui/Chip';
 
@@ -26,9 +27,9 @@ class TagList extends Component {
         )
     }
     renderList(tag) {
-        console.log(tag)
         return(
             <Chip
+                backgroundColor={tag.id == this.props.selectedTag ? blue300 : null}
                 key={tag.id}
                 style={styles.chip}
                 onClick={() => this.handleTagSelect(tag.id)}
@@ -43,7 +44,7 @@ class TagList extends Component {
     }
 }
 
-function mapStateToProps({ tagList }) {
-    return { tagList };
+function mapStateToProps({ tagList, selectedTag}) {
+    return { tagList, selectedTag};
 }
 export default connect(mapStateToProps, { fetchTagList, selectTag })(TagList);
