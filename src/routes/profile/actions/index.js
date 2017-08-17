@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const FETCH_RESTAURANTLIST = "FETCH_RESTAURANTLIST";
 export const FETCH_TAGLIST = "FETCH_TAGLIST";
-export const SELECT_RESTAURANTS= "SELECT_RESTAURANTS";
+export const SELECT_RESTAURANT= "SELECT_RESTAURANT";
 export const SELECT_TAG = "SELECT_TAG";
 export const FETCH_FRIENDLIST = "FETCH_FRIENDLIST";
 export const ADD_FRIENDS = "ADD_FRIENDS";
@@ -94,10 +94,10 @@ export function selectTag(selectedTag) {
 	}
 }
 
-export function selectRestaurants(selectedRows) {
+export function selectRestaurant(selectedRestaurant_id) {
 		return {
-		type: SELECT_RESTAURANTS,
-		payload: selectedRows
+		type: SELECT_RESTAURANT,
+		payload: selectedRestaurant_id
 	};
 }
 

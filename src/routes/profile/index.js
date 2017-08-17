@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import './style.css'
+
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
 
-import './style.css'
-
-import SendDialog from './sendDialog';
-import AddFriendDialog from './addFriendDialog';
+// import SendDialog from './sendDialog';
+// import AddFriendDialog from './addFriendDialog';
 import RestaurantList from './RestaurantList';
 import TagList from './TagList';
+import Details from './Details';
 
 export default class Profile extends Component {
 	constructor(props) {
@@ -33,22 +36,24 @@ export default class Profile extends Component {
 		}
 		return (
 			<div id="profile">
-				<SendDialog open={this.state.sendDialog.open} handleClose={this.handleCloseSendDialog} zDepth={2}/>
-				<AddFriendDialog open={this.state.addFriendDialog.open} handleClose={this.handleCloseAddFriendDialog} zDepth={2}/>
 				<Paper>
-					<TagList />
+					
 				</Paper>
 				<Paper id="rlist">
+					<Subheader>Filter by tag</Subheader>
+					<TagList />
+					<Divider />
 					<RestaurantList height="600px"/>
-					<Link to="/yelp">
-						<FloatingActionButton style={addButtonStyle}>
-							<ContentAdd />
-						</FloatingActionButton>
-					</Link>
+					
 				</Paper>
 				<Paper id="details">
-
+					<Details/>
 				</Paper>
+				<Link to="/yelp">
+					<FloatingActionButton style={addButtonStyle}>
+						<ContentAdd />
+					</FloatingActionButton>
+				</Link>
 			</div>
 		)
 	}

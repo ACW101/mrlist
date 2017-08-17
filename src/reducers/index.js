@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import SearchResultReducer from './reducer_searchResult';
-import SelectedRestaurantsReducer from './reducer_selectedRestaurants';
+import SelectedRestaurantReducer from './reducer_selectedRestaurant';
 import FriendListReducer from './reducer_friendList';
 import TagListReducer from './reducer_tagList';
 import selectedTagReducer from './reducer_selectedTag';
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   searchResult: SearchResultReducer,
   restaurantList: restaurantListReducer,
   restaurantListIsLoading: restaurantListIsLoadingReducer,
-  selectedRestaurants: SelectedRestaurantsReducer,
+  selectedRestaurant: SelectedRestaurantReducer,
   friendList: FriendListReducer,
   tagList: TagListReducer,
   selectedTag: selectedTagReducer,

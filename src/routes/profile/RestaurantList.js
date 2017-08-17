@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchRestaurantList } from "./actions";
+import { fetchRestaurantList, selectRestaurant } from "./actions";
 import { connect } from "react-redux";
 
 import List from 'material-ui/List/List';
@@ -27,16 +27,22 @@ class RestaurantList extends Component {
         return(
             <div>
                 <ListItem
+                    key={restaurant.id}
                     primaryText={restaurant.name}
+                    onClick={() => this.handleSelectRestaurant(restaurant.id)}
                 >
                 </ListItem>
                 <Divider/>
             </div>
         )
     }
+    
+    handleSelectRestaurant(restaurant_id) {
+        this.props.selectRestaurant(restaurant_id);
+    }
 }
 
 function mapStateToProps({ restaurantList, selectedTag, restaurantTags }) {
     return { restaurantList, selectedTag, restaurantTags };
 }
-export default connect(mapStateToProps, { fetchRestaurantList })(RestaurantList);
+export default connect(mapStateToProps, { fetchRestaurantList, selectRestaurant })(RestaurantList);
