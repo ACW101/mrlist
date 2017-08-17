@@ -9,11 +9,11 @@ import Divider from 'material-ui/Divider';
 class RestaurantList extends Component {
     componentDidMount() {
         this.props.fetchRestaurantList();
+        this.renderList = this.renderList.bind(this);
     }
     render() {
         return(
             <div>
-                <h1>{this.props.selectedTag}</h1>
                 <List>
                     {this.props.restaurantList.map(restaurant => this.renderList(restaurant))}
                 </List>
@@ -22,6 +22,8 @@ class RestaurantList extends Component {
     }
 
     renderList(restaurant) {
+        const restaurantTags = this.props.restaurantTags[restaurant.id];
+        if(this.props.selectedTag != null && restaurantTags[this.props.selectedTag] == null) return;
         return(
             <div>
                 <ListItem
@@ -34,7 +36,7 @@ class RestaurantList extends Component {
     }
 }
 
-function mapStateToProps({ restaurantList, selectedTag }) {
-    return { restaurantList, selectedTag };
+function mapStateToProps({ restaurantList, selectedTag, restaurantTags }) {
+    return { restaurantList, selectedTag, restaurantTags };
 }
 export default connect(mapStateToProps, { fetchRestaurantList })(RestaurantList);

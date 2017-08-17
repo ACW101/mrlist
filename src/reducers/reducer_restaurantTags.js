@@ -10,8 +10,12 @@ export function restaurantTagsReducer(state = {}, action) {
         }
 		case RESTAURANTTAG_FETCH_SUCCESS: {
             const newState = Object.assign({}, state);
-            newState[action.id] = action.payload;
-            console.log(newState);
+            const tagAsKey = {};
+            action.payload.map(tagObj => {
+                tagAsKey[tagObj.id] = tagObj.name;
+                return tagObj;
+            })
+            newState[action.id] = tagAsKey;
 			return newState;
 		}
 	}
