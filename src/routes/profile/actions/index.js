@@ -8,6 +8,9 @@ export const FETCH_FRIENDLIST = "FETCH_FRIENDLIST";
 export const ADD_FRIENDS = "ADD_FRIENDS";
 export const RESTAURANTLIST_IS_LOADING = 'RESTAURANTLIST_IS_LOADING';
 export const RESTAURANTLIST_FETCH_SUCCESS = 'RESTAURANTLIST_FETCH_SUCCESS';
+export const FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TAGS';
+export const RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
+export const RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
 
 
 export function fetchRestaurantList(selectedTag) {
@@ -19,21 +22,20 @@ export function fetchRestaurantList(selectedTag) {
 			method: 'get',
 			responseType: 'json',
 		}).then(response => {
-			console.log(response);
 			dispatch(restaurantListIsLoading(false));
 			const restaurantList = response.data.result;
 			dispatch(restaurantListFetchSuccess(response.data.result));
+			restaurantList.map(restaurant => {
+				dispatch(fetchRestaurantTags(restaurant.id));
+			})
 		})
 	}
-	// return {
-	// 	type: FETCH_RESTAURANTLIST,
-	// 	payload: request,
-	// };
+
 }
 
 export function restaurantListIsLoading(bool){
-    return {
-        type: RESTAURANTLIST_IS_LOADING,
+	return {
+		type: RESTAURANTLIST_IS_LOADING,
         payload: bool,
     }
 }
@@ -45,6 +47,34 @@ export function restaurantListFetchSuccess(restaurantList) {
 	}
 }
 
+export function fetchRestaurantTags(restaurant_id) {
+	return (dispatch) => {
+		dispatch(restaurantTagIsLoading(restaurant_id, true));
+		const request = axios({
+			url: `/api/user/restaurants/${restaurant_id}/tags`,
+			method: 'get',
+			responseType: 'json',
+		}).then(response => {
+			dispatch(restaurantTagIsLoading(restaurant_id, false));
+			console.log(response);
+			dispatch(restaurantTagFetchSuccess(restaurant_id, response.data.response));
+		})
+	}
+}
+
+export function restaurantTagIsLoading(restaurant_id, bool) {
+	return {
+		type: RESTAURANTTAG_IS_LOADING,
+		payload: { [restaurant_id]: bool },
+	}
+}
+export function restaurantTagFetchSuccess(restaurant_id, tags) {
+	return {
+		type: RESTAURANTTAG_FETCH_SUCCESS,
+		id: restaurant_id,
+		payload: tags,
+	}
+}
 export function fetchTagList() {
 	const request = axios({
 		url: '/api/user/tags',

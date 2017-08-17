@@ -3,7 +3,7 @@ import {
 	RESTAURANTLIST_FETCH_SUCCESS
 } from "../routes/profile/actions";
 
-export function restaurantListIsLoading(state = false, action) {
+export function restaurantListIsLoadingReducer(state = false, action) {
 	switch(action.type) {
         case RESTAURANTLIST_IS_LOADING: {
 			return action.payload;
@@ -12,7 +12,7 @@ export function restaurantListIsLoading(state = false, action) {
 	return state;
 }
 
-export function restaurantList(state = [], action) {
+export function restaurantListReducer(state = [], action) {
 	switch(action.type) {
 		case RESTAURANTLIST_FETCH_SUCCESS: {
 			return action.payload;
