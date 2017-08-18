@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import Divider from 'material-ui/Divider';
+import {blue300, indigo900} from 'material-ui/styles/colors';
 
 class RestaurantList extends Component {
     componentDidMount() {
@@ -23,12 +24,18 @@ class RestaurantList extends Component {
 
     renderList(restaurant) {
         const restaurantTags = this.props.restaurantTags[restaurant.id];
-        if(this.props.selectedTag != null && restaurantTags[this.props.selectedTag] == null) return;
+        const hasTag = this.props.selectedTag != null && restaurantTags[this.props.selectedTag] != null;
+        const styles={
+            active: {
+                backgroundColor: blue300
+            }
+        }
         return(
             <div>
                 <ListItem
                     key={restaurant.id}
                     primaryText={restaurant.name}
+                    style={hasTag ? styles.active: null}
                     onClick={() => this.handleSelectRestaurant(restaurant.id)}
                 >
                 </ListItem>
