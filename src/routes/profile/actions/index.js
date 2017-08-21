@@ -169,6 +169,33 @@ export function removeTag(params) {
 			responseType: 'json',
 		}).then(response => {
 			dispatch(fetchRestaurantTags(restaurant_id));
+			dispatch(checkOrphanTag(tag_id))
+		})
+	}
+}
+
+export function checkOrphanTag(tag_id) {
+	return(dispatch) => {
+		const createTagRequest = axios({
+			url: `api/user/tags/${tag_id}/restaurants`,
+			method: 'get',
+			responseType: 'json',
+		}).then(response => {
+			if(response.data.response.length == 0) {
+				dispatch(deleteOrphanTag(tag_id));
+			}
+		})
+	}
+}
+
+export function deleteOrphanTag(tag_id) {
+	return(dispatch) => {
+		const deleteOrphanTag = axios({
+			url: `api/user/tags/${tag_id}`,
+			method: 'delete',
+			responseType: 'json',
+		}).then(response => {
+			dispatch(fetchTagList());
 		})
 	}
 }
