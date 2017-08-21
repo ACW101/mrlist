@@ -57,7 +57,6 @@ export function fetchRestaurantTags(restaurant_id) {
 			responseType: 'json',
 		}).then(response => {
 			dispatch(restaurantTagIsLoading(restaurant_id, false));
-			console.log(response);
 			dispatch(restaurantTagFetchSuccess(restaurant_id, response.data.response));
 		})
 	}
@@ -131,5 +130,32 @@ export function toggleTagTextfield() {
 	return {
 		type: TOGGLE_TAGTEXTFIELD,
 		payload: null
+	}
+}
+
+export function addTag(params) {
+	return (dispatch) => {
+		const {restaurant_id, name} = params;
+		const createTagRequest = axios({
+			url: 'api/user/tags',
+			method: 'post',
+			data: {name},
+			responseType: 'json'
+		}).then(response => {
+			const newTagId = response.data.response;
+			if(newTagId != null) {
+				dispatch(fetchTagList());
+				const addTagToRestaurantRequest = axios({
+					url: `api/user/restaurants/${restaurant_id}/tags/${newTagId}`,
+					method: 'put',
+					responseType: 'json',
+				}).then(response => {
+					dispatch(fetchRestaurantTags(restaurant_id));
+				})
+				
+			}
+
+		}) 
+
 	}
 }

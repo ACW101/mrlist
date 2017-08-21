@@ -31,9 +31,8 @@ class RestaurantList extends Component {
             }
         }
         return(
-            <div>
+            <div key={restaurant.id}>
                 <ListItem
-                    key={restaurant.id}
                     primaryText={restaurant.name}
                     style={hasTag ? styles.active: null}
                     onClick={() => this.handleSelectRestaurant(restaurant.id)}
@@ -43,7 +42,6 @@ class RestaurantList extends Component {
             </div>
         )
     }
-    
     handleSelectRestaurant(restaurant_id) {
         this.props.selectRestaurant(restaurant_id);
     }
