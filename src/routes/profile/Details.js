@@ -6,8 +6,11 @@ import Chip from 'material-ui/Chip';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import TagTextfield from './TagTextField';
+
+const muiTheme = getMuiTheme();
 
 const styles = {
     chip: {
@@ -17,6 +20,10 @@ const styles = {
       display: 'flex',
       flexWrap: 'wrap',
     },
+    add: {
+        margin: 4,
+        backgroundColor: muiTheme.palette.accent1Color,
+    }
   };
 
 class Details extends Component {
@@ -28,19 +35,21 @@ class Details extends Component {
         const restaurant_id = this.props.selectedRestaurant;
         const restaurantTags = this.props.restaurantTags[restaurant_id];
         const AddBtn = (
-            <FloatingActionButton 
-                style={styles.chip} 
+            <Chip
+                style={styles.add} 
                 mini={true} 
                 zDepth={0}
                 onClick={this.handleAddButtonClicked.bind(this)}
             >
-                <ContentAdd />
-            </FloatingActionButton>
+                add Tag
+            </Chip>
         );
         const textField = (
-            <TagTextfield
-                toggleTagTextfield={this.props.toggleTagTextfield}
-            />
+            <Chip>
+                <TagTextfield
+                    toggleTagTextfield={this.props.toggleTagTextfield}
+                />
+            </Chip>
         )
         
         return(
