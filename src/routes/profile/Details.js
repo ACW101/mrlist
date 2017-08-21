@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { toggleTagTextfield } from "./actions";
+import { toggleTagTextfield, removeTag } from "./actions";
 import { connect } from "react-redux";
 
 import Chip from 'material-ui/Chip';
@@ -45,27 +45,36 @@ class Details extends Component {
         
         return(
             <div style={styles.wrapper}>
-                {_.map(restaurantTags, tag => this.renderList(tag))}
+                {_.map(restaurantTags, (tagName, tagId) => this.renderList(tagName, tagId))}
                 {this.props.showTagTextfield ? textField : AddBtn }
             </div>
         )
     }
-    renderList(tag) {
+    renderList(tagName, tagId) {
         return(
             <Chip
-                key={tag}
+                key={tagId}
                 style={styles.chip}
+                onRequestDelete={() => this.handleRequestDeleteTag(tagId)}
             >
-                {tag}
+                {tagName}
             </Chip>
         )
     }
     handleAddButtonClicked() {
         this.props.toggleTagTextfield();
     }
+    handleRequestDeleteTag(tagId) {
+        if(this.props.selectedRestaurant == null) return;
+        const params = {
+            restaurant_id: this.props.selectedRestaurant,
+            tag_id: parseInt(tagId),
+        }
+        this.props.removeTag(params);
+    }
 }
 
 function mapStateToProps({ selectedRestaurant, restaurantTags, showTagTextfield }) {
     return { selectedRestaurant, restaurantTags, showTagTextfield };
 }
-export default connect(mapStateToProps, { toggleTagTextfield })(Details);
+export default connect(mapStateToProps, { toggleTagTextfield, removeTag })(Details);

@@ -40,7 +40,6 @@ class TagList extends Component {
     }
     handleTagSelect(tag_id) {
         this.props.selectTag(tag_id);
-        console.log(tag_id);
     }
 }
 

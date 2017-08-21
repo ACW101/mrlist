@@ -159,3 +159,16 @@ export function addTag(params) {
 
 	}
 }
+
+export function removeTag(params) {
+	const {restaurant_id, tag_id} = params;
+	return (dispatch) => {
+		const detachTagRequest = axios({
+			url: `api/user/restaurants/${restaurant_id}/tags/${tag_id}`,
+			method: 'delete',
+			responseType: 'json',
+		}).then(response => {
+			dispatch(fetchRestaurantTags(restaurant_id));
+		})
+	}
+}
