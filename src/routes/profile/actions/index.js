@@ -11,6 +11,7 @@ export const RESTAURANTLIST_FETCH_SUCCESS = 'RESTAURANTLIST_FETCH_SUCCESS';
 export const FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TAGS';
 export const RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
 export const RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
+export const TOGGLE_TAGTEXTFIELD = 'TOGGLE_TAGTEXTFIELD';
 
 
 export function fetchRestaurantList(selectedTag) {
@@ -123,5 +124,12 @@ export function addFriends(params) {
 	return {
 		type: ADD_FRIENDS,
 		payload: request
+	}
+}
+
+export function toggleTagTextfield() {
+	return {
+		type: TOGGLE_TAGTEXTFIELD,
+		payload: null
 	}
 }

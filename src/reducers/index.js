@@ -6,6 +6,7 @@ import TagListReducer from './reducer_tagList';
 import selectedTagReducer from './reducer_selectedTag';
 import {restaurantListIsLoadingReducer, restaurantListReducer} from './reducer_restaurantList';
 import {restaurantTagsReducer} from './reducer_restaurantTags';
+import showTagTextfieldReducer from './reducer_showTagTextfield';
 
 const rootReducer = combineReducers({
   searchResult: SearchResultReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   tagList: TagListReducer,
   selectedTag: selectedTagReducer,
   restaurantTags: restaurantTagsReducer,
+  showTagTextfield: showTagTextfieldReducer,
 });
 
 export default rootReducer;

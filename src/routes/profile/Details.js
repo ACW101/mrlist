@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-// import {} from "./actions";
+import { toggleTagTextfield } from "./actions";
 import { connect } from "react-redux";
 
 import Chip from 'material-ui/Chip';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import TextField from 'material-ui/TextField';
+
+import TagTextfield from './TagTextField';
 
 const styles = {
     chip: {
@@ -15,15 +20,33 @@ const styles = {
   };
 
 class Details extends Component {
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        this.handleAddButtonClicked = this.handleAddButtonClicked.bind(this);
     }
     render() {
         const restaurant_id = this.props.selectedRestaurant;
         const restaurantTags = this.props.restaurantTags[restaurant_id];
-        console.log(restaurantTags);
+        const AddBtn = (
+            <FloatingActionButton 
+                style={styles.chip} 
+                mini={true} 
+                zDepth={0}
+                onClick={this.handleAddButtonClicked.bind(this)}
+            >
+                <ContentAdd />
+            </FloatingActionButton>
+        );
+        const textField = (
+            <TagTextfield
+                toggleTagTextfield={this.props.toggleTagTextfield}
+            />
+        )
+        
         return(
             <div style={styles.wrapper}>
                 {_.map(restaurantTags, tag => this.renderList(tag))}
+                {this.props.showTagTextfield ? textField : AddBtn }
             </div>
         )
     }
@@ -37,9 +60,12 @@ class Details extends Component {
             </Chip>
         )
     }
+    handleAddButtonClicked() {
+        this.props.toggleTagTextfield();
+    }
 }
 
-function mapStateToProps({ selectedRestaurant, restaurantTags }) {
-    return { selectedRestaurant, restaurantTags};
+function mapStateToProps({ selectedRestaurant, restaurantTags, showTagTextfield }) {
+    return { selectedRestaurant, restaurantTags, showTagTextfield };
 }
-export default connect(mapStateToProps, {})(Details);
+export default connect(mapStateToProps, { toggleTagTextfield })(Details);
