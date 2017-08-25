@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { addTag, toggleTagTextfield } from './actions';
 import { connect } from "react-redux";
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+const muiTheme = getMuiTheme();
 
 class TagTextField extends Component {
     constructor(props){
@@ -22,6 +25,7 @@ class TagTextField extends Component {
                 ref={input => { this.textInput = input;}}
                 value={this.state.value}
                 onChange={this.handleChange}
+                style={{width: 70}}
             />
             </form>
         )

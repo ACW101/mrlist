@@ -45,14 +45,15 @@ class Details extends Component {
             </Chip>
         );
         const textField = (
-            <Chip>
+            <Chip style={styles.add}>
                 <TagTextfield
                     toggleTagTextfield={this.props.toggleTagTextfield}
                 />
             </Chip>
         )
-        
-        return(
+        const selectRestaurantPrompt = <p>please select a restaurant on the left</p>;
+        if(this.props.selectedRestaurant == null) return selectRestaurantPrompt;
+        else return(
             <div style={styles.wrapper}>
                 {_.map(restaurantTags, (tagName, tagId) => this.renderList(tagName, tagId))}
                 {this.props.showTagTextfield ? textField : AddBtn }
