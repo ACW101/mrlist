@@ -58,7 +58,7 @@ typings/
 .env
 
 # api keys
-utility/keys
+devKeys.js
 
 # bundle
 public/build

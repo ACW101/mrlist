@@ -7,11 +7,11 @@ const LocalStrategy = require('passport-local').Strategy;
 let User = require('../models/User');
 
 // import your own facebook login key
-const facebookKey = require('./keys/facebookKey');
-const facebookConfig = Object.assign({}, facebookKey, {
-  callbackURL: "http://localhost:3000/auth/facebook/callback",
-  profileFields: ['id', 'displayName', 'photos', 'email', 'name']
-})
+const keys = require('./config/keys');
+const facebookConfig = Object.assign({}, 
+  keys.facebook,
+  { profileFields: ['id', 'displayName', 'photos', 'email', 'name'] }
+)
 
 passport.use(new LocalStrategy(authenticate))
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))
