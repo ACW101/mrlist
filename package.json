@@ -7,8 +7,7 @@
     "test": "./node_modules/.bin/mocha --reporter spec",
     "dev": "webpack -w",
     "bootstrap": "knex --cwd ./utility migrate:latest",
-    "heroku-prebuild": "webpack -p",
-    "heroku-postbuild": "knex --cwd ./utility migrate:latest"
+    "heroku-postbuild": "webpack -p"
   },
   "dependencies": {
     "axios": "^0.16.2",
