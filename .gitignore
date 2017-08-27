@@ -59,6 +59,3 @@ typings/
 
 # api keys
 devKeys.js
-
-# bundle
-public/build
