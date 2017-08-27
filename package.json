@@ -8,7 +8,6 @@
     "dev": "webpack -w",
     "prod": "webpack -p",
     "bootstrap": "knex --cwd ./utility migrate:latest",
-    "heroku-postbuild": "webpack"
   },
   "dependencies": {
     "axios": "^0.16.2",
