@@ -6,5 +6,14 @@ module.exports = {
             user: "root",
             database: "development",
         }
+    },
+    production: {
+        client: "mysql",
+        connection: {
+            host: process.env.JAWSDB_URL.hostname,
+            user: process.env.JAWSDB_URL.username,
+            password: process.env.JAWSDB_URL.password,
+            database: "production"
+        }
     }
 }
