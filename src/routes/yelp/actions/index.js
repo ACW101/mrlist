@@ -1,14 +1,12 @@
 import axios from "axios";
 import querystring from 'querystring';
 
-const ROOT_URL = "http://localhost:3000/api"
-
 export const FETCH_RESTAURANT = "FETCH_RESTAURANT";
 export const ADD_RESTAURANT = "ADD_RESTAURANT";
 
 export function fetchRestaurant(query) {
 	const request = axios({
-		url: `${ROOT_URL}/yelp/search?${querystring.stringify({'term': query.term, 'location': query.location})}`,
+		url: `/api/yelp/search?${querystring.stringify({'term': query.term, 'location': query.location})}`,
 		method: 'get',
 		responseType: 'json',
 	});
@@ -29,7 +27,7 @@ export function addRestaurant(restaurantData, callback) {
 		console.log(response);
 		const restaurant_id = response.data.results.id;
 		const request = axios({
-			url: `${ROOT_URL}/user/restaurants/${restaurant_id}`,
+			url: `/api/user/restaurants/${restaurant_id}`,
 			method: 'put',
 			responseType: 'json'
 		})
