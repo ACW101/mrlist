@@ -5,9 +5,10 @@
   "scripts": {
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha --reporter spec",
-    "dev": "webpack -w",
+    "dev": "webpack -w && nodemon server.js",
     "prod": "webpack -p",
-    "bootstrap": "knex --cwd ./utility migrate:latest"
+    "bootstrap": "knex --cwd ./utility migrate:latest",
+    "heroku-postbuild": "knex --cwd ./utility migrate:latest"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -31,6 +32,7 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
+    "pg": "^7.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",

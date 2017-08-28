@@ -1,19 +1,16 @@
 module.exports = {
     development: {
-    client: "mysql",
-        connection: {
-            host: "127.0.0.1",
-            user: "root",
-            database: "development",
+        client: "pg",
+        connection: 'postgres://localhost:5432/mrlist-dev',
+        migrations: {
+            directory: __dirname + '/utility/migrations'
         }
     },
     production: {
-        client: "mysql",
-        connection: {
-            host: process.env.JAWSDB_URL.hostname,
-            user: process.env.JAWSDB_URL.username,
-            password: process.env.JAWSDB_URL.password,
-            database: "production"
+        client: "pg",
+        connection: process.env.DATABASE_URL,
+        migrations: {
+            directory: __dirname + '/utility/migrations'
         }
     }
 }
