@@ -3,14 +3,14 @@ module.exports = {
         client: "pg",
         connection: 'postgres://localhost:5432/mrlist-dev',
         migrations: {
-            directory: __dirname + '/utility/migrations'
+            directory: __dirname + '/migrations'
         }
     },
     production: {
         client: "pg",
         connection: process.env.DATABASE_URL,
         migrations: {
-            directory: __dirname + '/utility/migrations'
+            directory: __dirname + '/migrations'
         }
     }
 }
