@@ -59986,6 +59986,7 @@ var TagTextField = function (_Component) {
 
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleKeyDown = _this.handleKeyDown.bind(_this);
         return _this;
     }
 
@@ -60010,9 +60011,18 @@ var TagTextField = function (_Component) {
                     },
                     value: this.state.value,
                     onChange: this.handleChange,
+                    onKeyDown: this.handleKeyDown,
                     style: { width: 70 }
                 })
             );
+        }
+    }, {
+        key: 'handleKeyDown',
+        value: function handleKeyDown(e) {
+            console.log(e.key);
+            if (e.key == 'Backspace') {
+                this.setState({ value: this.state.value.slice(0, -1) });
+            }
         }
     }, {
         key: 'handleChange',

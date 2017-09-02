@@ -12,6 +12,7 @@ class TagTextField extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
     componentDidMount() {
         this.textInput.focus();
@@ -25,10 +26,17 @@ class TagTextField extends Component {
                 ref={input => { this.textInput = input;}}
                 value={this.state.value}
                 onChange={this.handleChange}
+                onKeyDown={this.handleKeyDown}
                 style={{width: 70}}
             />
             </form>
         )
+    }
+    handleKeyDown(e) {
+        console.log(e.key);
+        if (e.key == 'Backspace') {
+            this.setState({ value: this.state.value.slice(0, -1) })
+        }
     }
     handleChange(e) {
         this.setState({value: e.target.value});
