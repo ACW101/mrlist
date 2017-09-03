@@ -35,26 +35,23 @@ export default class Profile extends Component {
 			bottom: '25px'
 		}
 		return (
-			<div id="profile">
-				<Paper>
-					
-				</Paper>
-				<Paper id="rlist">
+			<Paper id="profile">
+				<div id="rlist">
 					<Subheader>Filter by tag</Subheader>
 					<TagList />
 					<Divider />
 					<RestaurantList height="600px"/>
 					
-				</Paper>
-				<Paper id="details">
+				</div>
+				<div id="details">
 					<Details/>
-				</Paper>
+				</div>
 				<Link to="/yelp">
 					<FloatingActionButton style={addButtonStyle}>
 						<ContentAdd />
 					</FloatingActionButton>
 				</Link>
-			</div>
+			</Paper>
 		)
 	}
 	handleOpenSendDialog() {

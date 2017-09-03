@@ -12,10 +12,10 @@ export function restaurantListIsLoadingReducer(state = false, action) {
 	return state;
 }
 
-export function restaurantListReducer(state = [], action) {
+export function restaurantListReducer(state = {}, action) {
 	switch(action.type) {
 		case RESTAURANTLIST_FETCH_SUCCESS: {
-			return action.payload;
+			return _.keyBy(action.payload, 'id');
 		}
 	}
 	return state;

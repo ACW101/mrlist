@@ -52746,13 +52746,13 @@ function restaurantListIsLoadingReducer() {
 }
 
 function restaurantListReducer() {
-	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	var action = arguments[1];
 
 	switch (action.type) {
 		case _actions.RESTAURANTLIST_FETCH_SUCCESS:
 			{
-				return action.payload;
+				return _.keyBy(action.payload, 'id');
 			}
 	}
 	return state;
@@ -53035,11 +53035,10 @@ var Profile = function (_Component) {
 				bottom: '25px'
 			};
 			return _react2.default.createElement(
-				'div',
+				_Paper2.default,
 				{ id: 'profile' },
-				_react2.default.createElement(_Paper2.default, null),
 				_react2.default.createElement(
-					_Paper2.default,
+					'div',
 					{ id: 'rlist' },
 					_react2.default.createElement(
 						_Subheader2.default,
@@ -53051,7 +53050,7 @@ var Profile = function (_Component) {
 					_react2.default.createElement(_RestaurantList2.default, { height: '600px' })
 				),
 				_react2.default.createElement(
-					_Paper2.default,
+					'div',
 					{ id: 'details' },
 					_react2.default.createElement(_Details2.default, null)
 				),
@@ -56257,7 +56256,7 @@ var RestaurantList = function (_Component) {
                 _react2.default.createElement(
                     _List2.default,
                     null,
-                    this.props.restaurantList.map(function (restaurant) {
+                    _.map(this.props.restaurantList, function (restaurant) {
                         return _this2.renderList(restaurant);
                     })
                 )
@@ -58374,11 +58373,20 @@ var Details = function (_Component) {
             );
             if (this.props.selectedRestaurant == null) return selectRestaurantPrompt;else return _react2.default.createElement(
                 "div",
-                { style: styles.wrapper },
-                _.map(restaurantTags, function (tagName, tagId) {
-                    return _this2.renderList(tagName, tagId);
-                }),
-                this.props.showTagTextfield ? textField : AddBtn
+                null,
+                _react2.default.createElement(
+                    "h3",
+                    null,
+                    this.props.restaurantList[restaurant_id].name
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { style: styles.wrapper },
+                    _.map(restaurantTags, function (tagName, tagId) {
+                        return _this2.renderList(tagName, tagId);
+                    }),
+                    this.props.showTagTextfield ? textField : AddBtn
+                )
             );
         }
     }, {
@@ -58421,9 +58429,10 @@ var Details = function (_Component) {
 function mapStateToProps(_ref) {
     var selectedRestaurant = _ref.selectedRestaurant,
         restaurantTags = _ref.restaurantTags,
-        showTagTextfield = _ref.showTagTextfield;
+        showTagTextfield = _ref.showTagTextfield,
+        restaurantList = _ref.restaurantList;
 
-    return { selectedRestaurant: selectedRestaurant, restaurantTags: restaurantTags, showTagTextfield: showTagTextfield };
+    return { selectedRestaurant: selectedRestaurant, restaurantTags: restaurantTags, showTagTextfield: showTagTextfield, restaurantList: restaurantList };
 }
 exports.default = (0, _reactRedux.connect)(mapStateToProps, { toggleTagTextfield: _actions.toggleTagTextfield, removeTag: _actions.removeTag })(Details);
 

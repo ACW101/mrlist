@@ -54,9 +54,12 @@ class Details extends Component {
         const selectRestaurantPrompt = <p>please select a restaurant on the left</p>;
         if(this.props.selectedRestaurant == null) return selectRestaurantPrompt;
         else return(
-            <div style={styles.wrapper}>
-                {_.map(restaurantTags, (tagName, tagId) => this.renderList(tagName, tagId))}
-                {this.props.showTagTextfield ? textField : AddBtn }
+            <div>      
+                <h3>{this.props.restaurantList[restaurant_id].name}</h3>
+                <div style={styles.wrapper}>
+                    {_.map(restaurantTags, (tagName, tagId) => this.renderList(tagName, tagId))}
+                    {this.props.showTagTextfield ? textField : AddBtn }
+                </div>
             </div>
         )
     }
@@ -84,7 +87,7 @@ class Details extends Component {
     }
 }
 
-function mapStateToProps({ selectedRestaurant, restaurantTags, showTagTextfield }) {
-    return { selectedRestaurant, restaurantTags, showTagTextfield };
+function mapStateToProps({ selectedRestaurant, restaurantTags, showTagTextfield, restaurantList }) {
+    return { selectedRestaurant, restaurantTags, showTagTextfield, restaurantList };
 }
 export default connect(mapStateToProps, { toggleTagTextfield, removeTag })(Details);
