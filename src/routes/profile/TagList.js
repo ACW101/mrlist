@@ -31,7 +31,6 @@ class TagList extends Component {
         )
     }
     renderList(tag) {
-        console.log(this.props.tagList[tag.id].selected);
         return(
             <Chip
                 backgroundColor={this.props.tagList[tag.id].selected ? blue300 : null}

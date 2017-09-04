@@ -7,7 +7,6 @@ export default function(state = {}, action) {
 			return tagListKeyById;
 		}
 		case SELECT_TAG: {
-			console.log('select')
 			const selectedTag = action.payload;
 			const clone = Object.assign({}, state);
 			if (clone[selectedTag].selected == null || 
@@ -16,7 +15,6 @@ export default function(state = {}, action) {
             } else {
                 clone[selectedTag].selected = false;
 			}
-			console.log(clone);
             return clone;
 		}
 	}
