@@ -8,12 +8,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
+import Dialog from 'material-ui/Dialog';
+
 
 // import SendDialog from './sendDialog';
 // import AddFriendDialog from './addFriendDialog';
 import RestaurantList from './RestaurantList';
 import TagList from './TagList';
 import Details from './Details';
+import SendDialog from './SendDialog';
 
 export default class Profile extends Component {
 	constructor(props) {
@@ -25,8 +28,6 @@ export default class Profile extends Component {
 
 		this.handleOpenSendDialog = this.handleOpenSendDialog.bind(this);
 		this.handleCloseSendDialog = this.handleCloseSendDialog.bind(this);
-		this.handleOpenAddFriendDialog = this.handleOpenAddFriendDialog.bind(this);
-		this.handleCloseAddFriendDialog = this.handleCloseAddFriendDialog.bind(this);
 	}
 	render() {
 		const addButtonStyle = {
@@ -34,8 +35,30 @@ export default class Profile extends Component {
 			right: '25px',
 			bottom: '25px'
 		}
+		const dialogActions = [
+			<RaisedButton
+			  label="Cancel"
+			  primary={true}
+			  onClick={this.handleCloseSendDialog}
+			/>,
+			<RaisedButton
+			  label="Submit"
+			  primary={true}
+			  keyboardFocused={true}
+			  onClick={this.handleCloseSendDialog}
+			/>,
+		  ];
 		return (
 			<Paper id="profile">
+				<Dialog
+					title="Invitation"
+					actions={dialogActions}
+					modal={false}
+					open={this.state.sendDialog.open}
+					onRequestClose={this.handleClose}
+				>
+					<SendDialog/>
+				</Dialog>
 				<div id="rlist">
 					<Subheader>Filter by tag</Subheader>
 					<TagList />
@@ -46,11 +69,12 @@ export default class Profile extends Component {
 				<div id="details">
 					<Details/>
 				</div>
-				<Link to="/yelp">
-					<FloatingActionButton style={addButtonStyle}>
-						<ContentAdd />
-					</FloatingActionButton>
-				</Link>
+				<FloatingActionButton
+					style={addButtonStyle}
+					onClick={this.handleOpenSendDialog}
+				>
+					<ContentAdd />
+				</FloatingActionButton>
 			</Paper>
 		)
 	}
@@ -59,11 +83,5 @@ export default class Profile extends Component {
 	}
 	handleCloseSendDialog() {
 		this.setState({sendDialog: {open: false}});
-	}
-	handleOpenAddFriendDialog() {
-		this.setState({addFriendDialog: {open: true}})
-	}
-	handleCloseAddFriendDialog() {
-		this.setState({addFriendDialog: {open: false}})
 	}
 }

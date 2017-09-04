@@ -22,19 +22,11 @@ class RestaurantList extends Component {
         )
     }
 
-    renderList(restaurant) {
-        const restaurantTags = this.props.restaurantTags[restaurant.id];
-        const hasTag = this.props.selectedTag != null && restaurantTags[this.props.selectedTag] != null;
-        const styles={
-            active: {
-                backgroundColor: blue300
-            }
-        }
+    renderList(restaurant) {        
         return(
             <div key={restaurant.id}>
                 <ListItem
                     primaryText={restaurant.name}
-                    style={hasTag ? styles.active: null}
                     onClick={() => this.handleSelectRestaurant(restaurant.id)}
                 >
                 </ListItem>
@@ -47,7 +39,7 @@ class RestaurantList extends Component {
     }
 }
 
-function mapStateToProps({ restaurantList, selectedTag, restaurantTags }) {
-    return { restaurantList, selectedTag, restaurantTags };
+function mapStateToProps({ restaurantList}) {
+    return { restaurantList};
 }
 export default connect(mapStateToProps, { fetchRestaurantList, selectRestaurant })(RestaurantList);

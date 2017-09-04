@@ -16,20 +16,25 @@ const styles = {
   };
 
 class TagList extends Component {
+    constructor(props) {
+        super(props);
+        this.renderList = this.renderList.bind(this)
+    }
     componentDidMount() {
         this.props.fetchTagList();
     }
     render() {
         return(
             <div style={styles.wrapper}>
-                {this.props.tagList.map(tag => this.renderList(tag))}
+                {_.map(this.props.tagList, tag => this.renderList(tag))}
             </div>
         )
     }
     renderList(tag) {
+        console.log(this.props.tagList[tag.id].selected);
         return(
             <Chip
-                backgroundColor={tag.id == this.props.selectedTag ? blue300 : null}
+                backgroundColor={this.props.tagList[tag.id].selected ? blue300 : null}
                 key={tag.id}
                 style={styles.chip}
                 onClick={() => this.handleTagSelect(tag.id)}
@@ -43,7 +48,7 @@ class TagList extends Component {
     }
 }
 
-function mapStateToProps({ tagList, selectedTag}) {
-    return { tagList, selectedTag};
+function mapStateToProps({ tagList }) {
+    return { tagList };
 }
 export default connect(mapStateToProps, { fetchTagList, selectTag })(TagList);
