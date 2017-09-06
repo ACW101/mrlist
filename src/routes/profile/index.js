@@ -60,11 +60,13 @@ export default class Profile extends Component {
 					<SendDialog/>
 				</Dialog>
 				<div id="rlist">
-					<Subheader>Filter by tag</Subheader>
-					<TagList />
-					<Divider />
+					<Link to="/yelp" mini={true}>
+						<FloatingActionButton
+						>
+							<ContentAdd />
+						</FloatingActionButton>
+					</Link>
 					<RestaurantList height="600px"/>
-					
 				</div>
 				<div id="details">
 					<Details/>
