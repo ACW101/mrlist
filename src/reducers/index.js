@@ -6,6 +6,8 @@ import TagListReducer from './reducer_tagList';
 import {restaurantListIsLoadingReducer, restaurantListReducer} from './reducer_restaurantList';
 import {restaurantTagsReducer} from './reducer_restaurantTags';
 import showTagTextfieldReducer from './reducer_showTagTextfield';
+import newPollReducer from './reducer_newPoll';
+import pollFormReducer from './reducer_pollForm';
 
 const rootReducer = combineReducers({
   searchResult: SearchResultReducer,
@@ -16,6 +18,8 @@ const rootReducer = combineReducers({
   tagList: TagListReducer,
   restaurantTags: restaurantTagsReducer,
   showTagTextfield: showTagTextfieldReducer,
+  newPoll: newPollReducer,
+  pollForm: pollFormReducer,
 });
 
 export default rootReducer;

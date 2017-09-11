@@ -4,15 +4,19 @@ const yelp = require('./yelp');
 
 
 function loginRequired(req, res, next) {
-	if (!req.isAuthenticated()) {
-		return res.json({
-			confirmation: 'fail',
-			message: ('login required!')
-		})
+	if (process.env.NODE_ENV !== 'production') {
+		req.user = {id: 1};
+	} else {
+		if (!req.isAuthenticated()) {
+			return res.json({
+				confirmation: 'fail',
+				message: ('login required!')
+			})
+		}
 	}
 	
-	// default userID for development
-	// req.user = {id: 17}
+	// // default userID for development
+	// req.user = {id: 1}
 	next()
 }
 

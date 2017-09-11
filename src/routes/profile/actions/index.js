@@ -12,6 +12,8 @@ export const FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TAGS';
 export const RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
 export const RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
 export const TOGGLE_TAGTEXTFIELD = 'TOGGLE_TAGTEXTFIELD';
+export const CREATE_POLL = 'CREATE_POLL';
+export const POLLFORM_CHANGE = 'POLLFORM_CHANGE';
 
 
 export function fetchRestaurantList(selectedTag) {
@@ -197,5 +199,26 @@ export function deleteOrphanTag(tag_id) {
 		}).then(response => {
 			dispatch(fetchTagList());
 		})
+	}
+}
+
+export function createPoll(body) {
+	console.log(body)
+	const request = axios({
+		url: '/api/user/polls',
+		method: 'post',
+		data: body,
+		responseType: 'json',
+	});
+	return {
+		type: CREATE_POLL,
+		payload: request,
+	};
+}
+
+export function onPollFormChange(data) {
+	return {
+		type: POLLFORM_CHANGE,
+		payload: data
 	}
 }

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
-import './style.css'
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import './style.css';
 
+import {createPoll} from './actions';
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -18,7 +20,7 @@ import TagList from './TagList';
 import Details from './Details';
 import SendDialog from './SendDialog';
 
-export default class Profile extends Component {
+class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { 
@@ -45,7 +47,7 @@ export default class Profile extends Component {
 			  label="Submit"
 			  primary={true}
 			  keyboardFocused={true}
-			  onClick={this.handleCloseSendDialog}
+			  onClick={() => this.handleSubmitPoll(this.props.pollForm)}
 			/>,
 		  ];
 		return (
@@ -57,7 +59,7 @@ export default class Profile extends Component {
 					open={this.state.sendDialog.open}
 					onRequestClose={this.handleClose}
 				>
-					<SendDialog/>
+					<SendDialog />
 				</Dialog>
 				<div id="rlist">
 					<Link to="/yelp" mini={true}>
@@ -80,6 +82,13 @@ export default class Profile extends Component {
 			</Paper>
 		)
 	}
+	handleSubmitPoll(pollForm) {
+		const formData = {
+			name: pollForm.eventName,
+			restaurant_ids: pollForm.selected.toString()
+		}
+		createPoll(formData);
+	}
 	handleOpenSendDialog() {
 		this.setState({sendDialog: {open: true}});
 	}
@@ -87,3 +96,9 @@ export default class Profile extends Component {
 		this.setState({sendDialog: {open: false}});
 	}
 }
+
+function mapStateToProps({pollForm}) {
+	return {pollForm};
+}
+
+export default connect(mapStateToProps, { createPoll })(Profile);

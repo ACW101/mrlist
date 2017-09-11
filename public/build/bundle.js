@@ -2340,7 +2340,7 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.TOGGLE_TAGTEXTFIELD = exports.RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_IS_LOADING = exports.FETCH_RESTAURANT_TAGS = exports.RESTAURANTLIST_FETCH_SUCCESS = exports.RESTAURANTLIST_IS_LOADING = exports.ADD_FRIENDS = exports.FETCH_FRIENDLIST = exports.SELECT_TAG = exports.SELECT_RESTAURANT = exports.FETCH_TAGLIST = exports.FETCH_RESTAURANTLIST = undefined;
+exports.POLLFORM_CHANGE = exports.CREATE_POLL = exports.TOGGLE_TAGTEXTFIELD = exports.RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_IS_LOADING = exports.FETCH_RESTAURANT_TAGS = exports.RESTAURANTLIST_FETCH_SUCCESS = exports.RESTAURANTLIST_IS_LOADING = exports.ADD_FRIENDS = exports.FETCH_FRIENDLIST = exports.SELECT_TAG = exports.SELECT_RESTAURANT = exports.FETCH_TAGLIST = exports.FETCH_RESTAURANTLIST = undefined;
 exports.fetchRestaurantList = fetchRestaurantList;
 exports.restaurantListIsLoading = restaurantListIsLoading;
 exports.restaurantListFetchSuccess = restaurantListFetchSuccess;
@@ -2357,6 +2357,8 @@ exports.addTag = addTag;
 exports.removeTag = removeTag;
 exports.checkOrphanTag = checkOrphanTag;
 exports.deleteOrphanTag = deleteOrphanTag;
+exports.createPoll = createPoll;
+exports.onPollFormChange = onPollFormChange;
 
 var _axios = __webpack_require__(213);
 
@@ -2378,6 +2380,8 @@ var FETCH_RESTAURANT_TAGS = exports.FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TA
 var RESTAURANTTAG_IS_LOADING = exports.RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
 var RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
 var TOGGLE_TAGTEXTFIELD = exports.TOGGLE_TAGTEXTFIELD = 'TOGGLE_TAGTEXTFIELD';
+var CREATE_POLL = exports.CREATE_POLL = 'CREATE_POLL';
+var POLLFORM_CHANGE = exports.POLLFORM_CHANGE = 'POLLFORM_CHANGE';
 
 function fetchRestaurantList(selectedTag) {
 	return function (dispatch) {
@@ -2562,6 +2566,27 @@ function deleteOrphanTag(tag_id) {
 		}).then(function (response) {
 			dispatch(fetchTagList());
 		});
+	};
+}
+
+function createPoll(body) {
+	console.log(body);
+	var request = (0, _axios2.default)({
+		url: '/api/user/polls',
+		method: 'post',
+		data: body,
+		responseType: 'json'
+	});
+	return {
+		type: CREATE_POLL,
+		payload: request
+	};
+}
+
+function onPollFormChange(data) {
+	return {
+		type: POLLFORM_CHANGE,
+		payload: data
 	};
 }
 
@@ -54635,6 +54660,14 @@ var _reducer_showTagTextfield = __webpack_require__(511);
 
 var _reducer_showTagTextfield2 = _interopRequireDefault(_reducer_showTagTextfield);
 
+var _reducer_newPoll = __webpack_require__(614);
+
+var _reducer_newPoll2 = _interopRequireDefault(_reducer_newPoll);
+
+var _reducer_pollForm = __webpack_require__(615);
+
+var _reducer_pollForm2 = _interopRequireDefault(_reducer_pollForm);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
@@ -54645,7 +54678,9 @@ var rootReducer = (0, _redux.combineReducers)({
   friendList: _reducer_friendList2.default,
   tagList: _reducer_tagList2.default,
   restaurantTags: _reducer_restaurantTags.restaurantTagsReducer,
-  showTagTextfield: _reducer_showTagTextfield2.default
+  showTagTextfield: _reducer_showTagTextfield2.default,
+  newPoll: _reducer_newPoll2.default,
+  pollForm: _reducer_pollForm2.default
 });
 
 exports.default = rootReducer;
@@ -56024,7 +56059,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(84);
 
+var _reactRedux = __webpack_require__(36);
+
 __webpack_require__(516);
+
+var _actions = __webpack_require__(31);
 
 var _Paper = __webpack_require__(33);
 
@@ -56103,6 +56142,8 @@ var Profile = function (_Component) {
 	_createClass(Profile, [{
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			var addButtonStyle = {
 				position: 'fixed',
 				right: '25px',
@@ -56116,7 +56157,9 @@ var Profile = function (_Component) {
 				label: 'Submit',
 				primary: true,
 				keyboardFocused: true,
-				onClick: this.handleCloseSendDialog
+				onClick: function onClick() {
+					return _this2.handleSubmitPoll(_this2.props.pollForm);
+				}
 			})];
 			return _react2.default.createElement(
 				_Paper2.default,
@@ -56162,6 +56205,15 @@ var Profile = function (_Component) {
 			);
 		}
 	}, {
+		key: 'handleSubmitPoll',
+		value: function handleSubmitPoll(pollForm) {
+			var formData = {
+				name: pollForm.eventName,
+				restaurant_ids: pollForm.selected.toString()
+			};
+			(0, _actions.createPoll)(formData);
+		}
+	}, {
 		key: 'handleOpenSendDialog',
 		value: function handleOpenSendDialog() {
 			this.setState({ sendDialog: { open: true } });
@@ -56176,7 +56228,13 @@ var Profile = function (_Component) {
 	return Profile;
 }(_react.Component);
 
-exports.default = Profile;
+function mapStateToProps(_ref) {
+	var pollForm = _ref.pollForm;
+
+	return { pollForm: pollForm };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { createPoll: _actions.createPoll })(Profile);
 
 /***/ }),
 /* 516 */
@@ -62846,6 +62904,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(36);
 
+var _actions = __webpack_require__(31);
+
 var _DatePicker = __webpack_require__(563);
 
 var _DatePicker2 = _interopRequireDefault(_DatePicker);
@@ -62866,6 +62926,10 @@ var _IconButton = __webpack_require__(72);
 
 var _IconButton2 = _interopRequireDefault(_IconButton);
 
+var _TextField = __webpack_require__(90);
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
 var _GridList = __webpack_require__(594);
 
 var _TagList = __webpack_require__(232);
@@ -62873,6 +62937,8 @@ var _TagList = __webpack_require__(232);
 var _TagList2 = _interopRequireDefault(_TagList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -62888,15 +62954,19 @@ var SendDialog = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (SendDialog.__proto__ || Object.getPrototypeOf(SendDialog)).call(this, props));
 
-        _this.state = {
-            selected: []
-        };
         _this.handleSelectionChange = _this.handleSelectionChange.bind(_this);
+        _this.handleDeleteSelected = _this.handleDeleteSelected.bind(_this);
         _this.handleDeleteSelected = _this.handleDeleteSelected.bind(_this);
         return _this;
     }
 
     _createClass(SendDialog, [{
+        key: 'onInputChange',
+        value: function onInputChange(event, inputName) {
+            var newState = _defineProperty({}, inputName, event);
+            this.props.onPollFormChange(newState);
+        }
+    }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
             var tagList = nextProps.tagList,
@@ -62924,8 +62994,25 @@ var SendDialog = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                'Event Date:',
-                _react2.default.createElement(_DatePicker2.default, { hintText: 'yyyy-mm-dd' }),
+                'Name of Event:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(_TextField2.default, {
+                    name: 'eventName',
+
+                    onChange: function onChange(event) {
+                        return _this2.onInputChange(event.target.value, "eventName");
+                    }
+                }),
+                _react2.default.createElement('br', null),
+                'Date:',
+                _react2.default.createElement(_DatePicker2.default, {
+                    name: 'eventDate',
+
+                    onChange: function onChange(event, date) {
+                        return _this2.onInputChange(date, "eventDate");
+                    }
+                }),
+                _react2.default.createElement('br', null),
                 'Tags:',
                 _react2.default.createElement(_TagList2.default, null),
                 'Restaurants Selected:',
@@ -62936,7 +63023,7 @@ var SendDialog = function (_Component) {
                         style: styles.gridList,
                         cols: 3
                     },
-                    this.state.selected.map(function (restaurantId) {
+                    this.props.pollForm.selected.map(function (restaurantId) {
                         return _react2.default.createElement(_GridList.GridTile, {
                             key: restaurantId,
                             title: _this2.props.restaurantList[restaurantId].name,
@@ -62969,15 +63056,18 @@ var SendDialog = function (_Component) {
                     });
                 }
             });
-            this.setState({ selected: _.uniq(restaurantsWithTags) });
+            this.props.onPollFormChange({ selected: _.uniq(restaurantsWithTags) });
         }
     }, {
         key: 'handleDeleteSelected',
         value: function handleDeleteSelected(restaurantId) {
-            var newState = _.remove(this.state.selected, function (n) {
+            var selected = this.props.pollForm.selected;
+
+            var newState = _.remove(selected, function (n) {
                 return n != restaurantId;
             });
-            this.setState({ selected: newState });
+            console.log(newState);
+            this.props.onPollFormChange({ selected: newState });
         }
     }]);
 
@@ -62987,11 +63077,12 @@ var SendDialog = function (_Component) {
 function mapStateToProps(_ref) {
     var restaurantTags = _ref.restaurantTags,
         tagList = _ref.tagList,
-        restaurantList = _ref.restaurantList;
+        restaurantList = _ref.restaurantList,
+        pollForm = _ref.pollForm;
 
-    return { restaurantTags: restaurantTags, tagList: tagList, restaurantList: restaurantList };
+    return { restaurantTags: restaurantTags, tagList: tagList, restaurantList: restaurantList, pollForm: pollForm };
 }
-exports.default = (0, _reactRedux.connect)(mapStateToProps, {})(SendDialog);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { onPollFormChange: _actions.onPollFormChange })(SendDialog);
 
 /***/ }),
 /* 563 */
@@ -70785,7 +70876,6 @@ var SearchBar = function (_Component) {
 	_createClass(SearchBar, [{
 		key: 'onInputChange',
 		value: function onInputChange(event, fieldName) {
-			console.log(event.target.value);
 			var newState = _defineProperty({}, fieldName, event.target.value);
 			this.setState(newState);
 		}
@@ -70842,6 +70932,67 @@ function mapDispatchToProps(dispatch) {
 }
 
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(SearchBar);
+
+/***/ }),
+/* 614 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function () {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actions.CREATE_POLL:
+			{
+				console.log(action.payload);
+				return action.payload;
+			}
+	}
+	return state;
+};
+
+var _actions = __webpack_require__(31);
+
+/***/ }),
+/* 615 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _actions.POLLFORM_CHANGE:
+            {
+                // assign modified state to original object
+                var clone = Object.assign(initialState, state, action.payload);
+                return clone;
+            }
+    }
+    return state;
+};
+
+var _actions = __webpack_require__(31);
+
+var initialState = {
+    selected: [],
+    eventName: "",
+    eventDate: ""
+};
 
 /***/ })
 /******/ ]);
