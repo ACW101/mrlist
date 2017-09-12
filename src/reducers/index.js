@@ -8,6 +8,7 @@ import {restaurantTagsReducer} from './reducer_restaurantTags';
 import showTagTextfieldReducer from './reducer_showTagTextfield';
 import newPollReducer from './reducer_newPoll';
 import pollFormReducer from './reducer_pollForm';
+import isOpenSendDialogReducer from './reducer_isOpenSendDialog';
 
 const rootReducer = combineReducers({
   searchResult: SearchResultReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   showTagTextfield: showTagTextfieldReducer,
   newPoll: newPollReducer,
   pollForm: pollFormReducer,
+  isOpenSendDialog: isOpenSendDialogReducer,
 });
 
 export default rootReducer;

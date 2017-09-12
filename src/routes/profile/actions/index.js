@@ -12,8 +12,10 @@ export const FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TAGS';
 export const RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
 export const RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
 export const TOGGLE_TAGTEXTFIELD = 'TOGGLE_TAGTEXTFIELD';
-export const CREATE_POLL = 'CREATE_POLL';
 export const POLLFORM_CHANGE = 'POLLFORM_CHANGE';
+export const POLLID_RECEIVED = 'POLLID_RECEIVED';
+export const NEWPOLL_REJECTED = 'NEWPOLL_REJECTED';
+
 
 
 export function fetchRestaurantList(selectedTag) {
@@ -203,22 +205,49 @@ export function deleteOrphanTag(tag_id) {
 }
 
 export function createPoll(body) {
-	console.log(body)
-	const request = axios({
-		url: '/api/user/polls',
-		method: 'post',
-		data: body,
-		responseType: 'json',
-	});
+	return(dispatch) => {
+		const request = axios({
+			url: '/api/user/polls',
+			method: 'post',
+			data: body,
+			responseType: 'json',
+		}).then(response => {
+			if (response.data.confirmation === 'success') {
+				dispatch(pollIDReceived(response.data.response))
+			} else {
+				dispatch(createPollRejected(response.data.response));
+			}
+			dispatch(toggleSendDialog());
+		})
+	}
+}
+
+export function pollIDReceived(pollID) {
 	return {
-		type: CREATE_POLL,
-		payload: request,
-	};
+		type: POLLID_RECEIVED,
+		payload: pollID
+	}
+}
+
+export function createPollRejected(err) {
+	return {
+		type: NEWPOLL_REJECTED,
+		payload: err,
+	}
 }
 
 export function onPollFormChange(data) {
 	return {
 		type: POLLFORM_CHANGE,
 		payload: data
+	}
+}
+
+// isOpenSendDialog
+export const TOGGLE_SENDDIALOG = "TOGGLE_SENDDIALOG";
+export function toggleSendDialog() {
+	return {
+		type: TOGGLE_SENDDIALOG,
+		payload: null
 	}
 }

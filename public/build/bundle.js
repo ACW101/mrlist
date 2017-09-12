@@ -2340,7 +2340,7 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.POLLFORM_CHANGE = exports.CREATE_POLL = exports.TOGGLE_TAGTEXTFIELD = exports.RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_IS_LOADING = exports.FETCH_RESTAURANT_TAGS = exports.RESTAURANTLIST_FETCH_SUCCESS = exports.RESTAURANTLIST_IS_LOADING = exports.ADD_FRIENDS = exports.FETCH_FRIENDLIST = exports.SELECT_TAG = exports.SELECT_RESTAURANT = exports.FETCH_TAGLIST = exports.FETCH_RESTAURANTLIST = undefined;
+exports.TOGGLE_SENDDIALOG = exports.NEWPOLL_REJECTED = exports.POLLID_RECEIVED = exports.POLLFORM_CHANGE = exports.TOGGLE_TAGTEXTFIELD = exports.RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_IS_LOADING = exports.FETCH_RESTAURANT_TAGS = exports.RESTAURANTLIST_FETCH_SUCCESS = exports.RESTAURANTLIST_IS_LOADING = exports.ADD_FRIENDS = exports.FETCH_FRIENDLIST = exports.SELECT_TAG = exports.SELECT_RESTAURANT = exports.FETCH_TAGLIST = exports.FETCH_RESTAURANTLIST = undefined;
 exports.fetchRestaurantList = fetchRestaurantList;
 exports.restaurantListIsLoading = restaurantListIsLoading;
 exports.restaurantListFetchSuccess = restaurantListFetchSuccess;
@@ -2358,7 +2358,10 @@ exports.removeTag = removeTag;
 exports.checkOrphanTag = checkOrphanTag;
 exports.deleteOrphanTag = deleteOrphanTag;
 exports.createPoll = createPoll;
+exports.pollIDReceived = pollIDReceived;
+exports.createPollRejected = createPollRejected;
 exports.onPollFormChange = onPollFormChange;
+exports.toggleSendDialog = toggleSendDialog;
 
 var _axios = __webpack_require__(213);
 
@@ -2380,8 +2383,9 @@ var FETCH_RESTAURANT_TAGS = exports.FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TA
 var RESTAURANTTAG_IS_LOADING = exports.RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
 var RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
 var TOGGLE_TAGTEXTFIELD = exports.TOGGLE_TAGTEXTFIELD = 'TOGGLE_TAGTEXTFIELD';
-var CREATE_POLL = exports.CREATE_POLL = 'CREATE_POLL';
 var POLLFORM_CHANGE = exports.POLLFORM_CHANGE = 'POLLFORM_CHANGE';
+var POLLID_RECEIVED = exports.POLLID_RECEIVED = 'POLLID_RECEIVED';
+var NEWPOLL_REJECTED = exports.NEWPOLL_REJECTED = 'NEWPOLL_REJECTED';
 
 function fetchRestaurantList(selectedTag) {
 	return function (dispatch) {
@@ -2570,16 +2574,34 @@ function deleteOrphanTag(tag_id) {
 }
 
 function createPoll(body) {
-	console.log(body);
-	var request = (0, _axios2.default)({
-		url: '/api/user/polls',
-		method: 'post',
-		data: body,
-		responseType: 'json'
-	});
+	return function (dispatch) {
+		var request = (0, _axios2.default)({
+			url: '/api/user/polls',
+			method: 'post',
+			data: body,
+			responseType: 'json'
+		}).then(function (response) {
+			if (response.data.confirmation === 'success') {
+				dispatch(pollIDReceived(response.data.response));
+			} else {
+				dispatch(createPollRejected(response.data.response));
+			}
+			dispatch(toggleSendDialog());
+		});
+	};
+}
+
+function pollIDReceived(pollID) {
 	return {
-		type: CREATE_POLL,
-		payload: request
+		type: POLLID_RECEIVED,
+		payload: pollID
+	};
+}
+
+function createPollRejected(err) {
+	return {
+		type: NEWPOLL_REJECTED,
+		payload: err
 	};
 }
 
@@ -2587,6 +2609,15 @@ function onPollFormChange(data) {
 	return {
 		type: POLLFORM_CHANGE,
 		payload: data
+	};
+}
+
+// isOpenSendDialog
+var TOGGLE_SENDDIALOG = exports.TOGGLE_SENDDIALOG = "TOGGLE_SENDDIALOG";
+function toggleSendDialog() {
+	return {
+		type: TOGGLE_SENDDIALOG,
+		payload: null
 	};
 }
 
@@ -54668,6 +54699,10 @@ var _reducer_pollForm = __webpack_require__(615);
 
 var _reducer_pollForm2 = _interopRequireDefault(_reducer_pollForm);
 
+var _reducer_isOpenSendDialog = __webpack_require__(616);
+
+var _reducer_isOpenSendDialog2 = _interopRequireDefault(_reducer_isOpenSendDialog);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
@@ -54680,7 +54715,8 @@ var rootReducer = (0, _redux.combineReducers)({
   restaurantTags: _reducer_restaurantTags.restaurantTagsReducer,
   showTagTextfield: _reducer_showTagTextfield2.default,
   newPoll: _reducer_newPoll2.default,
-  pollForm: _reducer_pollForm2.default
+  pollForm: _reducer_pollForm2.default,
+  isOpenSendDialog: _reducer_isOpenSendDialog2.default
 });
 
 exports.default = rootReducer;
@@ -56130,12 +56166,8 @@ var Profile = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
 
 		_this.state = {
-			sendDialog: { open: false },
 			addFriendDialog: { open: false }
 		};
-
-		_this.handleOpenSendDialog = _this.handleOpenSendDialog.bind(_this);
-		_this.handleCloseSendDialog = _this.handleCloseSendDialog.bind(_this);
 		return _this;
 	}
 
@@ -56152,13 +56184,13 @@ var Profile = function (_Component) {
 			var dialogActions = [_react2.default.createElement(_RaisedButton2.default, {
 				label: 'Cancel',
 				primary: true,
-				onClick: this.handleCloseSendDialog
+				onClick: this.props.toggleSendDialog
 			}), _react2.default.createElement(_RaisedButton2.default, {
 				label: 'Submit',
 				primary: true,
 				keyboardFocused: true,
 				onClick: function onClick() {
-					return _this2.handleSubmitPoll(_this2.props.pollForm);
+					return _this2.props.toggleSendDialog(_this2.props.pollForm);
 				}
 			})];
 			return _react2.default.createElement(
@@ -56170,7 +56202,7 @@ var Profile = function (_Component) {
 						title: 'Invitation',
 						actions: dialogActions,
 						modal: false,
-						open: this.state.sendDialog.open,
+						open: this.props.isOpenSendDialog,
 						onRequestClose: this.handleClose
 					},
 					_react2.default.createElement(_SendDialog2.default, null)
@@ -56198,7 +56230,7 @@ var Profile = function (_Component) {
 					_FloatingActionButton2.default,
 					{
 						style: addButtonStyle,
-						onClick: this.handleOpenSendDialog
+						onClick: this.props.toggleSendDialog
 					},
 					_react2.default.createElement(_add2.default, null)
 				)
@@ -56211,17 +56243,12 @@ var Profile = function (_Component) {
 				name: pollForm.eventName,
 				restaurant_ids: pollForm.selected.toString()
 			};
-			(0, _actions.createPoll)(formData);
+			this.props.createPoll(formData);
 		}
 	}, {
-		key: 'handleOpenSendDialog',
-		value: function handleOpenSendDialog() {
-			this.setState({ sendDialog: { open: true } });
-		}
-	}, {
-		key: 'handleCloseSendDialog',
-		value: function handleCloseSendDialog() {
-			this.setState({ sendDialog: { open: false } });
+		key: 'toggleSendDialog',
+		value: function toggleSendDialog() {
+			this.props.toggleSendDialog();
 		}
 	}]);
 
@@ -56229,12 +56256,13 @@ var Profile = function (_Component) {
 }(_react.Component);
 
 function mapStateToProps(_ref) {
-	var pollForm = _ref.pollForm;
+	var pollForm = _ref.pollForm,
+	    isOpenSendDialog = _ref.isOpenSendDialog;
 
-	return { pollForm: pollForm };
+	return { pollForm: pollForm, isOpenSendDialog: isOpenSendDialog };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { createPoll: _actions.createPoll })(Profile);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { createPoll: _actions.createPoll, toggleSendDialog: _actions.toggleSendDialog })(Profile);
 
 /***/ }),
 /* 516 */
@@ -70949,10 +70977,14 @@ exports.default = function () {
 	var action = arguments[1];
 
 	switch (action.type) {
-		case _actions.CREATE_POLL:
+		case _actions.POLLID_RECEIVED:
 			{
 				console.log(action.payload);
 				return action.payload;
+			}
+		case _actions.NEWPOLL_REJECTED:
+			{
+				console.log('rejected');
 			}
 	}
 	return state;
@@ -70993,6 +71025,31 @@ var initialState = {
     eventName: "",
     eventDate: ""
 };
+
+/***/ }),
+/* 616 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function () {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actions.TOGGLE_SENDDIALOG:
+			console.log(action.type);
+			return state ? false : true;
+	}
+	return state;
+};
+
+var _actions = __webpack_require__(31);
 
 /***/ })
 /******/ ]);

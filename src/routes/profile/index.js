@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './style.css';
 
-import {createPoll} from './actions';
+import {createPoll, toggleSendDialog} from './actions';
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -24,12 +24,8 @@ class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { 
-			sendDialog: { open: false },
 			addFriendDialog: { open: false }
 		};
-
-		this.handleOpenSendDialog = this.handleOpenSendDialog.bind(this);
-		this.handleCloseSendDialog = this.handleCloseSendDialog.bind(this);
 	}
 	render() {
 		const addButtonStyle = {
@@ -41,13 +37,13 @@ class Profile extends Component {
 			<RaisedButton
 			  label="Cancel"
 			  primary={true}
-			  onClick={this.handleCloseSendDialog}
+			  onClick={this.props.toggleSendDialog}
 			/>,
 			<RaisedButton
 			  label="Submit"
 			  primary={true}
 			  keyboardFocused={true}
-			  onClick={() => this.handleSubmitPoll(this.props.pollForm)}
+			  onClick={() => this.props.toggleSendDialog(this.props.pollForm)}
 			/>,
 		  ];
 		return (
@@ -56,7 +52,7 @@ class Profile extends Component {
 					title="Invitation"
 					actions={dialogActions}
 					modal={false}
-					open={this.state.sendDialog.open}
+					open={this.props.isOpenSendDialog}
 					onRequestClose={this.handleClose}
 				>
 					<SendDialog />
@@ -75,7 +71,7 @@ class Profile extends Component {
 				</div>
 				<FloatingActionButton
 					style={addButtonStyle}
-					onClick={this.handleOpenSendDialog}
+					onClick={this.props.toggleSendDialog}
 				>
 					<ContentAdd />
 				</FloatingActionButton>
@@ -87,18 +83,15 @@ class Profile extends Component {
 			name: pollForm.eventName,
 			restaurant_ids: pollForm.selected.toString()
 		}
-		createPoll(formData);
+		this.props.createPoll(formData);
 	}
-	handleOpenSendDialog() {
-		this.setState({sendDialog: {open: true}});
-	}
-	handleCloseSendDialog() {
-		this.setState({sendDialog: {open: false}});
+	toggleSendDialog() {
+		this.props.toggleSendDialog();
 	}
 }
 
-function mapStateToProps({pollForm}) {
-	return {pollForm};
+function mapStateToProps({ pollForm, isOpenSendDialog }) {
+	return {pollForm, isOpenSendDialog};
 }
 
-export default connect(mapStateToProps, { createPoll })(Profile);
+export default connect(mapStateToProps, { createPoll, toggleSendDialog })(Profile);
