@@ -10,6 +10,7 @@ const passport = require("passport")
 
 const api = require('./routes/api');
 const auth = require('./routes/auth');
+const poll = require('./routes/poll');
 require('./utility/passport');
 
 function loginRequired(req, res, next) {
@@ -50,6 +51,7 @@ app
 // routes
 app.use('/api', api)
   .use('/auth', auth)
+  .use('/poll', poll)
   .get('/', (req, res) => { res.render('index')})
   .get('/*', loginRequired , (req, res) => { res.render('index')})
 
