@@ -6,8 +6,8 @@ module.exports = {
 	find: function(params, callback) {
 		callback("not supported", null);
 	},
-	findById: function(pollId, callback) {
-		Poll.where({id: pollId })
+	findById: function(params, callback) {
+		Poll.where({id: params.pollId })
 			.fetch()
 			.then((poll) => {
                 if (poll == null) {
@@ -21,8 +21,15 @@ module.exports = {
 		callback("not supported", null);
 	}, 
 	update: function(params, callback) {
-		const errMessage = "not supported"
-		callback(errMessage, null);
+		Poll.forge({id: params.id})
+			.save({poll_counts: params.poll_counts}, {patch: true})
+			.then((poll) => {
+				if (poll == null) {
+					callback("not found", null);
+				} 
+				callback(null, poll.toJSON());
+			})
+			.catch(e => callback(e, null))
 	},
 	destroy: function(params, callback) {
 		callback("not supported", null);
