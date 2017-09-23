@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const controllers = require('../controllers/index');
 const yelp = require('./yelp');
-
+const poll = require('./poll');
 
 function loginRequired(req, res, next) {
 	if (process.env.NODE_ENV !== 'production') {
@@ -22,6 +22,7 @@ function loginRequired(req, res, next) {
 
 router
 	.use('/yelp', yelp)
+	.use('/poll', poll)
 	.get('/user/:userResource', loginRequired, function(req, res) {
 		const { userResource} = req.params;
 		const controller = controllers.userResources[userResource];

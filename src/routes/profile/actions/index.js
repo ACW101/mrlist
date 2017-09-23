@@ -217,7 +217,7 @@ export function createPoll(body) {
 			} else {
 				dispatch(createPollRejected(response.data.response));
 			}
-			dispatch(toggleSendDialog());
+			
 		})
 	}
 }

@@ -51,7 +51,6 @@ app
 // routes
 app.use('/api', api)
   .use('/auth', auth)
-  .use('/poll', poll)
   .get('/', (req, res) => { res.render('index')})
   .get('/*', loginRequired , (req, res) => { res.render('index')})
 

@@ -8,7 +8,6 @@ import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 
@@ -43,7 +42,7 @@ class Profile extends Component {
 			  label="Submit"
 			  primary={true}
 			  keyboardFocused={true}
-			  onClick={() => this.props.toggleSendDialog(this.props.pollForm)}
+			  onClick={() => this.handleSubmitPoll(this.props.pollForm)}
 			/>,
 		  ];
 		return (
