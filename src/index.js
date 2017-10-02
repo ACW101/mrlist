@@ -24,6 +24,9 @@ import Home from './routes/home';
 import Profile from './routes/profile';
 import Auth from './routes/auth';
 import Yelp from './routes/yelp';
+import TitleBar from './TitleBar';
+
+import Paper from 'material-ui/Paper';
 
 const middlewares = [ReduxPromise, ReduxThunk];
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
@@ -32,12 +35,13 @@ ReactDOM.render(
   <MuiThemeProvider>
   <Provider store={createStoreWithMiddleware(reducers)}>
     <Router>
-      <div>
+      <Paper id="container">
+        <TitleBar/>
         <Route exact path="/" component={Home} />
         <Route path="/profile" component={Profile} />
         <Route path="/auth" component={Auth} />
         <Route path="/yelp" component={Yelp} />
-      </div>
+      </Paper>
     </Router>
   </Provider>
   </MuiThemeProvider>

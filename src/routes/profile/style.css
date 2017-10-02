@@ -1,8 +1,5 @@
 #profile{
     display: grid;
-    width: 960px;
-    height: 600px;
-    margin: 50px auto;
     grid-gap: 10px;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 50px auto;

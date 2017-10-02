@@ -3,8 +3,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './style.css';
 
-import {createPoll, toggleSendDialog} from './actions';
-import Paper from 'material-ui/Paper';
+import {createPoll, toggleSendDialog, login} from './actions';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -25,6 +24,7 @@ class Profile extends Component {
 		this.state = { 
 			addFriendDialog: { open: false }
 		};
+		this.props.login();
 	}
 	render() {
 		const addButtonStyle = {
@@ -46,7 +46,7 @@ class Profile extends Component {
 			/>,
 		  ];
 		return (
-			<Paper id="profile">
+			<div id="profile">
 				<Dialog
 					title="Invitation"
 					actions={dialogActions}
@@ -74,7 +74,7 @@ class Profile extends Component {
 				>
 					<ContentAdd />
 				</FloatingActionButton>
-			</Paper>
+			</div>
 		)
 	}
 	handleSubmitPoll(pollForm) {
@@ -93,4 +93,4 @@ function mapStateToProps({ pollForm, isOpenSendDialog }) {
 	return {pollForm, isOpenSendDialog};
 }
 
-export default connect(mapStateToProps, { createPoll, toggleSendDialog })(Profile);
+export default connect(mapStateToProps, {createPoll, toggleSendDialog, login})(Profile);

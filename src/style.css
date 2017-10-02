@@ -1,19 +1,5 @@
-.main.grid{
-    display: grid;
+#container{
     width: 960px;
-    height: 600px;
-    background-color: blueviolet;
-    margin: 50px auto;
-    grid-template-rows: 1fr 1fr 1fr;
-}
-
-#title{
-    grid-row: 1;
-    background-color: burlywood;
-    text-align: center;
-}
-
-#login{
-    grid-row: 2 / 4;
-    background-color: gold;
+    height: 800px;
+    margin: auto;
 }

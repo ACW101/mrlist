@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import isLoggedInReducer from './reducer_isLoggedIn';
 import SearchResultReducer from './reducer_searchResult';
 import SelectedRestaurantReducer from './reducer_selectedRestaurant';
 import FriendListReducer from './reducer_friendList';
@@ -11,6 +12,7 @@ import pollFormReducer from './reducer_pollForm';
 import isOpenSendDialogReducer from './reducer_isOpenSendDialog';
 
 const rootReducer = combineReducers({
+  isLoggedIn: isLoggedInReducer,
   searchResult: SearchResultReducer,
   restaurantList: restaurantListReducer,
   restaurantListIsLoading: restaurantListIsLoadingReducer,

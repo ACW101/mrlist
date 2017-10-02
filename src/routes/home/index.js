@@ -1,10 +1,14 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import {connect} from 'react-redux'
 // import RaisedButton from 'material-ui/RaisedButton';
 
 import './style.css';
 
-export default class Home extends Component {
+class Home extends Component {
+	constructor(props) {
+		super(props)
+	}
 	render() {
 		return (
 			<div className="main grid">
@@ -20,3 +24,6 @@ export default class Home extends Component {
 		)
 	}
 }
+
+
+export default connect(null, {})(Home);

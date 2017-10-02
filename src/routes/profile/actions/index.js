@@ -1,5 +1,6 @@
 import axios from "axios";
 
+export const LOGIN = "LOGIN"
 export const FETCH_RESTAURANTLIST = "FETCH_RESTAURANTLIST";
 export const FETCH_TAGLIST = "FETCH_TAGLIST";
 export const SELECT_RESTAURANT= "SELECT_RESTAURANT";
@@ -16,7 +17,12 @@ export const POLLFORM_CHANGE = 'POLLFORM_CHANGE';
 export const POLLID_RECEIVED = 'POLLID_RECEIVED';
 export const NEWPOLL_REJECTED = 'NEWPOLL_REJECTED';
 
-
+export function login() {
+	return {
+		type: LOGIN,
+		payload: null
+	}
+}
 
 export function fetchRestaurantList(selectedTag) {
 	return (dispatch) => {
