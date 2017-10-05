@@ -32,7 +32,7 @@ const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
 ReactDOM.render(
   <MuiThemeProvider>
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
     <Router>
       <Paper id="container">
         <TitleBar/>

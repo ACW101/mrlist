@@ -28,9 +28,10 @@ export function fetchRestaurantSuccess(res) {
 }
 
 export function addRestaurant(restaurantData, callback) {
+	console.log(restaurantData);
 	const request = axios({
 		url: `api/restaurant`,
-		data: { name: restaurantData.id },
+		data: { name: restaurantData.name, yelp_id: restaurantData.id },
 		method: 'post',
 		responseType: 'json',
 	})

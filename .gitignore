@@ -61,4 +61,4 @@ typings/
 devKeys.js
 
 # build
-build
+build/
