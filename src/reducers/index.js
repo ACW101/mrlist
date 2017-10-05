@@ -10,6 +10,7 @@ import showTagTextfieldReducer from './reducer_showTagTextfield';
 import newPollReducer from './reducer_newPoll';
 import pollFormReducer from './reducer_pollForm';
 import isOpenSendDialogReducer from './reducer_isOpenSendDialog';
+import isOpenAddRestaurantDialogReducer from './reducer_isOpenAddRestaurantDialog'
 
 const rootReducer = combineReducers({
   isLoggedIn: isLoggedInReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   newPoll: newPollReducer,
   pollForm: pollFormReducer,
   isOpenSendDialog: isOpenSendDialogReducer,
+  isOpenAddRestaurantDialog: isOpenAddRestaurantDialogReducer,
 });
 
 export default rootReducer;

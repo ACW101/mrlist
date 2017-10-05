@@ -57,12 +57,6 @@ class Profile extends Component {
 					<SendDialog />
 				</Dialog>
 				<div id="rlist">
-					<Link to="/yelp" mini={true}>
-						<FloatingActionButton
-						>
-							<ContentAdd />
-						</FloatingActionButton>
-					</Link>
 					<RestaurantList height="600px"/>
 				</div>
 				<div id="details">

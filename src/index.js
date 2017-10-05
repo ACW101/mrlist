@@ -23,7 +23,6 @@ import reducers from './reducers';
 import Home from './routes/home';
 import Profile from './routes/profile';
 import Auth from './routes/auth';
-import Yelp from './routes/yelp';
 import TitleBar from './TitleBar';
 
 import Paper from 'material-ui/Paper';
@@ -40,7 +39,6 @@ ReactDOM.render(
         <Route exact path="/" component={Home} />
         <Route path="/profile" component={Profile} />
         <Route path="/auth" component={Auth} />
-        <Route path="/yelp" component={Yelp} />
       </Paper>
     </Router>
   </Provider>

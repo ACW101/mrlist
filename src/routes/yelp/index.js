@@ -14,11 +14,7 @@ export default class Yelp extends Component {
     }
     return (
     	<div>
-        <Paper zDepth={2} style={containerStyle}>
           <h1>Find and Add Restaurants</h1>
-          <SearchBar />
-          <ResultList />
-        </Paper>
     	</div>
     );
   }

@@ -3,7 +3,7 @@ const yelp = require('yelp-fusion');
 const yelpKey = require("../utility/config/keys").yelp;
 let client;
 
-
+// get access token at startup
 (function() {
 	yelp.accessToken(yelpKey.clientId, yelpKey.clientSecret)
 		.then(response => {

@@ -13,12 +13,7 @@ class Home extends Component {
 		return (
 			<div className="main grid">
 				<div id="title">
-					<h1>Welcome to MasteR List</h1>
-				</div>
-				<div id="login">
-					<a href="/auth/facebook">
-						<img id="fb_login" style={{height: "50px"}} src="/images/fb_login.png" alt="facebook_login"/>
-					</a>
+					<h1>Welcome to my restaurant list</h1>
 				</div>
 			</div>
 		)

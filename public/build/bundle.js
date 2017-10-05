@@ -1131,7 +1131,7 @@ module.exports = ExecutionEnvironment;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.TOGGLE_SENDDIALOG = exports.NEWPOLL_REJECTED = exports.POLLID_RECEIVED = exports.POLLFORM_CHANGE = exports.TOGGLE_TAGTEXTFIELD = exports.RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_IS_LOADING = exports.FETCH_RESTAURANT_TAGS = exports.RESTAURANTLIST_FETCH_SUCCESS = exports.RESTAURANTLIST_IS_LOADING = exports.ADD_FRIENDS = exports.FETCH_FRIENDLIST = exports.SELECT_TAG = exports.SELECT_RESTAURANT = exports.FETCH_TAGLIST = exports.FETCH_RESTAURANTLIST = exports.LOGIN = undefined;
+exports.TOGGLE_ADDDIALOG = exports.TOGGLE_SENDDIALOG = exports.NEWPOLL_REJECTED = exports.POLLID_RECEIVED = exports.POLLFORM_CHANGE = exports.TOGGLE_TAGTEXTFIELD = exports.RESTAURANTTAG_FETCH_SUCCESS = exports.RESTAURANTTAG_IS_LOADING = exports.FETCH_RESTAURANT_TAGS = exports.RESTAURANTLIST_FETCH_SUCCESS = exports.RESTAURANTLIST_IS_LOADING = exports.ADD_FRIENDS = exports.FETCH_FRIENDLIST = exports.SELECT_TAG = exports.SELECT_RESTAURANT = exports.FETCH_TAGLIST = exports.FETCH_RESTAURANTLIST = exports.LOGIN = undefined;
 exports.login = login;
 exports.fetchRestaurantList = fetchRestaurantList;
 exports.restaurantListIsLoading = restaurantListIsLoading;
@@ -1154,6 +1154,7 @@ exports.pollIDReceived = pollIDReceived;
 exports.createPollRejected = createPollRejected;
 exports.onPollFormChange = onPollFormChange;
 exports.toggleSendDialog = toggleSendDialog;
+exports.toggleAddDialog = toggleAddDialog;
 
 var _axios = __webpack_require__(214);
 
@@ -1416,6 +1417,15 @@ var TOGGLE_SENDDIALOG = exports.TOGGLE_SENDDIALOG = "TOGGLE_SENDDIALOG";
 function toggleSendDialog() {
 	return {
 		type: TOGGLE_SENDDIALOG,
+		payload: null
+	};
+}
+
+// isOpenAddRestaurantDialog
+var TOGGLE_ADDDIALOG = exports.TOGGLE_ADDDIALOG = "TOGGLEADDDIALOG";
+function toggleAddDialog() {
+	return {
+		type: TOGGLE_ADDDIALOG,
 		payload: null
 	};
 }
@@ -12980,74 +12990,7 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.ADD_RESTAURANT = exports.FETCH_RESTAURANT = undefined;
-exports.fetchRestaurant = fetchRestaurant;
-exports.addRestaurant = addRestaurant;
-
-var _axios = __webpack_require__(214);
-
-var _axios2 = _interopRequireDefault(_axios);
-
-var _querystring = __webpack_require__(509);
-
-var _querystring2 = _interopRequireDefault(_querystring);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var FETCH_RESTAURANT = exports.FETCH_RESTAURANT = "FETCH_RESTAURANT";
-var ADD_RESTAURANT = exports.ADD_RESTAURANT = "ADD_RESTAURANT";
-
-function fetchRestaurant(query) {
-	var request = (0, _axios2.default)({
-		url: "/api/yelp/search?" + _querystring2.default.stringify({ 'term': query.term, 'location': query.location }),
-		method: 'get',
-		responseType: 'json'
-	});
-	return {
-		type: FETCH_RESTAURANT,
-		payload: request
-	};
-}
-
-function addRestaurant(restaurantData, callback) {
-	var request = (0, _axios2.default)({
-		url: "api/restaurant",
-		data: { name: restaurantData.id },
-		method: 'post',
-		responseType: 'json'
-	}).then(function (response) {
-		console.log(response);
-		var restaurant_id = response.data.results.id;
-		var request = (0, _axios2.default)({
-			url: "/api/user/restaurants/" + restaurant_id,
-			method: 'put',
-			responseType: 'json'
-		});
-		return request;
-	}).then(function (response) {
-		console.log(response);
-		callback(null, response);
-	}).catch(function (err) {
-		console.log(err);
-		callback(err, null);
-	});
-
-	return {
-		type: ADD_RESTAURANT,
-		payload: request
-	};
-}
-
-/***/ }),
+/* 144 */,
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22614,10 +22557,6 @@ var _auth = __webpack_require__(604);
 
 var _auth2 = _interopRequireDefault(_auth);
 
-var _yelp = __webpack_require__(606);
-
-var _yelp2 = _interopRequireDefault(_yelp);
-
 var _TitleBar = __webpack_require__(620);
 
 var _TitleBar2 = _interopRequireDefault(_TitleBar);
@@ -22653,8 +22592,7 @@ _reactDom2.default.render(_react2.default.createElement(
         _react2.default.createElement(_TitleBar2.default, null),
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _home2.default }),
         _react2.default.createElement(_reactRouterDom.Route, { path: '/profile', component: _profile2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/auth', component: _auth2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/yelp', component: _yelp2.default })
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/auth', component: _auth2.default })
       )
     )
   )
@@ -55690,6 +55628,10 @@ var _reducer_isOpenSendDialog = __webpack_require__(520);
 
 var _reducer_isOpenSendDialog2 = _interopRequireDefault(_reducer_isOpenSendDialog);
 
+var _reducer_isOpenAddRestaurantDialog = __webpack_require__(631);
+
+var _reducer_isOpenAddRestaurantDialog2 = _interopRequireDefault(_reducer_isOpenAddRestaurantDialog);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
@@ -55704,7 +55646,8 @@ var rootReducer = (0, _redux.combineReducers)({
   showTagTextfield: _reducer_showTagTextfield2.default,
   newPoll: _reducer_newPoll2.default,
   pollForm: _reducer_pollForm2.default,
-  isOpenSendDialog: _reducer_isOpenSendDialog2.default
+  isOpenSendDialog: _reducer_isOpenSendDialog2.default,
+  isOpenAddRestaurantDialog: _reducer_isOpenAddRestaurantDialog2.default
 });
 
 exports.default = rootReducer;
@@ -56573,9 +56516,13 @@ exports.default = function () {
 	var action = arguments[1];
 
 	switch (action.type) {
-		case _index.FETCH_RESTAURANT:
-			return _.mapKeys(action.payload.data.searchResult, 'id');
-		case _index.ADD_RESTAURANT:
+		case _actions.FETCH_RESTAURANT_SUCCESS:
+			{
+				console.log(action.payload);
+				return _.mapKeys(action.payload.data.searchResult, 'id');
+			}
+
+		case _actions.ADD_RESTAURANT:
 			{
 				console.log(action.payload);
 			}
@@ -56583,7 +56530,7 @@ exports.default = function () {
 	return state;
 };
 
-var _index = __webpack_require__(144);
+var _actions = __webpack_require__(635);
 
 /***/ }),
 /* 509 */
@@ -57117,16 +57064,7 @@ var Home = function (_Component) {
 					_react2.default.createElement(
 						'h1',
 						null,
-						'Welcome to MasteR List'
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{ id: 'login' },
-					_react2.default.createElement(
-						'a',
-						{ href: '/auth/facebook' },
-						_react2.default.createElement('img', { id: 'fb_login', style: { height: "50px" }, src: '/images/fb_login.png', alt: 'facebook_login' })
+						'Welcome to my restaurant list'
 					)
 				)
 			);
@@ -57310,15 +57248,6 @@ var Profile = function (_Component) {
 				_react2.default.createElement(
 					'div',
 					{ id: 'rlist' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/yelp', mini: true },
-						_react2.default.createElement(
-							_FloatingActionButton2.default,
-							null,
-							_react2.default.createElement(_add2.default, null)
-						)
-					),
 					_react2.default.createElement(_RestaurantList2.default, { height: '600px' })
 				),
 				_react2.default.createElement(
@@ -57404,7 +57333,7 @@ exports = module.exports = __webpack_require__(141)(undefined);
 
 
 // module
-exports.push([module.i, "#profile{\n    display: grid;\n    grid-gap: 10px;\n    grid-template-columns: 1fr 1fr 1fr;\n    grid-template-rows: 50px auto;\n}\n\n#tags{\n    grid-row: 1/2;\n    grid-column: 1/4;\n}\n\n#rlist{\n    grid-row: 2/3;\n    grid-column: 1 / 2;\n}\n\n#details{\n    grid-row: 2/3;\n    grid-column: 2 / 4;\n}\n\n.hide{\n    display: none;\n}", ""]);
+exports.push([module.i, "#profile{\n    display: grid;\n    height: 100%;\n    grid-gap: 10px;\n    grid-template-columns: 1fr 1fr 1fr;\n    grid-template-rows: 1fr;\n}\n\n#tags{\n    grid-row: 1fr;\n    grid-column: 1/4;\n}\n\n#rlist{\n    grid-row: 1fr;\n    grid-column: 1 / 2;\n}\n\n#details{\n    grid-row: auto;\n    grid-column: 2 / 4;\n}\n\n.hide{\n    display: none;\n}\n\n#restaurantList {\n    height: 100%;\n}", ""]);
 
 // exports
 
@@ -60726,17 +60655,43 @@ var _actions = __webpack_require__(20);
 
 var _reactRedux = __webpack_require__(22);
 
+var _reactRouterDom = __webpack_require__(85);
+
+var _YelpDialog = __webpack_require__(632);
+
+var _YelpDialog2 = _interopRequireDefault(_YelpDialog);
+
 var _List = __webpack_require__(145);
 
 var _List2 = _interopRequireDefault(_List);
+
+var _Paper = __webpack_require__(30);
+
+var _Paper2 = _interopRequireDefault(_Paper);
 
 var _ListItem = __webpack_require__(235);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
 
+var _add = __webpack_require__(228);
+
+var _add2 = _interopRequireDefault(_add);
+
+var _IconButton = __webpack_require__(48);
+
+var _IconButton2 = _interopRequireDefault(_IconButton);
+
+var _FlatButton = __webpack_require__(238);
+
+var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
 var _Divider = __webpack_require__(231);
 
 var _Divider2 = _interopRequireDefault(_Divider);
+
+var _Dialog = __webpack_require__(232);
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
 
 var _colors = __webpack_require__(73);
 
@@ -60768,9 +60723,45 @@ var RestaurantList = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            var styles = {
+                listHeader: {
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    padding: "5px 5px"
+                }
+            };
+            var dialogAction = _react2.default.createElement(_FlatButton2.default, {
+                label: "Done",
+                primary: true,
+                onClick: this.props.toggleAddDialog
+            });
             return _react2.default.createElement(
-                "div",
-                null,
+                _Paper2.default,
+                { id: "restaurantList", zDepth: 1 },
+                _react2.default.createElement(
+                    _Dialog2.default,
+                    {
+                        title: "Search on Yelp",
+                        actions: dialogAction,
+                        autoScrollBodyContent: true,
+                        autoDetectWindowHeight: true,
+                        open: this.props.isOpenAddRestaurantDialog
+                    },
+                    _react2.default.createElement(_YelpDialog2.default, null)
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { id: "listHeader", style: styles.listHeader },
+                    _react2.default.createElement(
+                        _IconButton2.default,
+                        { onClick: function onClick() {
+                                _this2.props.toggleAddDialog();
+                            } },
+                        _react2.default.createElement(_add2.default, null)
+                    )
+                ),
+                _react2.default.createElement(_Divider2.default, null),
                 _react2.default.createElement(
                     _List2.default,
                     null,
@@ -60808,11 +60799,12 @@ var RestaurantList = function (_Component) {
 }(_react.Component);
 
 function mapStateToProps(_ref) {
-    var restaurantList = _ref.restaurantList;
+    var restaurantList = _ref.restaurantList,
+        isOpenAddRestaurantDialog = _ref.isOpenAddRestaurantDialog;
 
-    return { restaurantList: restaurantList };
+    return { restaurantList: restaurantList, isOpenAddRestaurantDialog: isOpenAddRestaurantDialog };
 }
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchRestaurantList: _actions.fetchRestaurantList, selectRestaurant: _actions.selectRestaurant })(RestaurantList);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchRestaurantList: _actions.fetchRestaurantList, selectRestaurant: _actions.selectRestaurant, toggleAddDialog: _actions.toggleAddDialog })(RestaurantList);
 
 /***/ }),
 /* 554 */
@@ -69559,196 +69551,8 @@ var Login = function (_Component) {
 exports.default = Login;
 
 /***/ }),
-/* 606 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _resultList = __webpack_require__(607);
-
-var _resultList2 = _interopRequireDefault(_resultList);
-
-var _searchBar = __webpack_require__(619);
-
-var _searchBar2 = _interopRequireDefault(_searchBar);
-
-var _Paper = __webpack_require__(30);
-
-var _Paper2 = _interopRequireDefault(_Paper);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Yelp = function (_Component) {
-  _inherits(Yelp, _Component);
-
-  function Yelp() {
-    _classCallCheck(this, Yelp);
-
-    return _possibleConstructorReturn(this, (Yelp.__proto__ || Object.getPrototypeOf(Yelp)).apply(this, arguments));
-  }
-
-  _createClass(Yelp, [{
-    key: 'render',
-    value: function render() {
-      var containerStyle = {
-        width: '1036px',
-        margin: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '20px'
-      };
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          _Paper2.default,
-          { zDepth: 2, style: containerStyle },
-          _react2.default.createElement(
-            'h1',
-            null,
-            'Find and Add Restaurants'
-          ),
-          _react2.default.createElement(_searchBar2.default, null),
-          _react2.default.createElement(_resultList2.default, null)
-        )
-      );
-    }
-  }]);
-
-  return Yelp;
-}(_react.Component);
-
-exports.default = Yelp;
-
-/***/ }),
-/* 607 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(22);
-
-var _actions = __webpack_require__(144);
-
-var _Card = __webpack_require__(608);
-
-var _RaisedButton = __webpack_require__(92);
-
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ResultTable = function (_Component) {
-  _inherits(ResultTable, _Component);
-
-  function ResultTable(props) {
-    _classCallCheck(this, ResultTable);
-
-    var _this = _possibleConstructorReturn(this, (ResultTable.__proto__ || Object.getPrototypeOf(ResultTable)).call(this, props));
-
-    _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
-    return _this;
-  }
-
-  _createClass(ResultTable, [{
-    key: "handleAddRestaurant",
-    value: function handleAddRestaurant(event, id) {
-      var restaurantData = this.props.searchResult[id];
-      this.props.addRestaurant(restaurantData, function (err, response) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var cardStyle = {
-        margin: 'auto',
-        padding: 0
-      };
-      var cards = _.map(this.props.searchResult, function (restaurantData) {
-        var name = restaurantData.id;
-        var imageURL = restaurantData.image_url;
-        var address = restaurantData.location.display_address;
-        return _react2.default.createElement(
-          _Card.Card,
-          { style: cardStyle, key: name },
-          _react2.default.createElement(_Card.CardHeader, {
-            title: name,
-            subtitle: _.flatten(address),
-            actAsExpander: true,
-            showExpandableButton: true
-          }),
-          _react2.default.createElement(
-            _Card.CardActions,
-            null,
-            _react2.default.createElement(_RaisedButton2.default, {
-              label: "Add Restaurant",
-              onTouchTap: function onTouchTap(e) {
-                return _this2.handleAddRestaurant(e, name);
-              }
-            })
-          )
-        );
-      });
-      return _react2.default.createElement(
-        "div",
-        null,
-        cards
-      );
-    }
-  }]);
-
-  return ResultTable;
-}(_react.Component);
-
-function mapStateToProps(_ref) {
-  var searchResult = _ref.searchResult;
-
-  return { searchResult: searchResult };
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { addRestaurant: _actions.addRestaurant })(ResultTable);
-
-/***/ }),
+/* 606 */,
+/* 607 */,
 /* 608 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -71131,121 +70935,7 @@ exports.default = CardActions;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 619 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(22);
-
-var _redux = __webpack_require__(84);
-
-var _actions = __webpack_require__(144);
-
-var _TextField = __webpack_require__(62);
-
-var _TextField2 = _interopRequireDefault(_TextField);
-
-var _RaisedButton = __webpack_require__(92);
-
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SearchBar = function (_Component) {
-	_inherits(SearchBar, _Component);
-
-	function SearchBar(props) {
-		_classCallCheck(this, SearchBar);
-
-		var _this = _possibleConstructorReturn(this, (SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).call(this, props));
-
-		_this.state = { term: "", location: "" };
-		_this.onInputChange = _this.onInputChange.bind(_this);
-		_this.onFormSubmit = _this.onFormSubmit.bind(_this);
-		return _this;
-	}
-
-	_createClass(SearchBar, [{
-		key: 'onInputChange',
-		value: function onInputChange(event, fieldName) {
-			var newState = _defineProperty({}, fieldName, event.target.value);
-			this.setState(newState);
-		}
-	}, {
-		key: 'onFormSubmit',
-		value: function onFormSubmit(event) {
-			event.preventDefault();
-			var query = {
-				location: this.state.location,
-				term: this.state.term
-			};
-
-			this.props.fetchRestaurant(query);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return _react2.default.createElement(
-				'form',
-				{ onSubmit: this.onFormSubmit, className: 'input-group' },
-				_react2.default.createElement(_TextField2.default, {
-					hintText: 'thai, noodle...',
-					floatingLabelText: 'Search on Yelp',
-					value: this.state.term,
-					onChange: function onChange(event) {
-						return _this2.onInputChange(event, "term");
-					}
-				}),
-				_react2.default.createElement(_TextField2.default, {
-					hintText: 'Taipei, SongShan...',
-					floatingLabelText: 'place',
-					value: this.state.location,
-					onChange: function onChange(event) {
-						return _this2.onInputChange(event, "location");
-					}
-				}),
-				_react2.default.createElement('br', null),
-				_react2.default.createElement(
-					_RaisedButton2.default,
-					{ type: 'submit' },
-					'Search'
-				)
-			);
-		}
-	}]);
-
-	return SearchBar;
-}(_react.Component);
-
-function mapDispatchToProps(dispatch) {
-	return (0, _redux.bindActionCreators)({ fetchRestaurant: _actions.fetchRestaurant }, dispatch);
-}
-
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(SearchBar);
-
-/***/ }),
+/* 619 */,
 /* 620 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -73056,6 +72746,399 @@ NavigationMoreVert.displayName = 'NavigationMoreVert';
 NavigationMoreVert.muiName = 'SvgIcon';
 
 exports.default = NavigationMoreVert;
+
+/***/ }),
+/* 631 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function () {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actions.TOGGLE_ADDDIALOG:
+			console.log(state);
+			return state ? false : true;
+	}
+	return state;
+};
+
+var _actions = __webpack_require__(20);
+
+/***/ }),
+/* 632 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _SearchBar = __webpack_require__(633);
+
+var _SearchBar2 = _interopRequireDefault(_SearchBar);
+
+var _ResultList = __webpack_require__(634);
+
+var _ResultList2 = _interopRequireDefault(_ResultList);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import { addTag, toggleTagTextfield } from './actions';
+// import { connect } from "react-redux";
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+var YelpDialog = function (_Component) {
+    _inherits(YelpDialog, _Component);
+
+    function YelpDialog() {
+        _classCallCheck(this, YelpDialog);
+
+        return _possibleConstructorReturn(this, (YelpDialog.__proto__ || Object.getPrototypeOf(YelpDialog)).apply(this, arguments));
+    }
+
+    _createClass(YelpDialog, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_SearchBar2.default, null),
+                _react2.default.createElement(_ResultList2.default, null)
+            );
+        }
+    }]);
+
+    return YelpDialog;
+}(_react.Component);
+
+exports.default = YelpDialog;
+
+/***/ }),
+/* 633 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(22);
+
+var _redux = __webpack_require__(84);
+
+var _actions = __webpack_require__(635);
+
+var _TextField = __webpack_require__(62);
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _RaisedButton = __webpack_require__(92);
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SearchBar = function (_Component) {
+	_inherits(SearchBar, _Component);
+
+	function SearchBar(props) {
+		_classCallCheck(this, SearchBar);
+
+		var _this = _possibleConstructorReturn(this, (SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).call(this, props));
+
+		_this.state = { term: "", location: "" };
+		_this.onInputChange = _this.onInputChange.bind(_this);
+		_this.onFormSubmit = _this.onFormSubmit.bind(_this);
+		return _this;
+	}
+
+	_createClass(SearchBar, [{
+		key: 'onInputChange',
+		value: function onInputChange(event, fieldName) {
+			var newState = _defineProperty({}, fieldName, event.target.value);
+			this.setState(newState);
+		}
+	}, {
+		key: 'onFormSubmit',
+		value: function onFormSubmit(event) {
+			event.preventDefault();
+			var query = {
+				location: this.state.location,
+				term: this.state.term
+			};
+
+			this.props.fetchRestaurant(query);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			return _react2.default.createElement(
+				'form',
+				{ onSubmit: this.onFormSubmit, className: 'input-group' },
+				_react2.default.createElement(_TextField2.default, {
+					hintText: 'thai, noodle...',
+					floatingLabelText: 'Search on Yelp',
+					value: this.state.term,
+					onChange: function onChange(event) {
+						return _this2.onInputChange(event, "term");
+					}
+				}),
+				_react2.default.createElement(_TextField2.default, {
+					hintText: 'Taipei, SongShan...',
+					floatingLabelText: 'place',
+					value: this.state.location,
+					onChange: function onChange(event) {
+						return _this2.onInputChange(event, "location");
+					}
+				}),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					_RaisedButton2.default,
+					{ type: 'submit' },
+					'Search'
+				)
+			);
+		}
+	}]);
+
+	return SearchBar;
+}(_react.Component);
+
+function mapDispatchToProps(dispatch) {
+	return (0, _redux.bindActionCreators)({ fetchRestaurant: _actions.fetchRestaurant }, dispatch);
+}
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(SearchBar);
+
+/***/ }),
+/* 634 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(22);
+
+var _actions = __webpack_require__(635);
+
+var _Card = __webpack_require__(608);
+
+var _RaisedButton = __webpack_require__(92);
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ResultList = function (_Component) {
+  _inherits(ResultList, _Component);
+
+  function ResultList(props) {
+    _classCallCheck(this, ResultList);
+
+    var _this = _possibleConstructorReturn(this, (ResultList.__proto__ || Object.getPrototypeOf(ResultList)).call(this, props));
+
+    _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
+    return _this;
+  }
+
+  _createClass(ResultList, [{
+    key: "handleAddRestaurant",
+    value: function handleAddRestaurant(event, id) {
+      var restaurantData = this.props.searchResult[id];
+      this.props.addRestaurant(restaurantData, function (err, response) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var cardStyle = {
+        margin: 'auto',
+        padding: 0
+      };
+      var cards = _.map(this.props.searchResult, function (restaurantData) {
+        var name = restaurantData.id;
+        var imageURL = restaurantData.image_url;
+        var address = restaurantData.location.display_address;
+        return _react2.default.createElement(
+          _Card.Card,
+          { style: cardStyle, key: name },
+          _react2.default.createElement(_Card.CardHeader, {
+            title: name,
+            subtitle: _.flatten(address),
+            actAsExpander: true,
+            showExpandableButton: true
+          }),
+          _react2.default.createElement(
+            _Card.CardActions,
+            null,
+            _react2.default.createElement(_RaisedButton2.default, {
+              label: "Add Restaurant",
+              onTouchTap: function onTouchTap(e) {
+                return _this2.handleAddRestaurant(e, name);
+              }
+            })
+          )
+        );
+      });
+      return _react2.default.createElement(
+        "div",
+        null,
+        cards
+      );
+    }
+  }]);
+
+  return ResultList;
+}(_react.Component);
+
+function mapStateToProps(_ref) {
+  var searchResult = _ref.searchResult;
+
+  return { searchResult: searchResult };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { addRestaurant: _actions.addRestaurant })(ResultList);
+
+/***/ }),
+/* 635 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.ADD_RESTAURANT = exports.FETCH_RESTAURANT_SUCCESS = undefined;
+exports.fetchRestaurant = fetchRestaurant;
+exports.fetchRestaurantSuccess = fetchRestaurantSuccess;
+exports.addRestaurant = addRestaurant;
+
+var _axios = __webpack_require__(214);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _querystring = __webpack_require__(509);
+
+var _querystring2 = _interopRequireDefault(_querystring);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FETCH_RESTAURANT_SUCCESS = exports.FETCH_RESTAURANT_SUCCESS = "FETCH_RESTAURANT_SUCCESS";
+var ADD_RESTAURANT = exports.ADD_RESTAURANT = "ADD_RESTAURANT";
+
+function fetchRestaurant(query) {
+	return function (dispatch) {
+		var request = (0, _axios2.default)({
+			url: "/api/yelp/search?" + _querystring2.default.stringify({ 'term': query.term, 'location': query.location }),
+			method: 'get',
+			responseType: 'json'
+		}).then(function (res) {
+			dispatch(fetchRestaurantSuccess(res));
+		});
+	};
+	// return {
+	// 	type: FETCH_RESTAURANT,
+	// 	payload: request,
+	// };
+}
+function fetchRestaurantSuccess(res) {
+	return {
+		type: FETCH_RESTAURANT_SUCCESS,
+		payload: res
+	};
+}
+
+function addRestaurant(restaurantData, callback) {
+	var request = (0, _axios2.default)({
+		url: "api/restaurant",
+		data: { name: restaurantData.id },
+		method: 'post',
+		responseType: 'json'
+	}).then(function (response) {
+		console.log(response);
+		var restaurant_id = response.data.results.id;
+		var request = (0, _axios2.default)({
+			url: "/api/user/restaurants/" + restaurant_id,
+			method: 'put',
+			responseType: 'json'
+		});
+		return request;
+	}).then(function (response) {
+		console.log(response);
+		callback(null, response);
+	}).catch(function (err) {
+		console.log(err);
+		callback(err, null);
+	});
+
+	return {
+		type: ADD_RESTAURANT,
+		payload: request
+	};
+}
 
 /***/ })
 /******/ ]);
