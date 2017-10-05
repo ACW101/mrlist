@@ -22,6 +22,14 @@ router
 			console.log(e);
 		})
 	})
+	.get('/business', (req, res) => {
+		console.log(req.query.id);
+		client.business(req.query.id).then(response => {
+			res.json(response);
+		}).catch(e =>  {
+			console.log(e);
+		})
+	})
 
 
 module.exports = router;

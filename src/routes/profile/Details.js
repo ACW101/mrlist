@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { toggleTagTextfield, removeTag } from "./actions";
-import { connect } from "react-redux";
+import {toggleTagTextfield, removeTag, fetchRestaurantDetail} from "./actions";
+import {connect} from "react-redux";
 
 import Chip from 'material-ui/Chip';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -31,6 +31,15 @@ class Details extends Component {
         super(props);
         this.handleAddButtonClicked = this.handleAddButtonClicked.bind(this);
     }
+    // componentDidMount() {
+    //     console.log("yes")
+    //     this.props.selectedRestaurant
+    //     if (this.props.selectedRestaurant != null) {
+    //         console.log("called")
+    //         const {yelp_id} = this.props.restaurantList[restaurant_id];
+    //         this.props.fetchRestaurantDetail(yelp_id);
+    //     }
+    // }
     render() {
         const restaurant_id = this.props.selectedRestaurant;
         const restaurantTags = this.props.restaurantTags[restaurant_id];
@@ -90,4 +99,4 @@ class Details extends Component {
 function mapStateToProps({ selectedRestaurant, restaurantTags, showTagTextfield, restaurantList }) {
     return { selectedRestaurant, restaurantTags, showTagTextfield, restaurantList };
 }
-export default connect(mapStateToProps, { toggleTagTextfield, removeTag })(Details);
+export default connect(mapStateToProps, {toggleTagTextfield, removeTag, fetchRestaurantDetail})(Details);

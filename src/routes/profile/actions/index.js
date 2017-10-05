@@ -104,12 +104,21 @@ export function selectTag(selectedTag) {
 	}
 }
 
+// select restaurant and fetch restaurantDetail
 export function selectRestaurant(selectedRestaurant_id) {
-		return {
-		type: SELECT_RESTAURANT,
-		payload: selectedRestaurant_id
-	};
+	return ((dispatch, getState) => {
+		// dispatch selectedRestaurant
+		dispatch({
+			type: SELECT_RESTAURANT,
+			payload: selectedRestaurant_id
+		})
+		// start fetching restaurantDetails
+		const {restaurantList} = getState();
+		const {yelp_id} = restaurantList[selectedRestaurant_id];
+		dispatch(fetchRestaurantDetail(yelp_id))
+	})
 }
+
 
 export function fetchFriendList(query) {
 	const request = axios({
@@ -259,10 +268,40 @@ export function toggleSendDialog() {
 }
 
 // isOpenAddRestaurantDialog
-export const TOGGLE_ADDDIALOG = "TOGGLEADDDIALOG";
+export const TOGGLE_ADDDIALOG = "TOGGLE_ADDDIALOG";
 export function toggleAddDialog() {
 	return {
 		type: TOGGLE_ADDDIALOG,
 		payload: null
+	}
+}
+
+// restaurantDetail
+export const FETCH_RESTAURANT_DETAIL = "FETCH_RESTAURANT_DETAIL"
+export function fetchRestaurantDetail(yelp_id) {
+	return (dispatch => {
+		dispatch(restaurantDetailIsLoading(true));
+		axios({
+			url: `/api/yelp/business?id=${yelp_id}`,
+			method: 'get',
+			responseType: 'json',
+		}).then(response => {
+			dispatch(restaurantDetailIsLoading(false));
+			dispatch(restaurantDetailFetchSuccess(response));
+		})
+	})
+}
+export const RESTAURANT_DETAIL_IS_LOADING = "RESTAURANT_DETAIL_IS_LOADING"
+export function restaurantDetailIsLoading(bool) {
+	return {
+		type: RESTAURANT_DETAIL_IS_LOADING,
+		payload: bool
+	}
+}
+export const RESTAURANT_DETAIL_FETCH_SUCCESS = "RESTUARANT_DETAIL_FETCH_SUCCESS"
+export function restaurantDetailFetchSuccess(response) {
+	return {
+		type: RESTAURANT_DETAIL_FETCH_SUCCESS,
+		payload: response
 	}
 }
