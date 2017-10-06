@@ -26,6 +26,13 @@ class RestaurantList extends Component {
                 flexDirection: "row",
                 justifyContent: "flex-end",
                 padding: "5px 5px"
+            },
+            addDialog: {
+                height: '500px',
+                maxHeight: '50%'
+            },
+            root: {
+                paddingTop: "10%"
             }
         }
         const dialogAction = <FlatButton
@@ -38,8 +45,9 @@ class RestaurantList extends Component {
                 <Dialog
                     title="Search on Yelp"
                     actions={dialogAction}
+                    style={styles.root}
                     autoScrollBodyContent={true}
-                    autoDetectWindowHeight={true}
+                    autoDetectWindowHeight={false}
                     open={this.props.isOpenAddRestaurantDialog}
                 >
                     <YelpDialog />

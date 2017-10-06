@@ -18,7 +18,10 @@ class ResultList extends Component {
       }
     });
   }
-  
+  componentDidUpdate() {
+    // force window resize to enforce top-padding constraint
+    window.dispatchEvent(new Event('resize'));    
+  }
   render() {
     const cardStyle = {
       margin: 'auto',
