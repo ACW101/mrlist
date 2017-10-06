@@ -269,10 +269,10 @@ export function toggleSendDialog() {
 
 // isOpenAddRestaurantDialog
 export const TOGGLE_ADDDIALOG = "TOGGLE_ADDDIALOG";
-export function toggleAddDialog() {
+export function toggleAddDialog(bool) {
 	return {
 		type: TOGGLE_ADDDIALOG,
-		payload: null
+		payload: bool
 	}
 }
 

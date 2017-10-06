@@ -31,7 +31,7 @@ class RestaurantList extends Component {
         const dialogAction = <FlatButton
             label="Done"
             primary={true}
-            onClick={this.props.toggleAddDialog}
+            onClick={() => this.handleCloseAddDialog()}
         />
         return(
             <Paper id="restaurantList" zDepth={1}>
@@ -45,7 +45,7 @@ class RestaurantList extends Component {
                     <YelpDialog />
                 </Dialog>
                 <div id="listHeader" style={styles.listHeader}>
-                    <IconButton onClick={() => {this.props.toggleAddDialog();}}>
+                    <IconButton onClick={() => this.props.toggleAddDialog(true)}>
                         <ContentAdd />
                     </IconButton>
                 </div>
@@ -56,7 +56,6 @@ class RestaurantList extends Component {
             </Paper>
         )
     }
-
     renderList(restaurant) {        
         return(
             <div key={restaurant.id}>
@@ -68,6 +67,10 @@ class RestaurantList extends Component {
                 <Divider/>
             </div>
         )
+    }
+    handleCloseAddDialog() {
+        this.props.toggleAddDialog(false);
+        this.props.fetchRestaurantList();
     }
     handleSelectRestaurant(restaurant_id) {
         this.props.selectRestaurant(restaurant_id);
