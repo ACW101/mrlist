@@ -28,35 +28,42 @@ export function fetchRestaurantSuccess(res) {
 }
 
 export function addRestaurant(restaurantData, callback) {
-	console.log(restaurantData);
-	const request = axios({
-		url: `api/restaurant`,
-		data: { name: restaurantData.name, yelp_id: restaurantData.id },
-		method: 'post',
-		responseType: 'json',
-	})
-	.then((response) => {
-		console.log(response);
-		const restaurant_id = response.data.results.id;
+		return (dispatch) => {
+			// create new row in restaurants
 		const request = axios({
-			url: `/api/user/restaurants/${restaurant_id}`,
-			method: 'put',
-			responseType: 'json'
+			url: `api/restaurant`,
+			data: { name: restaurantData.name, yelp_id: restaurantData.id },
+			method: 'post',
+			responseType: 'json',
 		})
-		return request;
-	})
-	.then((response) => {
-		console.log(response);
-		callback(null, response);
-	})
-	.catch(err =>{
-		console.log(err);
-		callback(err, null);
-	}) 
-	
+		// create new row in user_restaurant relation
+		.then((response) => {
+			const restaurant_id = response.data.results.id;
+			const request = axios({
+				url: `/api/user/restaurants/${restaurant_id}`,
+				method: 'put',
+				responseType: 'json'
+			})
+			dispatch(fireSnackbar());
+		})
+		return {
+			type: ADD_RESTAURANT,
+			payload: request,
+		}
+	}
+}
 
+export const FIRE_ADDRESTAURANT_SNACKBAR = "FIRE_ADDRESTAURANT_SNACKBAR"
+export function fireSnackbar() {
 	return {
-		type: ADD_RESTAURANT,
-		payload: request,
+		type: FIRE_ADDRESTAURANT_SNACKBAR,
+		payload: true
+	}
+}
+export const HIDE_ADDRESTAURANT_SNACKBAR = "HIDE_ADDRESTAURANT_SNACKBAR"
+export function hideSnackbar() {
+	return {
+		type: HIDE_ADDRESTAURANT_SNACKBAR,
+		payload: false
 	}
 }

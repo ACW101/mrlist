@@ -4,11 +4,13 @@ import {connect} from 'react-redux';
 import './style.css';
 
 import {createPoll, toggleSendDialog, login} from './actions';
+import {fireSnackbar, hideSnackbar} from './YelpDialog/actions';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 
 
 // import SendDialog from './sendDialog';
@@ -47,6 +49,12 @@ class Profile extends Component {
 		  ];
 		return (
 			<div id="profile">
+				<Snackbar
+					open={this.props.addRestaurantSnackbar}
+					message="Restaurant Added"
+					autoHideDuration={1000}
+					onRequestClose={this.props.hideSnackbar}
+				/>
 				<Dialog
 					title="Invitation"
 					actions={dialogActions}
@@ -83,8 +91,8 @@ class Profile extends Component {
 	}
 }
 
-function mapStateToProps({ pollForm, isOpenSendDialog }) {
-	return {pollForm, isOpenSendDialog};
+function mapStateToProps({ pollForm, isOpenSendDialog, addRestaurantSnackbar}) {
+	return {pollForm, isOpenSendDialog, addRestaurantSnackbar};
 }
 
-export default connect(mapStateToProps, {createPoll, toggleSendDialog, login})(Profile);
+export default connect(mapStateToProps, {createPoll, toggleSendDialog, login, fireSnackbar, hideSnackbar})(Profile);

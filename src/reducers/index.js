@@ -12,6 +12,7 @@ import pollFormReducer from './reducer_pollForm';
 import isOpenSendDialogReducer from './reducer_isOpenSendDialog';
 import isOpenAddRestaurantDialogReducer from './reducer_isOpenAddRestaurantDialog'
 import restaurantDetailReducer from './reducer_restaurantDetail'
+import addRestaurantSnackbarReducer from './reducer_addRestaurantSnackbar'
 
 const rootReducer = combineReducers({
   isLoggedIn: isLoggedInReducer,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   isOpenSendDialog: isOpenSendDialogReducer,
   isOpenAddRestaurantDialog: isOpenAddRestaurantDialogReducer,
   restaurantDetail: restaurantDetailReducer,
+  addRestaurantSnackbar: addRestaurantSnackbarReducer,
 });
 
 export default rootReducer;
