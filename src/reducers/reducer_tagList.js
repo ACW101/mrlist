@@ -1,4 +1,4 @@
-import {FETCH_TAGLIST, SELECT_TAG} from "../routes/profile/actions";
+import {FETCH_TAGLIST, SELECT_TAG} from "../routes/profile/Details/actions";
 
 export default function(state = {}, action) {
 	switch(action.type) {

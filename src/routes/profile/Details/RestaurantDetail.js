@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Paper from 'material-ui/Paper';
-
+import TagList from './TagList';
 
 class RestaurantDetail extends Component {
     render() {
@@ -36,6 +36,7 @@ class RestaurantDetail extends Component {
                         id="yelp_stars"
                         src={yelp_starsURL}
                     />
+                    <TagList />
                 </Paper>
             </div>
         )
