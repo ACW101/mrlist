@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "./node_modules/.bin/mocha --reporter spec",
     "bootstrap": "knex --cwd ./utility migrate:latest",
     "heroku-postbuild": "npm --prefix src install && npm --prefix src run build"
@@ -15,6 +17,7 @@
     "bookshelf": "^0.10.3",
     "bookshelf-modelbase": "^2.10.4",
     "chai": "^4.0.2",
+    "concurrently": "^3.5.1",
     "connect-redis": "^3.3.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",

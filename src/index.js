@@ -8,8 +8,6 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
-import _ from "lodash";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import './style.css';
@@ -20,9 +18,9 @@ injectTapEventPlugin();
 import reducers from './reducers';
 
 // import routes components
-import Home from './routes/home';
 import Profile from './routes/profile';
 import Auth from './routes/auth';
+import Home from './routes/home';
 import TitleBar from './TitleBar';
 
 import Paper from 'material-ui/Paper';
@@ -31,7 +29,6 @@ const middlewares = [ReduxPromise, ReduxThunk];
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
 ReactDOM.render(
-  <MuiThemeProvider>
   <Provider store={createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
     <Router>
       <Paper id="container">
@@ -42,5 +39,4 @@ ReactDOM.render(
       </Paper>
     </Router>
   </Provider>
-  </MuiThemeProvider>
   , document.getElementById('root'));

@@ -2,13 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import ToolBar from 'material-ui/ToolBar';
+import Typography from 'material-ui/Typography';
 
 class TitleBar extends Component {
     render() {
@@ -23,11 +18,11 @@ class TitleBar extends Component {
             </a>
         )
         return (
-            <AppBar
-                title="My Restaurant List"
-                showMenuIconButton={false}
-                iconElementRight={this.props.isLoggedIn ? null : LoginButton}
-            />
+            <AppBar>
+                <Toolbar>
+                    <Typography type="title">Restaurant List</Typography>
+                </Toolbar>
+            </AppBar>
         )
     }
 }
