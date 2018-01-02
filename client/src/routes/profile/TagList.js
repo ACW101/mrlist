@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { fetchTagList, selectTag } from "./actions";
 import { connect } from "react-redux";
+import {map} from "lodash";
 
 import Chip from 'material-ui/Chip';
 
@@ -25,7 +26,7 @@ class TagList extends Component {
     render() {
         return(
             <div style={styles.wrapper}>
-                {_.map(this.props.tagList, tag => this.renderList(tag))}
+                {map(this.props.tagList, tag => this.renderList(tag))}
             </div>
         )
     }

@@ -14,7 +14,13 @@ import isOpenAddRestaurantDialogReducer from './reducer_isOpenAddRestaurantDialo
 import restaurantDetailReducer from './reducer_restaurantDetail'
 import addRestaurantSnackbarReducer from './reducer_addRestaurantSnackbar'
 
+import isOpenMenuReducer from './app/reducer_isOpenMenu';
+import isOpenLoginDialogReducer from './app/reducer_isOpenLoginDialog';
+
 const rootReducer = combineReducers({
+  isOpenMenu: isOpenMenuReducer,
+  isOpenLoginDialog: isOpenLoginDialogReducer,
+
   isLoggedIn: isLoggedInReducer,
   searchResult: searchResultReducer,
   restaurantList: restaurantListReducer,

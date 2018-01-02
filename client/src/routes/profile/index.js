@@ -10,7 +10,7 @@ import Add from 'material-ui-icons/Add';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
-
+import Paper from 'material-ui/Paper';
 
 // import SendDialog from './sendDialog';
 // import AddFriendDialog from './addFriendDialog';
@@ -63,9 +63,9 @@ class Profile extends Component {
 				>
 					<SendDialog />
 				</Dialog>
-				<div id="rlist">
-					<RestaurantList height="600px"/>
-				</div>
+				<Paper id="rlist">
+					<RestaurantList/>
+				</Paper>
 				<div id="details">
 					<Details/>
 				</div>

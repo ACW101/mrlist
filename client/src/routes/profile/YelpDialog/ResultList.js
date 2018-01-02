@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { addRestaurant } from "./actions";
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Button from 'material-ui/Button';
+import {flatten, map} from "lodash"
 
 class ResultList extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class ResultList extends Component {
       margin: 'auto',
       padding: 0,
     }
-    const cards = _.map(this.props.searchResult, (restaurantData) => {
+    const cards = map(this.props.searchResult, (restaurantData) => {
       const name = restaurantData.id;
       const imageURL = restaurantData.image_url;
       const address = restaurantData.location.display_address;
@@ -35,7 +36,7 @@ class ResultList extends Component {
         <Card style={cardStyle} key={name}>
           <CardHeader 
             title={name}
-            subtitle={_.flatten(address)}
+            subtitle={flatten(address)}
             actAsExpander={true}
             showExpandableButton={true}
           />

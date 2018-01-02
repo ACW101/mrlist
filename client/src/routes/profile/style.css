@@ -1,30 +1,17 @@
 #profile{
-    display: grid;
+    display: flex;
+    flex-direction: row;
     height: 100%;
-    grid-gap: 10px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-}
-
-#tags{
-    grid-row: 1fr;
-    grid-column: 1/4;
 }
 
 #rlist{
-    grid-row: 1fr;
-    grid-column: 1 / 2;
+    flex-grow: 1;
 }
 
 #details{
-    grid-row: auto;
-    grid-column: 2 / 4;
+    flex-grow: 2;
 }
 
 .hide{
     display: none;
-}
-
-#restaurantList {
-    height: 100%;
 }

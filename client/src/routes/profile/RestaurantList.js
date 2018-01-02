@@ -3,6 +3,7 @@ import { fetchRestaurantList, selectRestaurant, toggleAddDialog } from "./action
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import YelpDialog from './YelpDialog';
+import {map} from "lodash";
 
 import List from 'material-ui/List/List';
 import Paper from 'material-ui/Paper'
@@ -32,7 +33,11 @@ class RestaurantList extends Component {
             },
             root: {
                 paddingTop: "10%"
+            },
+            container: {
+                height: '100%',
             }
+
         }
         const dialogAction = <Button
             label="Done"
@@ -40,27 +45,11 @@ class RestaurantList extends Component {
             onClick={() => this.handleCloseAddDialog()}
         />
         return(
-            <Paper id="restaurantList" zDepth={1}>
-                <Dialog
-                    title="Search on Yelp"
-                    actions={dialogAction}
-                    style={styles.root}
-                    autoScrollBodyContent={true}
-                    autoDetectWindowHeight={false}
-                    open={this.props.isOpenAddRestaurantDialog}
-                >
-                    <YelpDialog />
-                </Dialog>
-                <div id="listHeader" style={styles.listHeader}>
-                    <IconButton onClick={() => this.props.toggleAddDialog(true)}>
-                        <Add />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {_.map(this.props.restaurantList, restaurant => this.renderList(restaurant))}
+            <div id="restaurantList">
+                <List style={styles.container}>
+                    {map(this.props.restaurantList, restaurant => this.renderList(restaurant))}
                 </List>
-            </Paper>
+            </div>
         )
     }
     renderList(restaurant) {        

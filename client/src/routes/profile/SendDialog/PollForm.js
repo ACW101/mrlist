@@ -6,6 +6,7 @@ import Close from 'material-ui-icons/Close';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {map, uniq, remove} from "lodash";
 
 
 import TagList from '../TagList';
@@ -88,20 +89,20 @@ class PollForm extends Component {
     }
     handleSelectionChange(tagList, restaurantTags) {
         var restaurantsWithTags = [];
-        const selectedTags = _.map(tagList, (tag) => {
+        const selectedTags = map(tagList, (tag) => {
             if(tag.selected) {
-                _.map(restaurantTags, (restaurant, key) => {
+                map(restaurantTags, (restaurant, key) => {
                     if (restaurant[tag.id] != null) {
                         restaurantsWithTags.push(key);
                     }
                 })
             }
         });
-        this.props.onPollFormChange({selected: _.uniq(restaurantsWithTags)});
+        this.props.onPollFormChange({selected: uniq(restaurantsWithTags)});
     }
     handleDeleteSelected(restaurantId) {
         let {selected} = this.props.pollForm;
-        const newState = _.remove(selected, n => n != restaurantId);
+        const newState = remove(selected, n => n != restaurantId);
         console.log(newState);
         this.props.onPollFormChange({selected: newState})
     }

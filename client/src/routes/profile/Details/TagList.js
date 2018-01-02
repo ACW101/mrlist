@@ -4,6 +4,7 @@ import {toggleTagTextfield, removeTag} from "./actions";
 
 import Chip from 'material-ui/Chip';
 import TagTextfield from './TagTextField';
+import {map} from "lodash";
 
 const styles = {
     chip: {
@@ -45,7 +46,7 @@ class TagList extends Component {
         )
         return (
             <div style={styles.wrapper}>
-                {_.map(restaurantTags, (tagName, tagId) => this.renderList(tagName, tagId))}
+                {map(restaurantTags, (tagName, tagId) => this.renderList(tagName, tagId))}
                 {this.props.showTagTextfield ? textField : AddBtn }
             </div>
         )
