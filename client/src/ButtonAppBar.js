@@ -21,24 +21,26 @@ const styles = {
       marginLeft: -12,
       marginRight: 20,
     },
+    toolBar: {
+      width: 960,
+      margin: '0 auto',
+    }
   };
   
 function ButtonAppBar(props) {
     const { classes } = props;
     return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="contrast" aria-label="Menu" onClick={props.onMenuButtonClick}>
-              <MenuIcon/>
-            </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
-              Restaurant List
-            </Typography>
-            <Button color="contrast" onClick={props.toggleLoginDialog}>Login</Button>
-          </Toolbar>
-        </AppBar>
-      </div>
+      <AppBar position="static" className={classes.root}>
+        <Toolbar className={classes.toolBar}>
+          <IconButton className={classes.menuButton} color="contrast" aria-label="Menu" onClick={props.onMenuButtonClick}>
+            <MenuIcon/>
+          </IconButton>
+          <Typography type="title" color="inherit" className={classes.flex}>
+            Restaurant List
+          </Typography>
+          <Button color="contrast" onClick={props.toggleLoginDialog}>Login</Button>
+        </Toolbar>
+      </AppBar>
     );
   }
   

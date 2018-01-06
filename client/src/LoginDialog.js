@@ -62,7 +62,10 @@ class LoginDialog extends React.Component {
                 onClose={this.props.toggleLoginDialog}
                 transition={Transition}
             >
-                <IconButton style={closeButtonStyle}>
+                <IconButton
+                    style={closeButtonStyle}
+                    onClick={this.props.toggleLoginDialog}
+                >
                     <Close />
                 </IconButton>
                 <div style={formContainerStyle}>

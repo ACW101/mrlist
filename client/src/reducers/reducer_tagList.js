@@ -1,4 +1,4 @@
-import {FETCH_TAGLIST, SELECT_TAG} from "../routes/profile/Details/actions";
+import {FETCH_TAGLIST, SELECT_TAG} from "../routes/profile/content/actions";
 import {keyBy} from "lodash";
 
 export default function(state = {}, action) {

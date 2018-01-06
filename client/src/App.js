@@ -36,23 +36,22 @@ class App extends Component {
 
   render() {
     return (
-        <div id="container">
-          <Menu
-            anchorEl={this.state.anchorEl}
-            open={this.state.open}
-            onClose={this.handleMenuClose}>
-            {menuItems.map((e) => 
-              <MenuItem onClick={() => this.handleMenuItemClick(e)}>
-                {e.toUpperCase()}
-              </MenuItem>
-            )}
-          </Menu>
-          <LoginDialog/>
-          <ButtonAppBar onMenuButtonClick={this.handleMenuClick}/>
-          <Route exact path="/" component={Home} />
-          <Route path="/profile" component={Profile} />
-        </div>
-
+      <div id="container">
+        <Menu
+          anchorEl={this.state.anchorEl}
+          open={this.state.open}
+          onClose={this.handleMenuClose}>
+          {menuItems.map((e) => 
+            <MenuItem onClick={() => this.handleMenuItemClick(e)}>
+              {e.toUpperCase()}
+            </MenuItem>
+          )}
+        </Menu>
+        <LoginDialog/>
+        <ButtonAppBar onMenuButtonClick={this.handleMenuClick}/>
+        <Route exact path="/" component={Home} />
+        <Route path="/profile" component={Profile} />
+      </div>
     );
   }
 }

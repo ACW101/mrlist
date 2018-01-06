@@ -1,4 +1,4 @@
-import {TOGGLE_TAGTEXTFIELD} from "../routes/profile/Details/actions";
+import {TOGGLE_TAGTEXTFIELD} from "../routes/profile/content/actions";
 
 export default function(state = false, action) {
 	switch(action.type) {

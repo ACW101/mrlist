@@ -1,7 +1,7 @@
 import { 
     RESTAURANTTAG_IS_LOADING,
     RESTAURANTTAG_FETCH_SUCCESS
-} from "../routes/profile/Details/actions";
+} from "../routes/profile/content/actions";
 
 export function restaurantTagsReducer(state = {}, action) {
 	switch(action.type) {

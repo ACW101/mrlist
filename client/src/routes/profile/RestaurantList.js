@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { fetchRestaurantList, selectRestaurant, toggleAddDialog } from "./actions";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
-import YelpDialog from './YelpDialog';
 import {map} from "lodash";
 
-import List from 'material-ui/List/List';
-import Paper from 'material-ui/Paper'
-import ListItem from 'material-ui/List/ListItem';
-import Add from 'material-ui-icons/Add';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import {withStyles} from 'material-ui/styles';
+import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/Button';
 import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
-import Dialog from 'material-ui/Dialog';
+
+const styles = {
+    root: {
+        height: "100%",
+        overflow: "scroll"
+    }
+}
 
 class RestaurantList extends Component {
     componentDidMount() {
@@ -20,47 +22,24 @@ class RestaurantList extends Component {
         this.renderList = this.renderList.bind(this);
     }
     render() {
-        const styles = {
-            listHeader: {
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                padding: "5px 5px"
-            },
-            addDialog: {
-                height: '500px',
-                maxHeight: '50%'
-            },
-            root: {
-                paddingTop: "10%"
-            },
-            container: {
-                height: '100%',
-            }
-
-        }
-        const dialogAction = <Button
-            label="Done"
-            primary={true}
-            onClick={() => this.handleCloseAddDialog()}
-        />
+        const { classes } = this.props;
         return(
-            <div id="restaurantList">
-                <List style={styles.container}>
+            <Paper id="restaurantList" className={classes.root}>
+                <List className={classes.list}>
                     {map(this.props.restaurantList, restaurant => this.renderList(restaurant))}
                 </List>
-            </div>
+            </Paper>
         )
     }
     renderList(restaurant) {        
         return(
             <div key={restaurant.id}>
                 <ListItem
-                    primaryText={restaurant.name}
+                    button
                     onClick={() => this.handleSelectRestaurant(restaurant.id)}
                 >
+                    <ListItemText primary={restaurant.name}/>
                 </ListItem>
-                <Divider/>
             </div>
         )
     }
@@ -76,4 +55,4 @@ class RestaurantList extends Component {
 function mapStateToProps({restaurantList, isOpenAddRestaurantDialog}) {
     return {restaurantList, isOpenAddRestaurantDialog};
 }
-export default connect(mapStateToProps, { fetchRestaurantList, selectRestaurant, toggleAddDialog})(RestaurantList);
+export default connect(mapStateToProps, { fetchRestaurantList, selectRestaurant, toggleAddDialog})(withStyles(styles)(RestaurantList));
