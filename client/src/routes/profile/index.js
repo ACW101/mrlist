@@ -12,14 +12,7 @@ const styles = {
 	root: {
 		display: "flex",
     	flexDirection: "row",
-    	height: "100%"
-	},
-	rlist: {
-		flex: 1,
-		maxWidth: 400
-	},
-	content: {
-		flex: 2,
+		height: "100%",
 	}
 }
 
@@ -36,12 +29,7 @@ class Profile extends Component {
 		
 		return (
 			<div className={classes.root}>
-				<div className={classes.rlist}>
-					<RestaurantList/>
-				</div>
-				<div className={classes.content}>
-					<Content/>
-				</div>
+				<Content/>
 			</div>
 		)
 	}

@@ -6,7 +6,7 @@ import Chip from 'material-ui/Chip';
 const styles = {
     container: {
         margin: "50px 50px",
-        padding: "50px 50px"
+        padding: "50px 50px",
     },
     row: {
         display: 'flex',
@@ -14,7 +14,7 @@ const styles = {
         flexWrap: 'wrap',
     },
     marginAfter: {
-        margin: "5px 5px"
+        marginRight: 5
     }
 
 }
@@ -32,7 +32,7 @@ class RestaurantInfo extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.container}>
-                <Typography type="headline">{restaurantInfo.name}</Typography>
+                <Typography type="display2">{restaurantInfo.name}</Typography>
                 <Typography type="subheading">{restaurantInfo.location}</Typography>
                 <div className={classes.row}>
                     {restaurantInfo.tags.map((e) => {

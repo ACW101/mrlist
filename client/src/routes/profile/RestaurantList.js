@@ -11,6 +11,7 @@ import Button from 'material-ui/Button';
 
 const styles = {
     root: {
+        position: "fixed",
         height: "100%",
         overflow: "scroll"
     }
