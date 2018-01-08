@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import CoverGridList from './CoverGridList'
 import RestaurantInfo from './RestaurantInfo'
 import RestaurantDishes from './RestaurantDishes'
-
+import RestaurantVisits from './RestaurantVisits'
 class Details extends Component {
     render() {
         return (
@@ -13,6 +13,7 @@ class Details extends Component {
                 <CoverGridList />
                 <RestaurantInfo />
                 <RestaurantDishes />
+                <RestaurantVisits />
             </div>
         )
     }
