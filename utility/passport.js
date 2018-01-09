@@ -3,6 +3,17 @@ const passport = require("passport")
 const FacebookStrategy = require('passport-facebook').Strategy
 const LocalStrategy = require('passport-local').Strategy;
 
+//JWT
+const passportJWT = require('passport-jwt');
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+
+// Jwt Options
+const jwtOptions= {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: "TheSecretOfFood"
+}
+
 // model
 let User = require('../models/User');
 
@@ -14,6 +25,20 @@ const facebookConfig = Object.assign({},
 )
 
 passport.use(new LocalStrategy(authenticate))
+
+passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
+  User.findOne({id: jwt_payload.sub}, (err, user) => {
+    if (err) {
+      return done(err, false);
+    }
+    if (user) {
+      return done(null, user);
+    } else {
+      return done(null, false);
+    }
+  })
+}))
+
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))
 
 function authenticate(email, password, done){
@@ -23,12 +48,12 @@ function authenticate(email, password, done){
       if (!User || !User.verifyPassword) {
         return done(null, false, {message: "invalid user and password combination"})
       }
-      console.log('logged in')
-      done(null, User)
+      done(null, true)
     }, done)
 }
 
 function register(req, email, password, done) {
+  console.log(email + password)
   User.findOne({email: email}, {require: false})
     .then((user) => {
       if (user) {

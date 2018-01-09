@@ -30,7 +30,7 @@ app.set('view engine', 'hjs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
@@ -46,7 +46,6 @@ app.use(session({ secret: "a restaurant list app", resave: false, saveUninitiali
 // authentication
 app
   .use(passport.initialize())
-  .use(passport.session())
 
 // routes
 app.use('/api', api)
