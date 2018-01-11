@@ -61,4 +61,4 @@ function mapStateToProp({ isLoggedIn }) {
   return { isLoggedIn }
 }
 
-export default connect(mapStateToProp, { checkToken })(withRouter(App)) 
+export default withRouter(connect(mapStateToProp, { checkToken })(App))
