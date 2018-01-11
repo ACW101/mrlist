@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {toggleLoginDialog} from './actions/AppAction';
+import {openLoginDialog} from './actions/AppAction';
 import PropTypes from 'prop-types';
 import AppBar from 'material-ui/AppBar/AppBar';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
@@ -8,6 +8,7 @@ import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
+import AccountCircleIcon from 'material-ui-icons/AccountCircle'
 import {withStyles} from 'material-ui/styles';
 
 const styles = {
@@ -38,7 +39,10 @@ function ButtonAppBar(props) {
           <Typography type="title" color="inherit" className={classes.flex}>
             Restaurant List
           </Typography>
-          <Button color="contrast" onClick={props.toggleLoginDialog}>Login</Button>
+          {props.isSignedIn 
+            ? <IconButton><AccountCircleIcon /></IconButton>
+            : <Button color="contrast" onClick={props.openLoginDialog}>Login</Button> 
+          }
         </Toolbar>
       </AppBar>
     );
@@ -48,4 +52,8 @@ function ButtonAppBar(props) {
     classes: PropTypes.object.isRequired,
   };
 
-  export default connect(null, {toggleLoginDialog})(withStyles(styles)(ButtonAppBar));
+  function mapStateToProp({isSignedIn}) {
+    return {isSignedIn}
+  }
+
+  export default connect(mapStateToProp, {openLoginDialog})(withStyles(styles)(ButtonAppBar));

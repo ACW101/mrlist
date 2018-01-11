@@ -13,13 +13,29 @@ function generateToken(id, provider) {
 }
 
 router
-	.post("/login", passport.authenticate('local', { session: false }), (req,res) => {
-		const token = generateToken(req.user.id, "local")
-		res.json({message: "ok", token: token});
+	.post("/login", (req, res, next) => {
+		passport.authenticate('local', { session: false }, (err, user, info) => {
+			if (err) {
+				res.json({confirmation: "err", err: err})
+			}
+			if (!user) {
+				res.json({confirmation: "fail", info: info})
+			}
+			const token = generateToken(user.id, "local")
+			res.json({confirmation: "ok", token: token});
+		})(req, res, next)
 	})
-	.post("/register", passport.authenticate("local-register"), (req, res) => {
-		const token = generateToken(req.user.id, "local")
-		res.json({message: "ok", token: token});
+	.post("/register", (req, res, next) => {
+		passport.authenticate('local-register', { session: false }, (err, user, info) => {
+			if (err) {
+				res.json({confirmation: "err", err: err})
+			}
+			if (!user) {
+				res.json({confirmation: "fail", info: info})
+			}
+			const token = generateToken(user.id, "local")
+			res.json({confirmation: "ok", token: token});
+		})(req, res, next)
 	})
 	.get('/facebook',
 		passport.authenticate('facebook', 

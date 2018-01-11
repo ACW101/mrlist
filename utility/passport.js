@@ -2,6 +2,7 @@
 const passport = require("passport")
 const FacebookStrategy = require('passport-facebook').Strategy
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require("bcrypt-nodejs");
 
 //JWT
 const passportJWT = require('passport-jwt');
@@ -14,7 +15,7 @@ const jwtOptions= {
   secretOrKey: "TheSecretOfFood"
 }
 
-// model
+// model 
 let User = require('../models/User');
 
 // import your own facebook login key
@@ -24,13 +25,11 @@ const facebookConfig = Object.assign({},
   { profileFields: ['id', 'displayName', 'photos', 'email', 'name'] }
 )
 
-passport.use(new LocalStrategy(authenticate))
 
 passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
-  User.findOne({id: jwt_payload.sub}, (err, user) => {
-    if (err) {
-      return done(err, false);
-    }
+  console.log(jwt_payload.id)
+  User.findOne({id: jwt_payload.id})
+  .then( (user) => {
     if (user) {
       return done(null, user);
     } else {
@@ -39,21 +38,20 @@ passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
   })
 }))
 
+passport.use(new LocalStrategy(authenticate))
 passport.use("local-register", new LocalStrategy({passReqToCallback: true}, register))
 
 function authenticate(email, password, done){
   User.findOne({email: email})
-    .then((User) => {
-      console.log(User);
-      if (!User || !User.verifyPassword) {
-        return done(null, false, {message: "invalid user and password combination"})
+    .then((user) => {
+      if (!user || !user.verifyPassword(password)) {
+        done(null, false, {message: "invalid user and password combination"})
       }
       done(null, true)
-    }, done)
+    })
 }
 
 function register(req, email, password, done) {
-  console.log(email + password)
   User.findOne({email: email}, {require: false})
     .then((user) => {
       if (user) {
@@ -63,7 +61,7 @@ function register(req, email, password, done) {
       const newUser = {
         name: req.body.first_name + " " + req.body.last_name,
         email: email,
-        password: password
+        password: bcrypt.hashSync(password, bcrypt.genSaltSync(13), null)
       };
       User.create(newUser)
         .then((user) => {

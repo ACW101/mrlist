@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import isLoggedInReducer from './reducer_isLoggedIn';
+import isSignedInReducer from './app/reducer_isSignedIn';
 import searchResultReducer from './reducer_searchResult';
 import selectedRestaurantReducer from './reducer_selectedRestaurant';
 import friendListReducer from './reducer_friendList';
@@ -20,8 +20,8 @@ import isOpenLoginDialogReducer from './app/reducer_isOpenLoginDialog';
 const rootReducer = combineReducers({
   isOpenMenu: isOpenMenuReducer,
   isOpenLoginDialog: isOpenLoginDialogReducer,
+  isSignedIn: isSignedInReducer,
 
-  isLoggedIn: isLoggedInReducer,
   searchResult: searchResultReducer,
   restaurantList: restaurantListReducer,
   restaurantListIsLoading: restaurantListIsLoadingReducer,

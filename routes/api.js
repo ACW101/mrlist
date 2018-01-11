@@ -1,29 +1,16 @@
 const router = require("express").Router();
+const passport = require("passport");
 const controllers = require('../controllers/index');
 const yelp = require('./yelp');
 const poll = require('./poll');
 
-function loginRequired(req, res, next) {
-	if (process.env.NODE_ENV !== 'production') {
-		req.user = {id: 1};
-	} else {
-		if (!req.isAuthenticated()) {
-			return res.json({
-				confirmation: 'fail',
-				message: ('login required!')
-			})
-		}
-	}
-	
-	// // default userID for development
-	// req.user = {id: 1}
-	next()
-}
-
 router
 	.use('/yelp', yelp)
 	.use('/poll', poll)
-	.get('/user/:userResource', loginRequired, function(req, res) {
+	.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
+		res.json({message: "success"})
+	})
+	.get('/user/:userResource', passport.authenticate('jwt', {session: false}) , function(req, res) {
 		const { userResource} = req.params;
 		const controller = controllers.userResources[userResource];
 		if (controller == null) {
@@ -48,7 +35,7 @@ router
 			})
 		})
 	})
-	.get('/user/:userResource/:resource_id', loginRequired, function(req, res) {
+	.get('/user/:userResource/:resource_id', passport.authenticate('jwt', {session: false}), function(req, res) {
 		const { userResource, resource_id } = req.params;
 		const controller = controllers.userResources[userResource];	
 		if (controller == null) {
@@ -75,7 +62,7 @@ router
 			})
 		})
 	})
-	.get('/user/:userResource/:resource_id/:resourceChild', loginRequired, function(req, res){
+	.get('/user/:userResource/:resource_id/:resourceChild', passport.authenticate('jwt', {session: false}), function(req, res){
 		const { userResource, resource_id, resourceChild } = req.params;
 		const controller = controllers.resourceChild[userResource][resourceChild];
 
@@ -102,7 +89,7 @@ router
 			})
 		})
 	})
-	.put('/user/:userResource/:resource_id', loginRequired, function(req,res){
+	.put('/user/:userResource/:resource_id', passport.authenticate('jwt', {session: false}), function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers.userResources[userResource];	
 		const params = {
@@ -124,7 +111,7 @@ router
 			})
 		})
 	})
-	.put('/user/:userResource/:resource_id/:resourceChild/:resourceChild_id', loginRequired, function(req, res){
+	.put('/user/:userResource/:resource_id/:resourceChild/:resourceChild_id', passport.authenticate('jwt', {session: false}), function(req, res){
 		const { userResource, resource_id, resourceChild, resourceChild_id } = req.params;
 		const controller = controllers.resourceChild[userResource][resourceChild];
 
@@ -152,7 +139,7 @@ router
 			})
 		})
 	})
-	.post('/user/:userResource', loginRequired, function(req,res){
+	.post('/user/:userResource', passport.authenticate('jwt', {session: false}), function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers.userResources[userResource];		
 		const params = { body: Object.assign({}, req.body, {user_id: req.user.id})};
@@ -170,7 +157,7 @@ router
 			})
 		})
 	})
-	.delete('/user/:userResource/:resource_id', loginRequired, function(req,res){
+	.delete('/user/:userResource/:resource_id', passport.authenticate('jwt', {session: false}), function(req,res){
 		const { userResource, resource_id } = req.params;
 		const controller = controllers.userResources[userResource];
 		
@@ -192,7 +179,7 @@ router
 			})
 		})
 	})
-	.delete('/user/:userResource/:resource_id/:resourceChild/:resourceChild_id', loginRequired, function(req, res){
+	.delete('/user/:userResource/:resource_id/:resourceChild/:resourceChild_id', passport.authenticate('jwt', {session: false}), function(req, res){
 		const { userResource, resource_id, resourceChild, resourceChild_id } = req.params;
 		const controller = controllers.resourceChild[userResource][resourceChild];
 

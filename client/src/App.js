@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {toggleMenuDrawer} from './actions/AppAction';
-import {
-  Route
-} from 'react-router-dom';
+import { toggleMenuDrawer, checkToken } from './actions/AppAction';
+import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import Paper from "material-ui/Paper";
 import Home from "./routes/home";
 import Profile from "./routes/profile";
 import ButtonAppBar from './ButtonAppBar';
@@ -16,6 +13,10 @@ import './App.css';
 const menuItems = ["about", "profile"]
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.props.checkToken();
+  }
   state = {
     anchorEl: null,
     open: false
@@ -56,4 +57,8 @@ class App extends Component {
   }
 }
 
-export default withRouter(App)
+function mapStateToProp({ isLoggedIn }) {
+  return { isLoggedIn }
+}
+
+export default connect(mapStateToProp, { checkToken })(withRouter(App)) 

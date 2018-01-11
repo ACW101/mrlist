@@ -1,20 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleLoginDialog} from './actions/AppAction';
+import {closeLoginDialog, signIn, register} from './actions/AppAction';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 import TextField from 'material-ui/TextField';
-import Close from 'material-ui-icons/Close';
 
 import fb_login_img from './fb_login.png';
 
@@ -44,7 +38,7 @@ function Transition(props) {
 
 class LoginDialog extends React.Component {
     state = {
-        userName: "",
+        username: "",
         password: "",
     }
     handleChange = name => event => {
@@ -53,28 +47,35 @@ class LoginDialog extends React.Component {
             [name]: event.target.value,
         })
     }
+    handleSignin = e => {
+        const { username, password } = this.state; 
+        this.props.signIn(username, password);
+    }
+    handleRegister = e => {
+        const { username, password } = this.state; 
+        this.props.register(username, password);
+    }
     render() {
         const { classes } = this.props;
         return (
             <Dialog
                 fullScreen
                 open={this.props.isOpenLoginDialog}
-                onClose={this.props.toggleLoginDialog}
                 transition={Transition}
             >
                 <IconButton
                     style={closeButtonStyle}
-                    onClick={this.props.toggleLoginDialog}
+                    onClick={this.props.closeLoginDialog}
                 >
-                    <Close />
+                    <CloseIcon />
                 </IconButton>
                 <div style={formContainerStyle}>
                     <TextField
-                        id="userName"
-                        label="User Name"
+                        id="username"
+                        label="Email"
                         value={this.state.userName}
                         style={formElementStyle}
-                        onChange={this.handleChange('userName')}
+                        onChange={this.handleChange('username')}
                         margin="normal"
                     />
                     <TextField
@@ -87,11 +88,11 @@ class LoginDialog extends React.Component {
                         margin="normal"
                     />
                     <div style={spacerStyle}></div>
-                    <Button color="primary" style={formElementStyle}>
+                    <Button color="primary" style={formElementStyle} onClick={this.handleSignin}>
                         Sign in
                     </Button>
                     <div style={spacerStyle}></div>
-                    <Button color="secondary" style={formElementStyle}>
+                    <Button color="secondary" style={formElementStyle} onClick={this.handleRegister}>
                         Create Account
                     </Button>
                     <div style={spacerStyle}></div>
@@ -112,4 +113,4 @@ function mapStateToProps({isOpenLoginDialog}) {
     return {isOpenLoginDialog};
 }
 
-export default connect(mapStateToProps, {toggleLoginDialog})(LoginDialog)
+export default connect(mapStateToProps, {closeLoginDialog, signIn, register})(LoginDialog)

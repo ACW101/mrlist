@@ -21,7 +21,7 @@ let User = bookshelf.Model.extend({
 		return this.hasMany('Tag')
 	},
 	verifyPassword: function(password) {
-		return bcrypt.compareSync(password, user.password);
+		return bcrypt.compareSync(password, this.get("password"));
 	}
 })
 
