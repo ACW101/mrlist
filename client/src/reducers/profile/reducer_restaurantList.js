@@ -1,7 +1,7 @@
 import {
 	RESTAURANTLIST_IS_LOADING, 
 	RESTAURANTLIST_FETCH_SUCCESS
-} from "../routes/profile/actions";
+} from "../../actions/RestaurantListAction";
 
 import {keyBy} from "lodash";
 

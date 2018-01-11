@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchRestaurantList, selectRestaurant, toggleAddDialog } from "./actions";
+import { fetchRestaurantList, selectRestaurant } from "../../actions/RestaurantListAction";
 import { connect } from "react-redux";
 import {map} from "lodash";
 
@@ -44,10 +44,6 @@ class RestaurantList extends Component {
             </div>
         )
     }
-    handleCloseAddDialog() {
-        this.props.toggleAddDialog(false);
-        this.props.fetchRestaurantList();
-    }
     handleSelectRestaurant(restaurant_id) {
         this.props.selectRestaurant(restaurant_id);
     }
@@ -56,4 +52,4 @@ class RestaurantList extends Component {
 function mapStateToProps({restaurantList, isOpenAddRestaurantDialog}) {
     return {restaurantList, isOpenAddRestaurantDialog};
 }
-export default connect(mapStateToProps, { fetchRestaurantList, selectRestaurant, toggleAddDialog})(withStyles(styles)(RestaurantList));
+export default connect(mapStateToProps, { fetchRestaurantList, selectRestaurant})(withStyles(styles)(RestaurantList));

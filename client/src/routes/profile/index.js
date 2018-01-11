@@ -29,7 +29,7 @@ class Profile extends Component {
 		
 		return (
 			<div className={classes.root}>
-				<Content/>
+				<RestaurantList />
 			</div>
 		)
 	}

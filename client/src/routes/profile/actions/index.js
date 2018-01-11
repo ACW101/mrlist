@@ -1,9 +1,7 @@
 import axios from "axios";
 
 export const LOGIN = "LOGIN"
-export const FETCH_RESTAURANTLIST = "FETCH_RESTAURANTLIST";
 export const FETCH_TAGLIST = "FETCH_TAGLIST";
-export const SELECT_RESTAURANT= "SELECT_RESTAURANT";
 export const SELECT_TAG = "SELECT_TAG";
 export const FETCH_FRIENDLIST = "FETCH_FRIENDLIST";
 export const ADD_FRIENDS = "ADD_FRIENDS";
@@ -24,25 +22,6 @@ export function login() {
 	}
 }
 
-export function fetchRestaurantList(selectedTag) {
-	return (dispatch) => {
-		dispatch(restaurantListIsLoading(true));
-
-		axios({
-			url: '/api/user/restaurants',
-			method: 'get',
-			responseType: 'json',
-		}).then(response => {
-			dispatch(restaurantListIsLoading(false));
-			const restaurantList = response.data.result;
-			dispatch(restaurantListFetchSuccess(response.data.result));
-			restaurantList.map(restaurant => {
-				dispatch(fetchRestaurantTags(restaurant.id));
-			})
-		})
-	}
-
-}
 
 export function restaurantListIsLoading(bool){
 	return {
@@ -105,19 +84,6 @@ export function selectTag(selectedTag) {
 }
 
 // select restaurant and fetch restaurantDetail
-export function selectRestaurant(selectedRestaurant_id) {
-	return ((dispatch, getState) => {
-		// dispatch selectedRestaurant
-		dispatch({
-			type: SELECT_RESTAURANT,
-			payload: selectedRestaurant_id
-		})
-		// start fetching restaurantDetails
-		const {restaurantList} = getState();
-		const {yelp_id} = restaurantList[selectedRestaurant_id];
-		dispatch(fetchRestaurantDetail(yelp_id))
-	})
-}
 
 
 export function fetchFriendList(query) {
@@ -291,6 +257,7 @@ export function fetchRestaurantDetail(yelp_id) {
 		})
 	})
 }
+
 export const RESTAURANT_DETAIL_IS_LOADING = "RESTAURANT_DETAIL_IS_LOADING"
 export function restaurantDetailIsLoading(bool) {
 	return {

@@ -1,4 +1,4 @@
-import {SELECT_RESTAURANT} from "../routes/profile/actions";
+import {SELECT_RESTAURANT} from  "../../actions/RestaurantListAction";
 
 // return the restaurant_id in DB
 export default function(state = null, action) {

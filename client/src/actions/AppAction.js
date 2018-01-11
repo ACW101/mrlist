@@ -103,6 +103,7 @@ export function test() {
 export const IS_SIGNED_IN = "IS_SIGNED_IN"
 export const NOT_SIGNED_IN = "NOT_SIGNED_IN"
 export function checkToken() {
-    return token !== null ? { type: IS_SIGNED_IN }
-                          : { type: NOT_SIGNED_IN }
+    return token !== null ? { type: IS_SIGNED_IN, payload: token}
+                          : { type: NOT_SIGNED_IN, payload: null }
 }
+
