@@ -27,7 +27,6 @@ const facebookConfig = Object.assign({},
 
 
 passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
-  console.log(jwt_payload.id)
   User.findOne({id: jwt_payload.id})
   .then( (user) => {
     if (user) {
@@ -73,7 +72,6 @@ function register(req, email, password, done) {
 
 passport.use(new FacebookStrategy(facebookConfig,
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
     User.findOne({ oauth_id: profile.id}, {require: false})
     	.then((user) => {
     		if (user) {

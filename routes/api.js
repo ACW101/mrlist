@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const passport = require("passport");
 const controllers = require('../controllers/index');
-const yelp = require('./yelp');
-const poll = require('./poll');
+const yelp = require('./api/yelp');
+const poll = require('./api/poll');
 
 router
+	.use(passport.authenticate('jwt', {session: false}))
 	.use('/yelp', yelp)
 	.use('/poll', poll)
-	.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
+	.get('/test', (req, res) => {
 		res.json({message: "success"})
 	})
 	.get('/user/:userResource', passport.authenticate('jwt', {session: false}) , function(req, res) {

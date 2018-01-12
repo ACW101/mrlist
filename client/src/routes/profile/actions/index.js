@@ -5,8 +5,6 @@ export const FETCH_TAGLIST = "FETCH_TAGLIST";
 export const SELECT_TAG = "SELECT_TAG";
 export const FETCH_FRIENDLIST = "FETCH_FRIENDLIST";
 export const ADD_FRIENDS = "ADD_FRIENDS";
-export const RESTAURANTLIST_IS_LOADING = 'RESTAURANTLIST_IS_LOADING';
-export const RESTAURANTLIST_FETCH_SUCCESS = 'RESTAURANTLIST_FETCH_SUCCESS';
 export const FETCH_RESTAURANT_TAGS = 'FETCH_RESTAURANT_TAGS';
 export const RESTAURANTTAG_IS_LOADING = 'RESTAURANTTAG_IS_LOADING';
 export const RESTAURANTTAG_FETCH_SUCCESS = 'RESTAURANTTAG_FETCH_SUCCESS';
@@ -23,19 +21,7 @@ export function login() {
 }
 
 
-export function restaurantListIsLoading(bool){
-	return {
-		type: RESTAURANTLIST_IS_LOADING,
-        payload: bool,
-    }
-}
 
-export function restaurantListFetchSuccess(restaurantList) {
-	return {
-		type: RESTAURANTLIST_FETCH_SUCCESS,
-		payload: restaurantList
-	}
-}
 
 export function fetchRestaurantTags(restaurant_id) {
 	return (dispatch) => {

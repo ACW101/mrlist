@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const controllers = require('../controllers/index');
+const controllers = require('../../controllers/index');
 
 router
     .get('/:pollId', function(req, res){

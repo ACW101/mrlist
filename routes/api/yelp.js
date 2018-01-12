@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const yelp = require('yelp-fusion');
-const yelpKey = require("../utility/config/keys").yelp;
+const yelpKey = require("../../utility/config/keys").yelp;
+const { fork } = require('child_process')
 let client;
 
 // get access token at startup
@@ -30,6 +31,18 @@ router
 			console.log(e);
 		})
 	})
-
+	.get('/bookmark', (req, res, next) => {
+		let bookmarks = []
+		const { yelp_id } = req.query;
+		const subprocess = fork('./utility/yelpBookmarkScraper.js');
+		subprocess.send(yelp_id);
+		subprocess.on('message', msg => {
+			if (msg !== 'eof') {
+				bookmarks.push(msg)
+			} else {
+				res.send(bookmarks)
+			}
+		})
+	})
 
 module.exports = router;
