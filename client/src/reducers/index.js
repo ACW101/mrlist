@@ -17,6 +17,9 @@ import isOpenMenuReducer from './app/reducer_isOpenMenu';
 import isOpenLoginDialogReducer from './app/reducer_isOpenLoginDialog';
 import isSignedInReducer from './app/reducer_isSignedIn';
 import tokenReducer from './app/reducer_token';
+import isOpenImportDialogReducer from './profile/reducer_isOpenImportDialog';
+import importResultReducer from './profile/reducer_importResult';
+import importCheckboxReducer from './profile/reducer_importCheckbox'
 
 
 const rootReducer = combineReducers({
@@ -24,6 +27,10 @@ const rootReducer = combineReducers({
   isOpenLoginDialog: isOpenLoginDialogReducer,
   isSignedIn: isSignedInReducer,
   token: tokenReducer,
+  // restaurantList
+  isOpenImportDialog: isOpenImportDialogReducer,
+  importResult: importResultReducer,
+  importCheckbox: importCheckboxReducer,
 
   searchResult: searchResultReducer,
   restaurantList: restaurantListReducer,
