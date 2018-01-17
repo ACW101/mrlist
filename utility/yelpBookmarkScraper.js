@@ -11,16 +11,19 @@ function getBookmarks(yelp_id) {
         .create()
         .scrape( $ => {
             return $(".biz-name.js-analytics-click")
-                .map( (i, e) => $(e).attr('href')).get();
+                .map( (i, e) => {
+                    return {
+                        id: $(e).attr('href').substring(5),
+                        name: $("span", e).text()
+                    }
+                }).get();
         })
         .then( bookmarks => {
             if (bookmarks.length == 0) {
                 process.send('eof')
             } else {
                 start += 50
-                for (var i = 0; i < bookmarks.length; i++) {
-                    process.send(bookmarks[i].substring(5))
-                }
+                process.send(bookmarks)
                 scraper.get(`https://www.yelp.com/user_details_bookmarks?userid=${yelp_id}&start=${start}`)
             }
         })

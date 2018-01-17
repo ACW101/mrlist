@@ -38,7 +38,7 @@ router
 		subprocess.send(yelp_id);
 		subprocess.on('message', msg => {
 			if (msg !== 'eof') {
-				bookmarks.push(msg)
+				bookmarks = bookmarks.concat(msg)
 			} else {
 				res.send(bookmarks)
 			}
