@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { closeImportDialog, importFromYelp, toggleImportCheckbox } from '../../../actions/RestaurantListAction'
+import { closeImportDialog, importFromYelp, toggleImportCheckbox,  } from '../../../actions/RestaurantListAction'
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
@@ -63,7 +63,7 @@ class ImportDialog extends Component {
                 return (
                     <div>
                         <ListItem>
-                            <ListItemText primary={val} />
+                            <ListItemText primary={val.name} />
                             <ListItemSecondaryAction>
                                 <Checkbox
                                     checked={this.props.importCheckbox[i]}
